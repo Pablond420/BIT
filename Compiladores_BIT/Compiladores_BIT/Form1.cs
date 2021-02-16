@@ -22,17 +22,28 @@ namespace Compiladores_BIT
         {
 
         }
-
+        /// <summary>
+        /// Controlador del evento (click) del botón
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
+            //Agrega un controlador en la interfaz de abrir explorador de archivos
+            //Asigna el directorio inicial
             abrir_txt.InitialDirectory = "C:/";
+            //Determina el filtro para archivos .txt únicamente
+            abrir_txt.Filter = "txt files (*.txt)|*.txt";
 
-            if(abrir_txt.ShowDialog()==DialogResult.OK)
+            //Si se abre correctamente la ventana de diálogo
+            if (abrir_txt.ShowDialog()==DialogResult.OK)
             {
+                //Inicializa un stream (flujo) de datos
                 StreamReader txt = new StreamReader(abrir_txt.FileName, Encoding.UTF8);
+                //Lee el txt hasta el final
                 string texto = txt.ReadToEnd();
-                txt.Close();
-                text_abrir.Text = texto;
+                txt.Close(); //Cierra el archivo
+                text_abrir.Text = texto; //Asigna el texto extraído del stream al cuadro de texto de la interfaz
             }
         }
     }
