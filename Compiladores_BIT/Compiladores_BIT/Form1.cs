@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Compiladores_BIT
 {
@@ -28,7 +29,7 @@ namespace Compiladores_BIT
 
             if(abrir_txt.ShowDialog()==DialogResult.OK)
             {
-                System.IO.StreamReader txt = new System.IO.StreamReader(abrir_txt.FileName, System.Text.Encoding.UTF8);
+                StreamReader txt = new StreamReader(abrir_txt.FileName, Encoding.UTF8);
                 string texto = txt.ReadToEnd();
                 txt.Close();
                 text_abrir.Text = texto;
