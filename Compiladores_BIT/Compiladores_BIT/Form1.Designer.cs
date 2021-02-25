@@ -90,6 +90,7 @@ namespace Compiladores_BIT
             this.btn_posfija.TabIndex = 4;
             this.btn_posfija.Text = "Representacion posfija";
             this.btn_posfija.UseVisualStyleBackColor = false;
+            this.btn_posfija.Click += new System.EventHandler(this.btn_posfija_Click);
             // 
             // tabControl1
             // 
