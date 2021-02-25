@@ -52,43 +52,40 @@ namespace Compiladores_BIT
 
         private void btn_posfija_Click(object sender, EventArgs e)
         {
-            
-
             if(text_abrir.Text!="")
             {
+                //Convierte el string en un arreglo de chars para después recuperarlo y asignarlo en la interfaz
                 regular = text_abrir.Text.ToCharArray();
-                string prueba = new string(Regresa_Expresion_legible());
-                posfija_text.Text = prueba;
-                
-
-
+                string regEx_explicit = new string(Regresa_Expresion_legible());
+                posfija_text.Text = regEx_explicit;
             }
         }
 
 
         public char[] Regresa_Expresion_legible()
         {
-            
             char[] aux = new char[1000];
             int cont_caract = 0;
             bool corchetes = false;
             for(int i=0; i<regular.Length;i++)
             {
-                
-
                 if (regular[i] == '[' || corchetes)
                 {
+                    //Levanta corchete para seguir con la dinámica hasta encontrar el corchete derecho
                     corchetes = true;
 
                     if (regular[i] == '[')
                     {
+                        //Convierte el corchete en paréntesis para comenzar a distribuir en caso de ser RANGO o NO
                         aux[cont_caract] = '(';
                         cont_caract++;
                     }
                     else
                     {
+                        //Si encuentra corchete derecho, termina el rango y concatena un paréntesis derecho
                         if (regular[i] == ']')
                         {
+                            //Avisa que el rango ha terminado
                             corchetes = false;
                             aux[cont_caract] = ')';
                             cont_caract++;
@@ -97,15 +94,20 @@ namespace Compiladores_BIT
                         {
                             int val_ascii = (int)regular[i];
 
+                            //Si el caracter en la expresion regular es de [a-z] o un número [0-9]
                             if ((val_ascii >= 97 && val_ascii <= 122) || (val_ascii >= 48 && val_ascii <= 57))
                             {
+                                //Concatena en la exp explicita
                                 aux[cont_caract] = regular[i];
                                 cont_caract++;
 
+                                //Verifica que se trata de un rango '-'
                                 if(regular[i+1] == '-')
                                 {
+                                    //Obtiene el numero max del rango
                                     int val_ascii_aux = regular[i + 2];
 
+                                    //Itera hasta llegar al valor maximo del rango desde el valor inicial
                                     for(int p=val_ascii+1; p<=val_ascii_aux;p++)
                                     {
                                         aux[cont_caract] = '|';
@@ -113,6 +115,7 @@ namespace Compiladores_BIT
                                         aux[cont_caract] = (char)p;
                                         cont_caract++;
                                     }
+                                    //Avisa que el rango ha terminado
                                     corchetes = false;
                                     aux[cont_caract] = ')';
                                     cont_caract++;
@@ -121,21 +124,16 @@ namespace Compiladores_BIT
                                 }
                                 else
                                 {
+                                    //Aplica selección de alternativas al caracter dentro del corchete
                                     if (regular[i + 1] != ']')
                                     {
                                         aux[cont_caract] = '|';
                                         cont_caract++;
                                     }
                                 }
-
                             }
-
                         }
                     }
-
-                    
-
-                    
                 }
                 else
                 {
@@ -143,14 +141,18 @@ namespace Compiladores_BIT
                     cont_caract++;
 
                     // las letras del abecedario van en val_ascii >= 97 && val_ascii <= 122
+                    // Comprueba que el caracter no sea seleccion de alternativas o parentesis izquiero, un rango o corchete izquierdo, estos casos N/A concatenacion
                     if (regular[i] != '(' && regular[i] != '[' && regular[i] != '-' && regular[i] != '|')
                     {
                         if (i != regular.Length - 1)
                         {
-
                             int val_ascii = (int)regular[i + 1];
+
+                            //CONDICION PARA CONCATENAR
+                            //Si el siguiente caracter en la expresion regular es de [a-z] o un paréntesis izquierdo, o un corchete izquierdo o un número [0-9]
                             if ((val_ascii >= 97 && val_ascii <= 122) || val_ascii == 40 || val_ascii == 91 || (val_ascii >= 48 && val_ascii <= 57))
                             {
+                                //Agrega concatenacion en el arreglo auxiliar de la posfija
                                 aux[cont_caract] = '&';
                                 cont_caract++;
                             }
@@ -159,10 +161,9 @@ namespace Compiladores_BIT
                 }
             }
 
+            //Obtiene la expresion con tamaño acotado
             char[] legible = new char[cont_caract + 1];
             Array.Copy(aux, 0, legible, 0, cont_caract + 1);
-
-            
 
             return legible;
         }
