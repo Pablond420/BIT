@@ -36,9 +36,10 @@ namespace Compiladores_BIT
             this.btn_posfija = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.regEx_explicita = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -47,8 +48,8 @@ namespace Compiladores_BIT
             // 
             this.button2.BackColor = System.Drawing.Color.Khaki;
             this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(178, 6);
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(25, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(116, 27);
             this.button2.TabIndex = 1;
@@ -58,8 +59,8 @@ namespace Compiladores_BIT
             // 
             // text_abrir
             // 
-            this.text_abrir.Font = new System.Drawing.Font("Montserrat", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.text_abrir.Location = new System.Drawing.Point(25, 36);
+            this.text_abrir.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.text_abrir.Location = new System.Drawing.Point(25, 75);
             this.text_abrir.Multiline = true;
             this.text_abrir.Name = "text_abrir";
             this.text_abrir.Size = new System.Drawing.Size(409, 34);
@@ -72,10 +73,11 @@ namespace Compiladores_BIT
             // 
             // posfija_text
             // 
-            this.posfija_text.Font = new System.Drawing.Font("Montserrat", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.posfija_text.Location = new System.Drawing.Point(25, 128);
+            this.posfija_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.posfija_text.Location = new System.Drawing.Point(25, 197);
             this.posfija_text.Multiline = true;
             this.posfija_text.Name = "posfija_text";
+            this.posfija_text.ReadOnly = true;
             this.posfija_text.Size = new System.Drawing.Size(410, 34);
             this.posfija_text.TabIndex = 3;
             // 
@@ -83,8 +85,8 @@ namespace Compiladores_BIT
             // 
             this.btn_posfija.BackColor = System.Drawing.Color.Khaki;
             this.btn_posfija.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_posfija.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_posfija.Location = new System.Drawing.Point(455, 36);
+            this.btn_posfija.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_posfija.Location = new System.Drawing.Point(457, 75);
             this.btn_posfija.Name = "btn_posfija";
             this.btn_posfija.Size = new System.Drawing.Size(175, 34);
             this.btn_posfija.TabIndex = 4;
@@ -105,6 +107,7 @@ namespace Compiladores_BIT
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FloralWhite;
+            this.tabPage1.Controls.Add(this.regEx_explicita);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.button2);
@@ -118,6 +121,26 @@ namespace Compiladores_BIT
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Analizador lexico";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(21, 172);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 20);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Posfija:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(21, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(136, 20);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Expresion regular:";
+            // 
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -128,25 +151,15 @@ namespace Compiladores_BIT
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // regEx_explicita
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(21, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(154, 22);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Expresion regular:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(21, 103);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 22);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Posfija:";
+            this.regEx_explicita.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.regEx_explicita.Location = new System.Drawing.Point(25, 112);
+            this.regEx_explicita.Multiline = true;
+            this.regEx_explicita.Name = "regEx_explicita";
+            this.regEx_explicita.ReadOnly = true;
+            this.regEx_explicita.Size = new System.Drawing.Size(409, 34);
+            this.regEx_explicita.TabIndex = 7;
             // 
             // Form1
             // 
@@ -175,6 +188,7 @@ namespace Compiladores_BIT
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TextBox regEx_explicita;
     }
 }
 
