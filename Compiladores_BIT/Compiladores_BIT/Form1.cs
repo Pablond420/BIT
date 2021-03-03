@@ -30,7 +30,7 @@ namespace Compiladores_BIT
         {
             //Limpia cualquier valor interpretado anteriormente
             regEx_explicita.Text = "";
-
+            posfija_text.Text = "";
             //Agrega un controlador en la interfaz de abrir explorador de archivos
             //Asigna el directorio inicial
             abrir_txt.InitialDirectory = "C:/";
@@ -92,6 +92,17 @@ namespace Compiladores_BIT
                             corchetes = false;
                             aux[cont_caract] = ')';
                             cont_caract++;
+
+                            if(i != regular.Length - 1)
+                            {
+                                int val_ascii = (int)regular[i + 1];
+                                if ((val_ascii >= 97 && val_ascii <= 122) || val_ascii == 40 || val_ascii == 91 || (val_ascii >= 48 && val_ascii <= 57) || val_ascii == 46)
+                                {
+                                    //Agrega concatenacion en el arreglo auxiliar de la posfija
+                                    aux[cont_caract] = '&';
+                                    cont_caract++;
+                                }
+                            }
                         }
                         else
                         {
