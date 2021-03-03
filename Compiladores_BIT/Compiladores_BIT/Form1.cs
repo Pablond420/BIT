@@ -98,7 +98,7 @@ namespace Compiladores_BIT
                             int val_ascii = (int)regular[i];
 
                             //Si el caracter en la expresion regular es de [a-z] o un número [0-9]
-                            if ((val_ascii >= 97 && val_ascii <= 122) || (val_ascii >= 48 && val_ascii <= 57))
+                            if ((val_ascii >= 97 && val_ascii <= 122) || (val_ascii >= 48 && val_ascii <= 57) || val_ascii==46)
                             {
                                 //Concatena en la exp explicita
                                 aux[cont_caract] = regular[i];
@@ -153,7 +153,7 @@ namespace Compiladores_BIT
 
                             //CONDICION PARA CONCATENAR
                             //Si el siguiente caracter en la expresion regular es de [a-z] o un paréntesis izquierdo, o un corchete izquierdo o un número [0-9]
-                            if ((val_ascii >= 97 && val_ascii <= 122) || val_ascii == 40 || val_ascii == 91 || (val_ascii >= 48 && val_ascii <= 57))
+                            if ((val_ascii >= 97 && val_ascii <= 122) || val_ascii == 40 || val_ascii == 91 || (val_ascii >= 48 && val_ascii <= 57) || val_ascii == 46)
                             {
                                 //Agrega concatenacion en el arreglo auxiliar de la posfija
                                 aux[cont_caract] = '&';
@@ -205,7 +205,7 @@ namespace Compiladores_BIT
                     pila[--p] = (char)0;
                 }
                 //Si es un operando del alfabeto
-                else if ((valAscii >= 97 && valAscii <= 122) || (valAscii >= 48 && valAscii <= 57))
+                else if ((valAscii >= 97 && valAscii <= 122) || (valAscii >= 48 && valAscii <= 57) || valAscii == 46)
                     posfija[iAux++] = regEx[i];
                 else
                 {
