@@ -11,6 +11,7 @@ namespace Compiladores_BIT
     {
         public char[] regular;
         public List<Expresion_Regular> er;
+        public char[] pos; // arreglo de caracteres que guarda la expresion posfija 
         public Form1()
         {
             InitializeComponent();
@@ -57,7 +58,8 @@ namespace Compiladores_BIT
                 regular = text_abrir.Text.ToCharArray();
                 char[] explicita = Regresa_Expresion_legible();
                 regEx_explicita.Text = new string(explicita);
-                posfija_text.Text = new string(getPosfija(explicita));
+                pos = getPosfija(explicita);
+                posfija_text.Text = new string(pos);
             }
         }
 
@@ -267,5 +269,75 @@ namespace Compiladores_BIT
 
             return res;
         }
+        /// <summary>
+        /// Crea el automata AFN en una lista
+        /// </summary>
+        public void Automata_AFN()
+        {
+            //verifica que la expresion posfija ya se haya creado
+            if(posfija_text.Text != "")
+            {
+                for(int i=0; i<pos.Length; i++)
+                {
+
+                    switch(Evalua_Caracter(pos[i]))
+                    {
+                        case 0:
+                            MessageBox.Show("Hay un caracter no reconocido");
+                            break;
+                        case 1: // es un caracter del abecedario, un operando
+                            break;
+                        case 2:  // el caracter es un ampersand o concatenacion
+                            break;
+                        case 3: // el caracter es un pipe o seleccion alternativas
+                            break;
+                        case 4: // el caracter es un mas o una cerradura positiva
+                            break;
+                        case 5: // el caracter es un asterisco o una cerradura de klenee
+                            break;
+                        case 6: // el caracter es una interrogacion o cero una instancia
+                            break;
+                    }
+
+
+                }
+
+
+            }
+
+
+
+        }
+
+        public int Evalua_Caracter(char a)
+        {
+            int valor = 0;
+            int val_ascii = (int)a;
+            if ((val_ascii >= 97 && val_ascii <= 122) || (val_ascii >= 48 && val_ascii <= 57) || val_ascii == 46)
+            {
+                valor = 1; // es un caracter del abecedario, un operando
+            }else
+            {
+                if(val_ascii == 38)
+                {
+                    valor = 2; // el caracter es un ampersand o concatenacion
+                }
+                else
+                    if(val_ascii == 124)
+                    valor = 3; // el caracter es un pipe o seleccion alternativas
+                else
+                    if (val_ascii == 43)
+                    valor = 4; // el caracter es un mas o una cerradura positiva
+                else
+                    if (val_ascii == 42)
+                    valor = 5; // el caracter es un asterisco o una cerradura de klenee
+                else
+                    if (val_ascii == 63)
+                    valor = 6; // el caracter es una interrogacion o cero una instancia
+
+            }
+            return valor;
+        }
+
     }
 }
