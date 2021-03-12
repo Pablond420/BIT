@@ -10,10 +10,11 @@ namespace Compiladores_BIT
     {
         public int id_e;
         public int numero;
+        public string tipo_edo;
 
         public Estado()
         {
-
+            tipo_edo = "normal";
         }
     }
 }

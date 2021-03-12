@@ -10,6 +10,7 @@ namespace Compiladores_BIT
     {
         public List<Estado> le;
         public List<Transicion> lt;
+        public string nombre;
         public Automata()
         {
             le = new List<Estado>();

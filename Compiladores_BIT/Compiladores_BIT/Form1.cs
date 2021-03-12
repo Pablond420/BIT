@@ -1,21 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+
 namespace Compiladores_BIT
 {
-    public partial class Form1 : Form
+    partial class Form1 : Form
     {
         public char[] regular;
         public List<Expresion_Regular> er;
         public char[] pos; // arreglo de caracteres que guarda la expresion posfija 
+        public int cont_edos_AFN; // cuenta los estados que se han creado para que estos obtengan un id en AFN
+        public int cont_trans_AFN; // cuenta las transiciones que se han creado para que estos obtengan un id en AFN
+        public int cont_automatas_AFN; // cuenta los automatas que se han creado para que estos obtengan un id en AFN
+
         public Form1()
         {
             InitializeComponent();
             er = new List<Expresion_Regular>();
+            cont_edos_AFN = cont_trans_AFN = 0;
+            cont_automatas_AFN = 1;
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -274,68 +283,285 @@ namespace Compiladores_BIT
         /// </summary>
         public void Automata_AFN()
         {
+            //crear PILA
+            List<Automata> pila = new List<Automata>();
+            pila.Clear();
             //verifica que la expresion posfija ya se haya creado
             if(posfija_text.Text != "")
             {
                 for(int i=0; i<pos.Length; i++)
                 {
+                    /*
+                      pila.Count() - 1 === tope de la pila
+                      pila.Count() - 2 === Uno antes del tope de pila
+                     */
 
-                    switch(Evalua_Caracter(pos[i]))
+
+                    switch (Evalua_Caracter(pos[i]))
                     {
                         case 0:
                             MessageBox.Show("Hay un caracter no reconocido");
                             break;
                         case 1: // es un caracter del abecedario, un operando
+                            pila.Add(CreaAutomataBase(pos[i]));
                             break;
                         case 2:  // el caracter es un ampersand o concatenacion
                             break;
                         case 3: // el caracter es un pipe o seleccion alternativas
                             break;
                         case 4: // el caracter es un mas o una cerradura positiva
+                            pila.Add(OperacionCerraduraPositiva(pila.ElementAt(pila.Count() - 1)));
+                            pila.RemoveAt(pila.Count() - 2);
                             break;
-                        case 5: // el caracter es un asterisco o una cerradura de klenee
+                        case 5: // el caracter es un asterisco o una cerradura de kleene
+                            pila.Add(OperacionCerraduraPositiva(pila.ElementAt(pila.Count() - 1)));
+                            pila.RemoveAt(pila.Count() - 2);
                             break;
                         case 6: // el caracter es una interrogacion o cero una instancia
+                            pila.Add(OperacionCeroInstancia(pila.ElementAt(pila.Count() - 1)));
+                            pila.RemoveAt(pila.Count() - 2);
                             break;
                     }
-
-
                 }
-
-
             }
+        }
+        /// <summary>
+        /// Regresa un automata resultado de aplicar la operacion Cero o una instancia del algoritmo de thompson
+        /// </summary>
+        /// <param name="rn"> Ingresa el automata que se le quiere aplicar la operacion, tope de la pila del algoritmo</param>
+        /// <returns>nuevo automata</returns>
+        public Automata OperacionCeroInstancia(Automata rn)
+        {
+            Automata copia = Copia_auto(rn);
+            // Crear dos estados nuevos que iran uno al inicio y otro al final
+            Estado e1 = new Estado();
+            Estado e2 = new Estado();
+            e1.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            e2.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            //Crear las dos transiciones que uniran los dos estados creados 
+
+            //Agregar al final y al inicio los nuevos estados en el automata que se le esta aplicando
+            copia.le.Insert(0, e1); //principio
+            copia.le.Add(e2); // fin
+
+            //Agregar las nuevas transiciones de los estados que se acaban de agregar
+            Transicion t2 = new Transicion();
+            t2.origen = copia.le.ElementAt(0);
+            t2.destino = copia.le.ElementAt(1);
+            t2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2.operando = 'ε';
+            copia.lt.Add(t2);
 
 
+            Transicion t3 = new Transicion();
+            t2.origen = copia.le.ElementAt(copia.le.Count() - 2);
+            t2.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2.operando = 'ε';
+            copia.lt.Add(t2);
+
+            //Transicion que une a los nuevos estados agregados
+            Transicion t4 = new Transicion();
+            t4.origen = copia.le.ElementAt(0);
+            t4.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t4.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t4.operando = 'ε';
+            copia.lt.Add(t4);
+
+            return copia;
+        }
+        /// <summary>
+        /// Regresa un automata resultado de aplicar la operacion cerradura positiva del algoritmo de thompson
+        /// </summary>
+        /// <param name="rn"> Ingresa el automata que se le quiere aplicar la operacion, tope de la pila del algoritmo</param>
+        /// <returns>nuevo automata</returns>
+        public Automata OperacionCerraduraPositiva(Automata rn)
+        {
+            Automata copia = Copia_auto(rn);
+            // Crear dos estados nuevos que iran uno al inicio y otro al final
+            Estado e1 = new Estado();
+            Estado e2 = new Estado();
+            e1.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            e2.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            //Crear las dos transiciones que uniran los dos estados creados y la transicion que regresa del ultimo estado al primero
+            Transicion t1 = new Transicion(); // primero la transicion que une al ultimo con el primero con epsilon o cadena vacia
+            t1.origen = copia.le.ElementAt(copia.le.Count()-1);
+            t1.destino = copia.le.ElementAt(0);
+            t1.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t1.operando = 'ε';
+            copia.lt.Add(t1);
+            //Despues agregar al final y al inicio los nuevos estados en el automata que se le esta aplicando
+            copia.le.Insert(0, e1); //principio
+            copia.le.Add(e2); // fin
+
+            //Agregar las nuevas transiciones de los estados que se acaban de agregar
+            Transicion t2 = new Transicion();
+            t2.origen = copia.le.ElementAt(0);
+            t2.destino = copia.le.ElementAt(1);
+            t2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2.operando = 'ε';
+            copia.lt.Add(t2);
+
+            
+            Transicion t3 = new Transicion();
+            t2.origen = copia.le.ElementAt(copia.le.Count() - 2);
+            t2.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2.operando = 'ε';
+            copia.lt.Add(t2);
+
+            return copia;
+        }
+
+        /// <summary>
+        /// Regresa un automata resultado de aplicar la operacion cerradura de kleene del algoritmo de thompson
+        /// </summary>
+        /// <param name="rn"> Ingresa el automata que se le quiere aplicar la operacion, tope de la pila del algoritmo</param>
+        /// <returns>nuevo automata</returns>
+        public Automata OperacionCerraduraKleene(Automata rn)
+        {
+            Automata copia = Copia_auto(rn);
+            // Crear dos estados nuevos que iran uno al inicio y otro al final
+            Estado e1 = new Estado();
+            Estado e2 = new Estado();
+            e1.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            e2.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            //Crear las dos transiciones que uniran los dos estados creados y la transicion que regresa del ultimo estado al primero y la transicion de los ultimos creados
+            Transicion t1 = new Transicion(); // primero la transicion que une al ultimo con el primero con epsilon o cadena vacia
+            t1.origen = copia.le.ElementAt(copia.le.Count() - 1);
+            t1.destino = copia.le.ElementAt(0);
+            t1.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t1.operando = 'ε';
+            copia.lt.Add(t1);
+            //Despues agregar al final y al inicio los nuevos estados en el automata que se le esta aplicando
+            copia.le.Insert(0, e1); //principio
+            copia.le.Add(e2); // fin
+
+            //Agregar las nuevas transiciones de los estados que se acaban de agregar
+            Transicion t2 = new Transicion();
+            t2.origen = copia.le.ElementAt(0);
+            t2.destino = copia.le.ElementAt(1);
+            t2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2.operando = 'ε';
+            copia.lt.Add(t2);
+
+
+            Transicion t3 = new Transicion();
+            t2.origen = copia.le.ElementAt(copia.le.Count() - 2);
+            t2.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2.operando = 'ε';
+            copia.lt.Add(t2);
+
+            //Transicion que une a los nuevos estados agregados
+            Transicion t4 = new Transicion();
+            t4.origen = copia.le.ElementAt(0);
+            t4.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t4.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t4.operando = 'ε';
+            copia.lt.Add(t4);
+
+            return copia;
+        }
+
+
+        /// <summary>
+        /// Copia las listas en otro objeto para evitar errores de que se le apliquen cambios a los dos objetos por duplicidad
+        /// </summary>
+        /// <param name="rn">recibe automata a copiar</param>
+        /// <returns>copia del automata que llego</returns>
+        public Automata Copia_auto(Automata rn)
+        {
+            Automata copia = new Automata();
+            foreach (Estado e in rn.le)
+            {
+                copia.le.Add(e);
+            }
+            foreach (Transicion t in rn.lt)
+            {
+                copia.lt.Add(t);
+            }
+            copia.nombre = "r" + cont_automatas_AFN;
+            cont_automatas_AFN++;
+            return copia;
+        }
+        /// <summary>
+        /// Crea el automata base de un caracter valido 
+        /// </summary>
+        /// <param name="pos">Recibe el caracter actual de la expresion posfija</param>
+        /// <returns>regresa el automata de ese caracter</returns>
+        public Automata CreaAutomataBase( char pos)
+        {
+            //El automata base de un  caracter valido se compone con dos estados y una transicion con dicho caracter
+            Estado e1 = new Estado();
+            Estado e2 = new Estado();
+            e1.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            e2.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            //El automata base de un caracter valido necesita una transicion que una a los dos estados
+            Transicion t1 = new Transicion();
+            t1.origen = e1;
+            t1.destino = e2;
+            t1.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t1.operando = pos;
+            //Creacion del automata, se guarda en una clase sus estados y transiciones
+            Automata bas = new Automata();
+            bas.nombre = "r" + cont_automatas_AFN;
+            cont_automatas_AFN++;
+            bas.le.Add(e1);
+            bas.le.Add(e2);
+            bas.lt.Add(t1);
+
+            return bas;
 
         }
 
+        /// <summary>
+        /// Este metodo regresa todos el tipo de caracter actual de la posfija
+        /// </summary>
+        /// <param name="a">caracter actual de expresion posfija</param>
+        /// <returns>regresa un entero que indica el tipo de caracter segun el numero que regrese</returns>
         public int Evalua_Caracter(char a)
         {
             int valor = 0;
-            int val_ascii = (int)a;
-            if ((val_ascii >= 97 && val_ascii <= 122) || (val_ascii >= 48 && val_ascii <= 57) || val_ascii == 46)
-            {
+            int val_ascii = (int)a;// guarda el valor ASCII en numero entero del caracter seleccionado
+            if ((val_ascii >= 97 && val_ascii <= 122) || (val_ascii >= 48 && val_ascii <= 57) || val_ascii == 46) // verifica que el valor entero ASCII obtenido se encuentre en el alfabeto para verificar que sea un operando valido
                 valor = 1; // es un caracter del abecedario, un operando
-            }else
-            {
-                if(val_ascii == 38)
-                {
-                    valor = 2; // el caracter es un ampersand o concatenacion
-                }
-                else
-                    if(val_ascii == 124)
-                    valor = 3; // el caracter es un pipe o seleccion alternativas
-                else
+            else
+                if (val_ascii == 38)
+                valor = 2; // el caracter es un ampersand o concatenacion
+            else
+                    if (val_ascii == 124)
+                valor = 3; // el caracter es un pipe o seleccion alternativas
+            else
                     if (val_ascii == 43)
-                    valor = 4; // el caracter es un mas o una cerradura positiva
-                else
+                valor = 4; // el caracter es un mas o una cerradura positiva
+            else
                     if (val_ascii == 42)
-                    valor = 5; // el caracter es un asterisco o una cerradura de klenee
-                else
+                valor = 5; // el caracter es un asterisco o una cerradura de kleene
+            else
                     if (val_ascii == 63)
-                    valor = 6; // el caracter es una interrogacion o cero una instancia
+                valor = 6; // el caracter es una interrogacion o cero una instancia
 
-            }
+
             return valor;
         }
 
