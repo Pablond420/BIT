@@ -296,7 +296,6 @@ namespace Compiladores_BIT
                       pila.Count() - 2 === Uno antes del tope de pila
                      */
 
-
                     switch (Evalua_Caracter(pos[i]))
                     {
                         case 0:
@@ -306,8 +305,14 @@ namespace Compiladores_BIT
                             pila.Add(CreaAutomataBase(pos[i]));
                             break;
                         case 2:  // el caracter es un ampersand o concatenacion
+                            pila.Add(OperacionConcatenacion(pila.ElementAt(pila.Count() - 2), pila.ElementAt(pila.Count() - 1)));
+                            pila.RemoveAt(pila.Count() - 2);
+                            pila.RemoveAt(pila.Count() - 1);
                             break;
                         case 3: // el caracter es un pipe o seleccion alternativas
+                            pila.Add(OperacionSeleccionAlternativas(pila.ElementAt(pila.Count() - 2), pila.ElementAt(pila.Count() - 1)));
+                            pila.RemoveAt(pila.Count() - 2);
+                            pila.RemoveAt(pila.Count() - 1);
                             break;
                         case 4: // el caracter es un mas o una cerradura positiva
                             pila.Add(OperacionCerraduraPositiva(pila.ElementAt(pila.Count() - 1)));
@@ -325,6 +330,7 @@ namespace Compiladores_BIT
                 }
             }
         }
+
         /// <summary>
         /// Regresa un automata resultado de aplicar la operacion Cero o una instancia del algoritmo de thompson
         /// </summary>
@@ -375,6 +381,7 @@ namespace Compiladores_BIT
 
             return copia;
         }
+
         /// <summary>
         /// Regresa un automata resultado de aplicar la operacion cerradura positiva del algoritmo de thompson
         /// </summary>
@@ -501,6 +508,7 @@ namespace Compiladores_BIT
             cont_automatas_AFN++;
             return copia;
         }
+
         /// <summary>
         /// Crea el automata base de un caracter valido 
         /// </summary>
@@ -565,5 +573,116 @@ namespace Compiladores_BIT
             return valor;
         }
 
+        /// <summary>
+        /// Aplica concatenacion en 2 automatas siguiendo el algoritmo de Thompson
+        /// </summary>
+        /// <param name="r1"></param>
+        /// <param name="r2"></param>
+        /// <returns></returns>
+        public Automata OperacionConcatenacion(Automata r1, Automata r2)
+        {
+            Automata r3 = new Automata();
+            //Obtiene los estados de aceptacion e inicial del primer y segundo automata respectivamente, para posteriormente hacer la concatenacion
+            Estado acept_r1 = r1.le.Last();
+            Estado inicial_r2 = r2.le.First();
+
+            //Agrega todos los estados del primer automata menos el de aceptacion (o el ultimo)
+            for (int i = 0; i <= r1.le.Count()-2; i++)
+            {
+                r3.le.Add(r1.le.ElementAt(i));
+            }
+            //Agrega todos las transiciones del primer automata
+            for (int i = 0; i <= r1.lt.Count()-1; i++)
+            {
+                r3.lt.Add(r1.lt.ElementAt(i));
+            }
+            //Agrega todos los estados del segundo automata 
+            for (int i = 0; i <= r2.le.Count() - 1; i++)
+            {
+                r3.le.Add(r2.le.ElementAt(i));
+            }
+            //Agrega todos las transiciones del segundo automata
+            for (int i = 0; i <= r2.lt.Count() - 1; i++)
+            {
+                r3.lt.Add(r2.lt.ElementAt(i));
+            }
+
+            //Genera la transicion para formar la concatencacion
+            List<Transicion> r1_t_acept = r1.lt.FindAll(t => t.destino.Equals(acept_r1));
+
+            foreach(Transicion t in r1_t_acept)
+                t.destino = r3.le.Find(e => e.Equals(inicial_r2));
+
+            return r3;
+        }
+
+        /// <summary>
+        /// Aplica seleccion de alternativas en 2 automatas siguiendo el algoritmo de Thompson
+        /// </summary>
+        /// <param name="r1">Automata operando 1</param>
+        /// <param name="r2">Automata operando 2</param>
+        /// <returns>Automata resultante con seleccion de alternativas aplicado</returns>
+        public Automata OperacionSeleccionAlternativas(Automata r1, Automata r2)
+        {
+            Automata r3 = new Automata();
+            //Agrega todos los estados del primer automata
+            for (int i = 0; i <= r1.le.Count() - 1; i++)
+                r3.le.Add(r1.le.ElementAt(i));
+            //Agrega todos las transiciones del primer automata
+            for (int i = 0; i <= r1.lt.Count() - 1; i++)
+                r3.lt.Add(r1.lt.ElementAt(i));
+            //Agrega todos los estados del segundo automata 
+            for (int i = 0; i <= r2.le.Count() - 1; i++)
+                r3.le.Add(r2.le.ElementAt(i));
+            //Agrega todos las transiciones del segundo automata
+            for (int i = 0; i <= r2.lt.Count() - 1; i++)
+                r3.lt.Add(r2.lt.ElementAt(i));
+
+            // Crear dos estados nuevos que iran uno al inicio y otro al final
+            Estado e1 = new Estado();
+            Estado e2 = new Estado();
+            e1.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+            e2.id_e = cont_edos_AFN;
+            cont_edos_AFN++;
+
+            //Crear las dos transiciones que uniran al automata r1
+            Transicion t1_r1 = new Transicion();
+            Transicion t2_r1 = new Transicion();
+            t1_r1.origen = e1;
+            t1_r1.destino = r1.le.First();
+            t2_r1.origen = r1.le.Last();
+            t2_r1.destino = e2;
+            t1_r1.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2_r1.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t1_r1.operando = 'ε';
+            t2_r1.operando = 'ε';
+            r3.lt.Add(t1_r1);
+            r3.lt.Add(t2_r1);
+
+            //Crear las dos transiciones que uniran al automata r2
+            Transicion t1_r2 = new Transicion();
+            Transicion t2_r2 = new Transicion();
+            t1_r2.origen = e1;
+            t1_r2.destino = r2.le.First();
+            t2_r2.origen = r2.le.Last();
+            t2_r2.destino = e2;
+            t1_r2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t2_r2.id_tran = cont_trans_AFN;
+            cont_trans_AFN++;
+            t1_r2.operando = 'ε';
+            t2_r2.operando = 'ε';
+            r3.lt.Add(t1_r2);
+            r3.lt.Add(t2_r2);
+
+            //Despues agregar al final y al inicio los nuevos estados en el automata resultante
+            r3.le.Insert(0, e1); //principio
+            r3.le.Add(e2); // fin
+
+            return r3;
+        }
     }
 }
