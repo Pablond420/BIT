@@ -18,6 +18,7 @@ namespace Compiladores_BIT
         public int cont_edos_AFN; // cuenta los estados que se han creado para que estos obtengan un id en AFN
         public int cont_trans_AFN; // cuenta las transiciones que se han creado para que estos obtengan un id en AFN
         public int cont_automatas_AFN; // cuenta los automatas que se han creado para que estos obtengan un id en AFN
+        Automata AFN = null;
 
         public Form1()
         {
@@ -69,6 +70,8 @@ namespace Compiladores_BIT
                 regEx_explicita.Text = new string(explicita);
                 pos = getPosfija(explicita);
                 posfija_text.Text = new string(pos);
+                tabla_transiciones_AFN.Rows.Clear();
+                tabla_transiciones_AFN.Columns.Clear();
             }
         }
 
@@ -281,7 +284,7 @@ namespace Compiladores_BIT
         /// <summary>
         /// Crea el automata AFN en una lista
         /// </summary>
-        public void Automata_AFN()
+        public Automata Automata_AFN()
         {
             //crear PILA
             List<Automata> pila = new List<Automata>();
@@ -307,19 +310,19 @@ namespace Compiladores_BIT
                         case 2:  // el caracter es un ampersand o concatenacion
                             pila.Add(OperacionConcatenacion(pila.ElementAt(pila.Count() - 2), pila.ElementAt(pila.Count() - 1)));
                             pila.RemoveAt(pila.Count() - 2);
-                            pila.RemoveAt(pila.Count() - 1);
+                            pila.RemoveAt(pila.Count() - 2);
                             break;
                         case 3: // el caracter es un pipe o seleccion alternativas
                             pila.Add(OperacionSeleccionAlternativas(pila.ElementAt(pila.Count() - 2), pila.ElementAt(pila.Count() - 1)));
                             pila.RemoveAt(pila.Count() - 2);
-                            pila.RemoveAt(pila.Count() - 1);
+                            pila.RemoveAt(pila.Count() - 2);
                             break;
                         case 4: // el caracter es un mas o una cerradura positiva
                             pila.Add(OperacionCerraduraPositiva(pila.ElementAt(pila.Count() - 1)));
                             pila.RemoveAt(pila.Count() - 2);
                             break;
                         case 5: // el caracter es un asterisco o una cerradura de kleene
-                            pila.Add(OperacionCerraduraPositiva(pila.ElementAt(pila.Count() - 1)));
+                            pila.Add(OperacionCerraduraKleene(pila.ElementAt(pila.Count() - 1)));
                             pila.RemoveAt(pila.Count() - 2);
                             break;
                         case 6: // el caracter es una interrogacion o cero una instancia
@@ -329,6 +332,8 @@ namespace Compiladores_BIT
                     }
                 }
             }
+
+            return pila.Last();
         }
 
         /// <summary>
@@ -363,12 +368,12 @@ namespace Compiladores_BIT
 
 
             Transicion t3 = new Transicion();
-            t2.origen = copia.le.ElementAt(copia.le.Count() - 2);
-            t2.destino = copia.le.ElementAt(copia.le.Count() - 1);
-            t2.id_tran = cont_trans_AFN;
+            t3.origen = copia.le.ElementAt(copia.le.Count() - 2);
+            t3.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t3.id_tran = cont_trans_AFN;
             cont_trans_AFN++;
-            t2.operando = 'ε';
-            copia.lt.Add(t2);
+            t3.operando = 'ε';
+            copia.lt.Add(t3);
 
             //Transicion que une a los nuevos estados agregados
             Transicion t4 = new Transicion();
@@ -420,12 +425,12 @@ namespace Compiladores_BIT
 
             
             Transicion t3 = new Transicion();
-            t2.origen = copia.le.ElementAt(copia.le.Count() - 2);
-            t2.destino = copia.le.ElementAt(copia.le.Count() - 1);
-            t2.id_tran = cont_trans_AFN;
+            t3.origen = copia.le.ElementAt(copia.le.Count() - 2);
+            t3.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t3.id_tran = cont_trans_AFN;
             cont_trans_AFN++;
-            t2.operando = 'ε';
-            copia.lt.Add(t2);
+            t3.operando = 'ε';
+            copia.lt.Add(t3);
 
             return copia;
         }
@@ -468,12 +473,12 @@ namespace Compiladores_BIT
 
 
             Transicion t3 = new Transicion();
-            t2.origen = copia.le.ElementAt(copia.le.Count() - 2);
-            t2.destino = copia.le.ElementAt(copia.le.Count() - 1);
-            t2.id_tran = cont_trans_AFN;
+            t3.origen = copia.le.ElementAt(copia.le.Count() - 2);
+            t3.destino = copia.le.ElementAt(copia.le.Count() - 1);
+            t3.id_tran = cont_trans_AFN;
             cont_trans_AFN++;
-            t2.operando = 'ε';
-            copia.lt.Add(t2);
+            t3.operando = 'ε';
+            copia.lt.Add(t3);
 
             //Transicion que une a los nuevos estados agregados
             Transicion t4 = new Transicion();
@@ -586,33 +591,42 @@ namespace Compiladores_BIT
             Estado acept_r1 = r1.le.Last();
             Estado inicial_r2 = r2.le.First();
 
+            Automata r1_copy = Copia_auto(r1);
+            Automata r2_copy = Copia_auto(r2);
+
             //Agrega todos los estados del primer automata menos el de aceptacion (o el ultimo)
-            for (int i = 0; i <= r1.le.Count()-2; i++)
+            for (int i = 0; i <= r1_copy.le.Count()-2; i++)
             {
-                r3.le.Add(r1.le.ElementAt(i));
+                r3.le.Add(r1_copy.le.ElementAt(i));
             }
             //Agrega todos las transiciones del primer automata
-            for (int i = 0; i <= r1.lt.Count()-1; i++)
+            for (int i = 0; i <= r1_copy.lt.Count()-1; i++)
             {
-                r3.lt.Add(r1.lt.ElementAt(i));
+                r3.lt.Add(r1_copy.lt.ElementAt(i));
             }
             //Agrega todos los estados del segundo automata 
-            for (int i = 0; i <= r2.le.Count() - 1; i++)
+            for (int i = 0; i <= r2_copy.le.Count() - 1; i++)
             {
-                r3.le.Add(r2.le.ElementAt(i));
+                r3.le.Add(r2_copy.le.ElementAt(i));
             }
             //Agrega todos las transiciones del segundo automata
-            for (int i = 0; i <= r2.lt.Count() - 1; i++)
+            for (int i = 0; i <= r2_copy.lt.Count() - 1; i++)
             {
-                r3.lt.Add(r2.lt.ElementAt(i));
+                r3.lt.Add(r2_copy.lt.ElementAt(i));
             }
 
             //Genera la transicion para formar la concatencacion
-            List<Transicion> r1_t_acept = r1.lt.FindAll(t => t.destino.Equals(acept_r1));
+            List<Transicion> r1_t_acept = r3.lt.FindAll(t => t.destino.Equals(acept_r1));
 
-            foreach(Transicion t in r1_t_acept)
-                t.destino = r3.le.Find(e => e.Equals(inicial_r2));
+            Estado nuevo_acep = r3.le.Find(e => e.Equals(inicial_r2));
+            foreach (Transicion t in r1_t_acept)
+            {
+                t.destino = nuevo_acep;
+            }
+                
 
+            r3.nombre = "r"+cont_automatas_AFN;
+            cont_automatas_AFN++;
             return r3;
         }
 
@@ -682,7 +696,46 @@ namespace Compiladores_BIT
             r3.le.Insert(0, e1); //principio
             r3.le.Add(e2); // fin
 
+            r3.nombre = "r" + cont_automatas_AFN;
+            cont_automatas_AFN++;
             return r3;
+        }
+
+        private void afn_btn_Click(object sender, EventArgs e)
+        {
+            AFN = Automata_AFN();
+            //Enumerar estados correctamente, definir inicial y final
+            AFN.setNumeracionEstados();
+
+            AFN.getMatrizAFN();
+
+            //Mostrar matriz de transiciones
+            visualizaMatriz();
+        }
+
+        public void visualizaMatriz()
+        {
+            tabla_transiciones_AFN.Columns.Add("", "");
+            foreach (char c in AFN.alfabeto)
+            {
+                tabla_transiciones_AFN.Columns.Add("", c.ToString());
+            }
+            foreach (DataGridViewColumn col in tabla_transiciones_AFN.Columns)
+            {
+                col.Width = 50;
+            }
+            int lim_edos = AFN.AFN_MTransicion.GetLength(0);
+            int lim_abc = AFN.AFN_MTransicion.GetLength(1);
+            for(int i = 0; i < lim_edos; i++)
+            {
+                string[] row = new string[AFN.alfabeto.Count()];
+                row[0] = i.ToString();
+                for (int j = 0; j < lim_abc; j++)
+                {
+                    row[j+1] = AFN.AFN_MTransicion[i, j].ToString();
+                }
+                tabla_transiciones_AFN.Rows.Add(row);
+            }
         }
     }
 }
