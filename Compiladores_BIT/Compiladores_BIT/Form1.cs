@@ -704,9 +704,11 @@ namespace Compiladores_BIT
         private void afn_btn_Click(object sender, EventArgs e)
         {
             AFN = Automata_AFN();
+
             //Enumerar estados correctamente, definir inicial y final
             AFN.setNumeracionEstados();
 
+            //Obtiene la matriz lógicamente
             AFN.getMatrizAFN();
 
             //Mostrar matriz de transiciones
@@ -715,6 +717,7 @@ namespace Compiladores_BIT
 
         public void visualizaMatriz()
         {
+            //Agrega columnas y renglones al data gris view de la interfaz segun la matriz que se obtuvo del AFN
             tabla_transiciones_AFN.Columns.Add("", "");
             foreach (char c in AFN.alfabeto)
             {
@@ -724,8 +727,11 @@ namespace Compiladores_BIT
             {
                 col.Width = 50;
             }
+            //Determina el tamaño de la matriz con base en las dimensiones
             int lim_edos = AFN.AFN_MTransicion.GetLength(0);
             int lim_abc = AFN.AFN_MTransicion.GetLength(1);
+
+            //Recupera datos y los vacia en el data grid view
             for(int i = 0; i < lim_edos; i++)
             {
                 string[] row = new string[AFN.alfabeto.Count()];
