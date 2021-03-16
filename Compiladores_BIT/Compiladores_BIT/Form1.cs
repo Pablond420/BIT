@@ -70,8 +70,10 @@ namespace Compiladores_BIT
                 regEx_explicita.Text = new string(explicita);
                 pos = getPosfija(explicita);
                 posfija_text.Text = new string(pos);
+                posf_txt.Text = "posfija = " + posfija_text.Text;
                 tabla_transiciones_AFN.Rows.Clear();
                 tabla_transiciones_AFN.Columns.Clear();
+                
             }
         }
 
@@ -703,6 +705,8 @@ namespace Compiladores_BIT
 
         private void afn_btn_Click(object sender, EventArgs e)
         {
+            cont_edos_AFN = cont_trans_AFN = 0;
+
             AFN = Automata_AFN();
 
             //Enumerar estados correctamente, definir inicial y final

@@ -43,6 +43,8 @@ namespace Compiladores_BIT
             this.btn_posfija = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabAFN = new System.Windows.Forms.TabPage();
+            this.posf_txt = new System.Windows.Forms.TextBox();
+            this.pos_txt = new System.Windows.Forms.Label();
             this.afn_btn = new System.Windows.Forms.Button();
             this.tabla_transiciones_AFN = new System.Windows.Forms.DataGridView();
             this.tabPage1.SuspendLayout();
@@ -192,6 +194,8 @@ namespace Compiladores_BIT
             // 
             // tabAFN
             // 
+            this.tabAFN.Controls.Add(this.posf_txt);
+            this.tabAFN.Controls.Add(this.pos_txt);
             this.tabAFN.Controls.Add(this.afn_btn);
             this.tabAFN.Controls.Add(this.tabla_transiciones_AFN);
             this.tabAFN.Location = new System.Drawing.Point(4, 24);
@@ -201,6 +205,23 @@ namespace Compiladores_BIT
             this.tabAFN.TabIndex = 1;
             this.tabAFN.Text = "AFN";
             this.tabAFN.UseVisualStyleBackColor = true;
+            // 
+            // posf_txt
+            // 
+            this.posf_txt.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.posf_txt.Location = new System.Drawing.Point(12, 13);
+            this.posf_txt.Name = "posf_txt";
+            this.posf_txt.Size = new System.Drawing.Size(439, 27);
+            this.posf_txt.TabIndex = 7;
+            // 
+            // pos_txt
+            // 
+            this.pos_txt.AutoSize = true;
+            this.pos_txt.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pos_txt.Location = new System.Drawing.Point(8, 18);
+            this.pos_txt.Name = "pos_txt";
+            this.pos_txt.Size = new System.Drawing.Size(0, 22);
+            this.pos_txt.TabIndex = 6;
             // 
             // afn_btn
             // 
@@ -240,6 +261,7 @@ namespace Compiladores_BIT
             this.tabPage1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabAFN.ResumeLayout(false);
+            this.tabAFN.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFN)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -263,6 +285,8 @@ namespace Compiladores_BIT
         private System.Windows.Forms.TabPage tabAFN;
         private System.Windows.Forms.DataGridView tabla_transiciones_AFN;
         private System.Windows.Forms.Button afn_btn;
+        private System.Windows.Forms.Label pos_txt;
+        private System.Windows.Forms.TextBox posf_txt;
     }
 }
 
