@@ -47,10 +47,17 @@ namespace Compiladores_BIT
             this.pos_txt = new System.Windows.Forms.Label();
             this.afn_btn = new System.Windows.Forms.Button();
             this.tabla_transiciones_AFN = new System.Windows.Forms.DataGridView();
+            this.tabAFD = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.afd_btn = new System.Windows.Forms.Button();
+            this.tabla_transiciones_AFD = new System.Windows.Forms.DataGridView();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabAFN.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFN)).BeginInit();
+            this.tabAFD.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFD)).BeginInit();
             this.SuspendLayout();
             // 
             // abrir_txt
@@ -185,6 +192,7 @@ namespace Compiladores_BIT
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabAFN);
+            this.tabControl1.Controls.Add(this.tabAFD);
             this.tabControl1.Font = new System.Drawing.Font("Montserrat", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.Location = new System.Drawing.Point(0, 91);
             this.tabControl1.Name = "tabControl1";
@@ -232,7 +240,7 @@ namespace Compiladores_BIT
             this.afn_btn.Name = "afn_btn";
             this.afn_btn.Size = new System.Drawing.Size(175, 34);
             this.afn_btn.TabIndex = 5;
-            this.afn_btn.Text = "Convertir AFN";
+            this.afn_btn.Text = "Contruir AFN";
             this.afn_btn.UseVisualStyleBackColor = false;
             this.afn_btn.Click += new System.EventHandler(this.afn_btn_Click);
             // 
@@ -242,8 +250,64 @@ namespace Compiladores_BIT
             this.tabla_transiciones_AFN.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tabla_transiciones_AFN.Location = new System.Drawing.Point(6, 71);
             this.tabla_transiciones_AFN.Name = "tabla_transiciones_AFN";
+            this.tabla_transiciones_AFN.RowHeadersWidth = 51;
             this.tabla_transiciones_AFN.Size = new System.Drawing.Size(644, 222);
             this.tabla_transiciones_AFN.TabIndex = 0;
+            // 
+            // tabAFD
+            // 
+            this.tabAFD.Controls.Add(this.textBox1);
+            this.tabAFD.Controls.Add(this.label6);
+            this.tabAFD.Controls.Add(this.afd_btn);
+            this.tabAFD.Controls.Add(this.tabla_transiciones_AFD);
+            this.tabAFD.Location = new System.Drawing.Point(4, 24);
+            this.tabAFD.Margin = new System.Windows.Forms.Padding(2);
+            this.tabAFD.Name = "tabAFD";
+            this.tabAFD.Padding = new System.Windows.Forms.Padding(2);
+            this.tabAFD.Size = new System.Drawing.Size(656, 299);
+            this.tabAFD.TabIndex = 2;
+            this.tabAFD.Text = "AFD";
+            this.tabAFD.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(11, 14);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(439, 27);
+            this.textBox1.TabIndex = 11;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(8, 19);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(0, 22);
+            this.label6.TabIndex = 10;
+            // 
+            // afd_btn
+            // 
+            this.afd_btn.BackColor = System.Drawing.Color.Khaki;
+            this.afd_btn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.afd_btn.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.afd_btn.Location = new System.Drawing.Point(477, 6);
+            this.afd_btn.Name = "afd_btn";
+            this.afd_btn.Size = new System.Drawing.Size(175, 34);
+            this.afd_btn.TabIndex = 9;
+            this.afd_btn.Text = "Contruir AFD";
+            this.afd_btn.UseVisualStyleBackColor = false;
+            this.afd_btn.Click += new System.EventHandler(this.afd_btn_Click);
+            // 
+            // tabla_transiciones_AFD
+            // 
+            this.tabla_transiciones_AFD.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.tabla_transiciones_AFD.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tabla_transiciones_AFD.Location = new System.Drawing.Point(5, 72);
+            this.tabla_transiciones_AFD.Name = "tabla_transiciones_AFD";
+            this.tabla_transiciones_AFD.RowHeadersWidth = 51;
+            this.tabla_transiciones_AFD.Size = new System.Drawing.Size(644, 222);
+            this.tabla_transiciones_AFD.TabIndex = 8;
             // 
             // Form1
             // 
@@ -263,6 +327,9 @@ namespace Compiladores_BIT
             this.tabAFN.ResumeLayout(false);
             this.tabAFN.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFN)).EndInit();
+            this.tabAFD.ResumeLayout(false);
+            this.tabAFD.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFD)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -287,6 +354,11 @@ namespace Compiladores_BIT
         private System.Windows.Forms.Button afn_btn;
         private System.Windows.Forms.Label pos_txt;
         private System.Windows.Forms.TextBox posf_txt;
+        private System.Windows.Forms.TabPage tabAFD;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button afd_btn;
+        private System.Windows.Forms.DataGridView tabla_transiciones_AFD;
     }
 }
 

@@ -12,13 +12,17 @@ namespace Compiladores_BIT
 {
     partial class Form1 : Form
     {
-        public char[] regular;
         public List<Expresion_Regular> er;
+
+        public char[] regular;
         public char[] pos; // arreglo de caracteres que guarda la expresion posfija 
+        
         public int cont_edos_AFN; // cuenta los estados que se han creado para que estos obtengan un id en AFN
         public int cont_trans_AFN; // cuenta las transiciones que se han creado para que estos obtengan un id en AFN
         public int cont_automatas_AFN; // cuenta los automatas que se han creado para que estos obtengan un id en AFN
+        
         Automata AFN = null;
+        Automata AFD = null;
 
         public Form1()
         {
@@ -716,10 +720,10 @@ namespace Compiladores_BIT
             AFN.getMatrizAFN();
 
             //Mostrar matriz de transiciones
-            visualizaMatriz();
+            visualizaMatrizAFN();
         }
 
-        public void visualizaMatriz()
+        public void visualizaMatrizAFN()
         {
             //Agrega columnas y renglones al data gris view de la interfaz segun la matriz que se obtuvo del AFN
             tabla_transiciones_AFN.Columns.Add("", "");
@@ -747,5 +751,18 @@ namespace Compiladores_BIT
                 tabla_transiciones_AFN.Rows.Add(row);
             }
         }
+
+        private void afd_btn_Click(object sender, EventArgs e)
+        {
+            AFD = AFN.Construccion_Subconjuntos();
+            AFD.setAlfabeto();
+
+            //AFD.setNumerosEstados_AFD();
+
+            //AFD.getMatrizAFD();
+
+            //visualizaMatrizAFD();
+        }
+
     }
 }

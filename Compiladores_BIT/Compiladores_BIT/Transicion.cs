@@ -18,5 +18,13 @@ namespace Compiladores_BIT
 
         }
 
+        public Transicion(Estado origen, Estado destino, char operando, int id)
+        {
+            this.origen = origen;
+            this.destino = destino;
+            this.operando = operando;
+            this.id_tran = id;
+        }
+
     }
 }

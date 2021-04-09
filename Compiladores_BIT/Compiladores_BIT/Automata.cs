@@ -11,8 +11,11 @@ namespace Compiladores_BIT
         public List<Estado> le; //Lista de estados
         public List<Transicion> lt; //Lista de transiciones
         public string[,] AFN_MTransicion; //Matriz de Transiciones AFN
+        public string[,] AFD_MTransicion; //MAtriz de Transiciones AFD
         public string nombre; //Nombre del automata
         public char[] alfabeto; //Alfabeto que acepta el automata
+
+        private List<Estado> Destados = new List<Estado>();
 
         public Automata()
         {
@@ -109,6 +112,123 @@ namespace Compiladores_BIT
                 id_Edo++;
             }
             le.Last().tipo_edo = "aceptación";
+        }
+
+        public Automata Construccion_Subconjuntos()
+        {
+            Automata AFD = new Automata();
+            int cont_edos_AFD = 0;
+            int cont_trans_AFD = 0;
+
+            
+            List<Estado> init = new List<Estado>();
+            init.Add(le.First());
+
+            Estado A = new Estado(E_Cerradura(init));
+            A.id_e = cont_edos_AFD;
+            cont_edos_AFD++;
+            AFD.le.Add(A);
+            Destados.Add(A);
+
+            //Mientras haya un estado sin marcar en Destados
+            while (Destados.Count() >= 1)
+            {
+                Estado T = Destados.First();
+                Destados.RemoveAt(0);
+                foreach (char a in alfabeto)
+                {
+                    if(a != 'ε')
+                    {
+                        List<Estado> U = E_Cerradura(mover(T.estados, a));
+
+                        if (U.Count() >= 1)
+                        {
+                            var sorted = U.OrderBy(x => x.id_e).ToList();
+                            U = sorted;
+
+                            Estado U_ = new Estado(U);
+                            U_.id_e = cont_edos_AFD;
+                            cont_edos_AFD++;
+
+                            
+                            bool dime = false;
+                            int edo = 0;
+                            foreach(Estado st in AFD.le)
+                            {
+                                if (st.estados.Count() == U.Count())
+                                {
+                                    int i = 0;
+                                    dime = true;
+                                    while (dime)
+                                    {
+                                        edo = AFD.le.IndexOf(st);
+                                        if (!st.estados[i].Equals(U[i]))
+                                            dime = false;
+                                        if (i < st.estados.Count() - 1) i++;
+                                        else break;
+                                    }
+                                    if (dime) break;
+                                }
+                            }
+
+                            if (!dime)
+                            {
+                                Destados.Add(U_);
+                                AFD.le.Add(U_);
+                            }
+                            else
+                            {
+                                U_ = AFD.le[edo];
+                            }
+
+                            Transicion tr = new Transicion(T, U_, a, cont_trans_AFD);
+                            cont_trans_AFD++;
+
+                            AFD.lt.Add(tr);
+                        }
+                    }                   
+                }
+            }
+            return AFD;
+        }
+
+        private List<Estado> E_Cerradura(List<Estado> edos)
+        {
+            List<Estado> U = new List<Estado>();
+            foreach (Estado e in edos)
+                cerradura_Ep(e, U);
+            return U;
+        }
+
+        private void cerradura_Ep(Estado e, List<Estado> U)
+        {
+            U.Add(e);
+            List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε');
+
+            foreach (Transicion t in trans_E)
+                cerradura_Ep(t.destino, U);
+        }
+
+        private List<Estado> mover(List<Estado> T, char a)
+        {
+            List<Estado> res = new List<Estado>();
+            foreach(Estado e_T in T)
+            {
+                List<Transicion> trans = lt.FindAll(t => t.origen.Equals(e_T) && t.operando == a);
+                foreach (Transicion t in trans)
+                    res.Add(t.destino);
+            }
+            return res;
+        }
+
+        public void setNumerosEstados_AFD()
+        {
+            int abc = 65;
+            foreach(Estado e in le)
+            {
+                e.numero = abc;
+                abc++;
+            }
         }
     }
 }
