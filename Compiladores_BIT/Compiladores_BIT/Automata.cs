@@ -118,17 +118,17 @@ namespace Compiladores_BIT
         {
             Automata AFD = new Automata();
             int cont_edos_AFD = 0;
-            int cont_trans_AFD = 0;
+            int cont_trans_AFD = 0; 
 
             
-            List<Estado> init = new List<Estado>();
-            init.Add(le.First());
+            List<Estado> init = new List<Estado>(); // lista de estados cerradura de epsilon con el estado 0
+            init.Add(le.First()); // se agrega el primer estado a la lista
 
-            Estado A = new Estado(E_Cerradura(init));
-            A.id_e = cont_edos_AFD;
+            Estado A = new Estado(E_Cerradura(init)); // se crea el primer estado para el AFD, y se obtiene la cerradura de epsilon del estado inicial
+            A.id_e = cont_edos_AFD; //se le agrega el id al primer estado del AFD
             cont_edos_AFD++;
-            AFD.le.Add(A);
-            Destados.Add(A);
+            AFD.le.Add(A); // se agrega el primer estado al AFD
+            Destados.Add(A); // Agrega el primer estado a una lista que guarda los Destados
 
             //Mientras haya un estado sin marcar en Destados
             while (Destados.Count() >= 1)
@@ -192,6 +192,12 @@ namespace Compiladores_BIT
             return AFD;
         }
 
+
+        /// <summary>
+        /// para cada estado en la lista de estados que llega llama a la funcion que modifica la lista de estados U (cerradura de epsilon)
+        /// </summary>
+        /// <param name="edos"> Lista de estados </param>
+        /// <returns>Cerradura de epsilon al estado que llega (lista de estados)</returns>
         private List<Estado> E_Cerradura(List<Estado> edos)
         {
             List<Estado> U = new List<Estado>();
@@ -200,10 +206,15 @@ namespace Compiladores_BIT
             return U;
         }
 
+        /// <summary>
+        /// Encuentra todos los estados que se encuentran enlazados con una transicion con ε 
+        /// </summary>
+        /// <param name="e">Estado actual</param>
+        /// <param name="U">Lista de estados recorridos con transicion con ε</param>
         private void cerradura_Ep(Estado e, List<Estado> U)
         {
             U.Add(e);
-            List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε');
+            List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε');//lista que guarda todas las transiciones que tiene ese estado con epsilon siendo ese estado el inicial
 
             foreach (Transicion t in trans_E)
                 cerradura_Ep(t.destino, U);
