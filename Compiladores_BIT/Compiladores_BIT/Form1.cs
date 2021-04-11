@@ -20,6 +20,8 @@ namespace Compiladores_BIT
         public int cont_edos_AFN; // cuenta los estados que se han creado para que estos obtengan un id en AFN
         public int cont_trans_AFN; // cuenta las transiciones que se han creado para que estos obtengan un id en AFN
         public int cont_automatas_AFN; // cuenta los automatas que se han creado para que estos obtengan un id en AFN
+
+        public bool exp; // bool para saber si ya fue aplanado un boton
         
         Automata AFN = null;
         Automata AFD = null;
@@ -30,6 +32,7 @@ namespace Compiladores_BIT
             er = new List<Expresion_Regular>();
             cont_edos_AFN = cont_trans_AFN = 0;
             cont_automatas_AFN = 1;
+            exp = false;
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -80,6 +83,7 @@ namespace Compiladores_BIT
                 tabla_transiciones_AFN.Columns.Clear();
                 tabla_transiciones_AFD.Rows.Clear();
                 tabla_transiciones_AFD.Columns.Clear();
+                exp = false;
                 
             }
         }
@@ -762,11 +766,14 @@ namespace Compiladores_BIT
         /// <param name="e"></param>
         private void afd_btn_Click(object sender, EventArgs e)
         {
-            AFD = AFN.Construccion_Subconjuntos();
-            AFD.setAlfabeto();
-            AFD.setLetrasEstados_AFD();
-            AFD.getMatrizAFD();
-            visualizaMatrizAFD();
+            if (!exp)
+            {
+                AFD = AFN.Construccion_Subconjuntos();
+                AFD.setAlfabeto();
+                AFD.setLetrasEstados_AFD();
+                AFD.getMatrizAFD();
+                visualizaMatrizAFD();
+            }
         }
 
 
@@ -775,7 +782,9 @@ namespace Compiladores_BIT
         /// </summary>
         public void visualizaMatrizAFD()
         {
-             for(int i =0; i<AFD.alfabeto.Length+1; i++)
+            tabla_transiciones_AFD.Rows.Clear();
+            tabla_transiciones_AFD.Columns.Clear();
+            for (int i =0; i<AFD.alfabeto.Length+1; i++)
             {
                 if(i==0)
                     tabla_transiciones_AFD.Columns.Add("c" + i, "");
@@ -798,6 +807,7 @@ namespace Compiladores_BIT
                     
                 }
             }
+
 
         }
 
