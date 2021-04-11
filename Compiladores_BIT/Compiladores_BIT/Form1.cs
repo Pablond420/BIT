@@ -75,8 +75,11 @@ namespace Compiladores_BIT
                 pos = getPosfija(explicita);
                 posfija_text.Text = new string(pos);
                 posf_txt.Text = "posfija = " + posfija_text.Text;
+                textBox1.Text = "posfija = " + posfija_text.Text;
                 tabla_transiciones_AFN.Rows.Clear();
                 tabla_transiciones_AFN.Columns.Clear();
+                tabla_transiciones_AFD.Rows.Clear();
+                tabla_transiciones_AFD.Columns.Clear();
                 
             }
         }
@@ -752,17 +755,55 @@ namespace Compiladores_BIT
             }
         }
 
+        /// <summary>
+        /// Realiza el procedimiento de construccion de AFD con el evento de pulsar el boton 'Construir AFS'
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void afd_btn_Click(object sender, EventArgs e)
         {
             AFD = AFN.Construccion_Subconjuntos();
             AFD.setAlfabeto();
-
-            //AFD.setNumerosEstados_AFD();
-
-            //AFD.getMatrizAFD();
-
-            //visualizaMatrizAFD();
+            AFD.setLetrasEstados_AFD();
+            AFD.getMatrizAFD();
+            visualizaMatrizAFD();
         }
 
+
+        /// <summary>
+        /// Metodo para rellenar el Data Grid View con los datos de la matriz de transiciones del AFD
+        /// </summary>
+        public void visualizaMatrizAFD()
+        {
+             for(int i =0; i<AFD.alfabeto.Length+1; i++)
+            {
+                if(i==0)
+                    tabla_transiciones_AFD.Columns.Add("c" + i, "");
+                else
+                tabla_transiciones_AFD.Columns.Add("c" + i, AFD.alfabeto[i-1].ToString());
+            }
+             for(int i=0; i<AFD.le.Count();i++)
+            {
+                tabla_transiciones_AFD.Rows.Add();
+            }
+
+             for(int i=0; i< AFD.le.Count(); i++)
+            {
+                for (int j = 0; j < AFD.alfabeto.Length; j++)
+                {
+                    if (j == 0)
+                        tabla_transiciones_AFD.Rows[i].Cells[j].Value = AFD.le.ElementAt(i).id_AFD;
+                    else
+                        tabla_transiciones_AFD.Rows[i].Cells[j].Value = AFD.AFD_MTransicion[i, j - 1];
+                    
+                }
+            }
+
+        }
+
+        private void tabla_transiciones_AFD_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

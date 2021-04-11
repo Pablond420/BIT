@@ -11,6 +11,7 @@ namespace Compiladores_BIT
         public int id_e;
         public int numero;
         public string tipo_edo;
+        public string id_AFD;
         public List<Estado> estados;
 
         public Estado()

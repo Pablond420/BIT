@@ -82,7 +82,7 @@ namespace Compiladores_BIT
             this.label4.Font = new System.Drawing.Font("Montserrat", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(189, 39);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(250, 26);
+            this.label4.Size = new System.Drawing.Size(245, 23);
             this.label4.TabIndex = 7;
             this.label4.Text = "Badillo Ortíz Pablo Angel";
             // 
@@ -92,7 +92,7 @@ namespace Compiladores_BIT
             this.label5.Font = new System.Drawing.Font("Montserrat", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(138, 64);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(341, 26);
+            this.label5.Size = new System.Drawing.Size(342, 23);
             this.label5.TabIndex = 8;
             this.label5.Text = "Ibarra Cuevas Dennise Monserrath";
             // 
@@ -106,10 +106,10 @@ namespace Compiladores_BIT
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.btn_posfija);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Location = new System.Drawing.Point(4, 23);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(656, 299);
+            this.tabPage1.Size = new System.Drawing.Size(656, 300);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Analizador lexico";
             // 
@@ -148,7 +148,7 @@ namespace Compiladores_BIT
             this.label2.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(21, 172);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 22);
+            this.label2.Size = new System.Drawing.Size(66, 19);
             this.label2.TabIndex = 6;
             this.label2.Text = "Posfija:";
             // 
@@ -158,7 +158,7 @@ namespace Compiladores_BIT
             this.label1.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(21, 50);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(154, 22);
+            this.label1.Size = new System.Drawing.Size(151, 19);
             this.label1.TabIndex = 5;
             this.label1.Text = "Expresión regular:";
             // 
@@ -206,10 +206,10 @@ namespace Compiladores_BIT
             this.tabAFN.Controls.Add(this.pos_txt);
             this.tabAFN.Controls.Add(this.afn_btn);
             this.tabAFN.Controls.Add(this.tabla_transiciones_AFN);
-            this.tabAFN.Location = new System.Drawing.Point(4, 24);
+            this.tabAFN.Location = new System.Drawing.Point(4, 23);
             this.tabAFN.Name = "tabAFN";
             this.tabAFN.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAFN.Size = new System.Drawing.Size(656, 299);
+            this.tabAFN.Size = new System.Drawing.Size(656, 300);
             this.tabAFN.TabIndex = 1;
             this.tabAFN.Text = "AFN";
             this.tabAFN.UseVisualStyleBackColor = true;
@@ -228,7 +228,7 @@ namespace Compiladores_BIT
             this.pos_txt.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pos_txt.Location = new System.Drawing.Point(8, 18);
             this.pos_txt.Name = "pos_txt";
-            this.pos_txt.Size = new System.Drawing.Size(0, 22);
+            this.pos_txt.Size = new System.Drawing.Size(0, 19);
             this.pos_txt.TabIndex = 6;
             // 
             // afn_btn
@@ -260,11 +260,11 @@ namespace Compiladores_BIT
             this.tabAFD.Controls.Add(this.label6);
             this.tabAFD.Controls.Add(this.afd_btn);
             this.tabAFD.Controls.Add(this.tabla_transiciones_AFD);
-            this.tabAFD.Location = new System.Drawing.Point(4, 24);
+            this.tabAFD.Location = new System.Drawing.Point(4, 23);
             this.tabAFD.Margin = new System.Windows.Forms.Padding(2);
             this.tabAFD.Name = "tabAFD";
             this.tabAFD.Padding = new System.Windows.Forms.Padding(2);
-            this.tabAFD.Size = new System.Drawing.Size(656, 299);
+            this.tabAFD.Size = new System.Drawing.Size(656, 300);
             this.tabAFD.TabIndex = 2;
             this.tabAFD.Text = "AFD";
             this.tabAFD.UseVisualStyleBackColor = true;
@@ -283,7 +283,7 @@ namespace Compiladores_BIT
             this.label6.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(8, 19);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(0, 22);
+            this.label6.Size = new System.Drawing.Size(0, 19);
             this.label6.TabIndex = 10;
             // 
             // afd_btn
@@ -308,6 +308,7 @@ namespace Compiladores_BIT
             this.tabla_transiciones_AFD.RowHeadersWidth = 51;
             this.tabla_transiciones_AFD.Size = new System.Drawing.Size(644, 222);
             this.tabla_transiciones_AFD.TabIndex = 8;
+            this.tabla_transiciones_AFD.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tabla_transiciones_AFD_CellContentClick);
             // 
             // Form1
             // 

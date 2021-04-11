@@ -42,6 +42,65 @@ namespace Compiladores_BIT
         }
 
         /// <summary>
+        /// Se le asigna un alias a los estados con el abecedario A,B,C... etc
+        /// </summary>
+        public void setLetrasEstados_AFD()
+        {
+            int q = 65;
+            foreach(Estado e in le)
+            {
+                char p = (char)q;
+                e.id_AFD = "" + p;
+                q++;
+            }
+        }
+
+        /// <summary>
+        /// Genera la matriz de transiciones del automata AFD
+        /// </summary>
+        public void getMatrizAFD() {
+            int edo = le.Count();
+            int trans = alfabeto.Count();
+            string c = "";
+            //instancia la matriz en donde se va a guardar las transiciones del AFD
+            AFD_MTransicion = new string[edo, trans];
+            //Ciclos iteradores de matriz con i,j
+            for (int i = 0; i < edo; i++)
+            {
+             for(int j=0; j<trans; j++)
+                {
+                    //Recorre cada transicion, buscando que transiciones tiene el estado que se esta iterando
+                    foreach(Transicion t in lt)
+                    {
+
+                        //si la transicion tiene como origen al estado i entonces entra
+                        if(le.ElementAt(i).id_e == t.origen.id_e)
+                        {
+                            if (alfabeto[j] == t.operando) // si la transicion tiene como operando al operando j  entra
+                            { 
+                                c = "" + t.destino.id_AFD; // asigna a una cadena el estado destino al que se llega con ese operando
+                                break;
+                            }
+                            else
+                            {
+                                if(c=="")
+                                c = "Φ"; // si no se llega a nada entonces se pone cadena vacia
+                            }
+                            
+                        }
+                        else
+                            c = "Φ"; // si no se llega a nada entonces se pone cadena vacia
+
+                    }
+                    AFD_MTransicion[i, j] = c; // se asigna el valor que se obtuvo a la matriz
+                    c = "";
+                }
+            
+            }
+        
+        }
+
+        /// <summary>
         /// Obtiene la matriz de transiciones AFN
         /// </summary>
         public void getMatrizAFN()
@@ -114,6 +173,11 @@ namespace Compiladores_BIT
             le.Last().tipo_edo = "aceptación";
         }
 
+
+        /// <summary>
+        /// Construye el AFD con base en el AFN regresa un objeto Automata con todos los estados y transiciones del AFD 
+        /// </summary>
+        /// <returns></returns>
         public Automata Construccion_Subconjuntos()
         {
             Automata AFD = new Automata();
@@ -133,27 +197,27 @@ namespace Compiladores_BIT
             //Mientras haya un estado sin marcar en Destados
             while (Destados.Count() >= 1)
             {
-                Estado T = Destados.First();
-                Destados.RemoveAt(0);
-                foreach (char a in alfabeto)
+                Estado T = Destados.First(); // Obtiene el primer elemento de la pila Destados
+                Destados.RemoveAt(0); // Remueve el elemento que se esta utilizando en T
+                foreach (char a in alfabeto) // por cada letra en el alfabeto del automata
                 {
                     if(a != 'ε')
                     {
-                        List<Estado> U = E_Cerradura(mover(T.estados, a));
+                        List<Estado> U = E_Cerradura(mover(T.estados, a)); // Obtiene la Cerradura de epsilon en una lista de estados
 
-                        if (U.Count() >= 1)
+                        if (U.Count() >= 1) // si la lista obtenida tiene al menos un elemento
                         {
                             var sorted = U.OrderBy(x => x.id_e).ToList();
-                            U = sorted;
+                            U = sorted; //ordenar por id los estados de la lista
 
-                            Estado U_ = new Estado(U);
+                            Estado U_ = new Estado(U); // se crea un nuevo estado mandando la cerradura de epsilon con una sobrecarga a la lista de estados en el objeto U_
                             U_.id_e = cont_edos_AFD;
-                            cont_edos_AFD++;
+                            cont_edos_AFD++; 
 
                             
                             bool dime = false;
                             int edo = 0;
-                            foreach(Estado st in AFD.le)
+                            foreach(Estado st in AFD.le) //procedimiento para checar si la cerradura de epsilon obtenida ya existe
                             {
                                 if (st.estados.Count() == U.Count())
                                 {
@@ -171,20 +235,20 @@ namespace Compiladores_BIT
                                 }
                             }
 
-                            if (!dime)
+                            if (!dime) // si no existe la cerradura de epsilon añade un nuevo estado
                             {
                                 Destados.Add(U_);
                                 AFD.le.Add(U_);
                             }
-                            else
+                            else // si ya existe toma el objeto que ya se habia creado
                             {
                                 U_ = AFD.le[edo];
                             }
 
-                            Transicion tr = new Transicion(T, U_, a, cont_trans_AFD);
+                            Transicion tr = new Transicion(T, U_, a, cont_trans_AFD); // Hacer transicion al estado AFD que se obtuvo con la cerradura de epsilon
                             cont_trans_AFD++;
 
-                            AFD.lt.Add(tr);
+                            AFD.lt.Add(tr); // añade la transicion al AFD
                         }
                     }                   
                 }
@@ -220,6 +284,13 @@ namespace Compiladores_BIT
                 cerradura_Ep(t.destino, U);
         }
 
+
+        /// <summary>
+        /// Regresa una lista de estados que se obtuvieron al hacer el movimiento de el Estado actual al estado al que se llega con el caracter
+        /// </summary>
+        /// <param name="T"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
         private List<Estado> mover(List<Estado> T, char a)
         {
             List<Estado> res = new List<Estado>();
