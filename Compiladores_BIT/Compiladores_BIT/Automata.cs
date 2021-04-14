@@ -277,11 +277,16 @@ namespace Compiladores_BIT
         /// <param name="U">Lista de estados recorridos con transicion con ε</param>
         private void cerradura_Ep(Estado e, List<Estado> U)
         {
-            U.Add(e);
-            List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε');//lista que guarda todas las transiciones que tiene ese estado con epsilon siendo ese estado el inicial
+            
+                U.Add(e);
 
-            foreach (Transicion t in trans_E)
-                cerradura_Ep(t.destino, U);
+                List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε' && U.Find(tr => tr.Equals(t.destino))==null);//lista que guarda todas las transiciones que tiene ese estado con epsilon siendo ese estado el inicial
+                 
+                
+
+                foreach (Transicion t in trans_E)
+                    cerradura_Ep(t.destino, U);
+            
         }
 
 

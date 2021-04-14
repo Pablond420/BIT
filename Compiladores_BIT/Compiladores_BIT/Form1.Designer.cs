@@ -109,7 +109,7 @@ namespace Compiladores_BIT
             this.tabPage1.Location = new System.Drawing.Point(4, 23);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(656, 300);
+            this.tabPage1.Size = new System.Drawing.Size(688, 458);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Analizador lexico";
             // 
@@ -197,7 +197,7 @@ namespace Compiladores_BIT
             this.tabControl1.Location = new System.Drawing.Point(0, 91);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(664, 327);
+            this.tabControl1.Size = new System.Drawing.Size(696, 485);
             this.tabControl1.TabIndex = 5;
             // 
             // tabAFN
@@ -209,7 +209,7 @@ namespace Compiladores_BIT
             this.tabAFN.Location = new System.Drawing.Point(4, 23);
             this.tabAFN.Name = "tabAFN";
             this.tabAFN.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAFN.Size = new System.Drawing.Size(656, 300);
+            this.tabAFN.Size = new System.Drawing.Size(688, 458);
             this.tabAFN.TabIndex = 1;
             this.tabAFN.Text = "AFN";
             this.tabAFN.UseVisualStyleBackColor = true;
@@ -251,7 +251,7 @@ namespace Compiladores_BIT
             this.tabla_transiciones_AFN.Location = new System.Drawing.Point(6, 71);
             this.tabla_transiciones_AFN.Name = "tabla_transiciones_AFN";
             this.tabla_transiciones_AFN.RowHeadersWidth = 51;
-            this.tabla_transiciones_AFN.Size = new System.Drawing.Size(644, 222);
+            this.tabla_transiciones_AFN.Size = new System.Drawing.Size(675, 381);
             this.tabla_transiciones_AFN.TabIndex = 0;
             // 
             // tabAFD
@@ -264,7 +264,7 @@ namespace Compiladores_BIT
             this.tabAFD.Margin = new System.Windows.Forms.Padding(2);
             this.tabAFD.Name = "tabAFD";
             this.tabAFD.Padding = new System.Windows.Forms.Padding(2);
-            this.tabAFD.Size = new System.Drawing.Size(656, 300);
+            this.tabAFD.Size = new System.Drawing.Size(688, 458);
             this.tabAFD.TabIndex = 2;
             this.tabAFD.Text = "AFD";
             this.tabAFD.UseVisualStyleBackColor = true;
@@ -306,7 +306,7 @@ namespace Compiladores_BIT
             this.tabla_transiciones_AFD.Location = new System.Drawing.Point(5, 72);
             this.tabla_transiciones_AFD.Name = "tabla_transiciones_AFD";
             this.tabla_transiciones_AFD.RowHeadersWidth = 51;
-            this.tabla_transiciones_AFD.Size = new System.Drawing.Size(644, 222);
+            this.tabla_transiciones_AFD.Size = new System.Drawing.Size(676, 375);
             this.tabla_transiciones_AFD.TabIndex = 8;
             this.tabla_transiciones_AFD.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tabla_transiciones_AFD_CellContentClick);
             // 
@@ -315,7 +315,7 @@ namespace Compiladores_BIT
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Bisque;
-            this.ClientSize = new System.Drawing.Size(666, 470);
+            this.ClientSize = new System.Drawing.Size(697, 573);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);

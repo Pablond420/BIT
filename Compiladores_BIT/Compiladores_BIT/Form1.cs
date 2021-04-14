@@ -807,7 +807,10 @@ namespace Compiladores_BIT
                     
                 }
             }
-
+            foreach (DataGridViewColumn col in tabla_transiciones_AFD.Columns)
+            {
+                col.Width = 50;
+            }
 
         }
 
