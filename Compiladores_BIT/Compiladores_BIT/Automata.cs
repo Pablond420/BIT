@@ -14,6 +14,7 @@ namespace Compiladores_BIT
         public string[,] AFD_MTransicion; //MAtriz de Transiciones AFD
         public string nombre; //Nombre del automata
         public char[] alfabeto; //Alfabeto que acepta el automata
+        public int id_acept=0; // variable que guarda el estado de aceptacion del AFN
 
         private List<Estado> Destados = new List<Estado>();
 
@@ -171,6 +172,7 @@ namespace Compiladores_BIT
                 id_Edo++;
             }
             le.Last().tipo_edo = "aceptación";
+            id_acept = le.Last().id_e;
         }
 
 
@@ -191,6 +193,7 @@ namespace Compiladores_BIT
             Estado A = new Estado(E_Cerradura(init)); // se crea el primer estado para el AFD, y se obtiene la cerradura de epsilon del estado inicial
             A.id_e = cont_edos_AFD; //se le agrega el id al primer estado del AFD
             cont_edos_AFD++;
+            A.tipo_edo = "inicial";
             AFD.le.Add(A); // se agrega el primer estado al AFD
             Destados.Add(A); // Agrega el primer estado a una lista que guarda los Destados
 
@@ -199,12 +202,13 @@ namespace Compiladores_BIT
             {
                 Estado T = Destados.First(); // Obtiene el primer elemento de la pila Destados
                 Destados.RemoveAt(0); // Remueve el elemento que se esta utilizando en T
+                
                 foreach (char a in alfabeto) // por cada letra en el alfabeto del automata
                 {
                     if(a != 'ε')
                     {
                         List<Estado> U = E_Cerradura(mover(T.estados, a)); // Obtiene la Cerradura de epsilon en una lista de estados
-
+                        bool acept = Verifica_estado_aceptacion(U); // revisa que el estado sea un estado de aceptacion
                         if (U.Count() >= 1) // si la lista obtenida tiene al menos un elemento
                         {
                             var sorted = U.OrderBy(x => x.id_e).ToList();
@@ -234,9 +238,14 @@ namespace Compiladores_BIT
                                     if (dime) break;
                                 }
                             }
+                           
 
                             if (!dime) // si no existe la cerradura de epsilon añade un nuevo estado
                             {
+                                if (acept) // si la cadena de epsilon contenia al estado de aceptacion del AFN entonces el estado del AFD sera de aceptacion.
+                                {
+                                    U_.tipo_edo = "aceptación";
+                                }
                                 Destados.Add(U_);
                                 AFD.le.Add(U_);
                             }
@@ -244,6 +253,8 @@ namespace Compiladores_BIT
                             {
                                 U_ = AFD.le[edo];
                             }
+
+                            
 
                             Transicion tr = new Transicion(T, U_, a, cont_trans_AFD); // Hacer transicion al estado AFD que se obtuvo con la cerradura de epsilon
                             cont_trans_AFD++;
@@ -254,6 +265,28 @@ namespace Compiladores_BIT
                 }
             }
             return AFD;
+        }
+        /// <summary>
+        /// Recorre la lista de cerradura de epsilon para verificar si tiene un estado de aceptacion del AFN para ponerlo en el AFD
+        /// </summary>
+        /// <param name="xD"></param>
+        /// <returns></returns>
+        public bool Verifica_estado_aceptacion(List<Estado> xD)
+        {
+            bool a=false;
+
+           foreach(Estado est in xD)
+            {
+                if(est.id_e == id_acept) // verifica que algun estado en la lista de estados tenga el id del estado de aceptacion del AFN
+                {
+                    a = true;
+                    break;
+                }
+
+            }
+
+
+            return a;
         }
 
 
@@ -281,8 +314,6 @@ namespace Compiladores_BIT
                 U.Add(e);
 
                 List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε' && U.Find(tr => tr.Equals(t.destino))==null);//lista que guarda todas las transiciones que tiene ese estado con epsilon siendo ese estado el inicial
-                 
-                
 
                 foreach (Transicion t in trans_E)
                     cerradura_Ep(t.destino, U);

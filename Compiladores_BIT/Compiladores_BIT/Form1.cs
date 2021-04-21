@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 
 namespace Compiladores_BIT
@@ -768,7 +769,9 @@ namespace Compiladores_BIT
         {
             if (!exp)
             {
+                int id_a = AFN.id_acept;
                 AFD = AFN.Construccion_Subconjuntos();
+                AFD.id_acept = id_a;
                 AFD.setAlfabeto();
                 AFD.setLetrasEstados_AFD();
                 AFD.getMatrizAFD();
@@ -814,9 +817,67 @@ namespace Compiladores_BIT
 
         }
 
+        /// <summary>
+        /// Este metodo obtiene el texto ingresado en lexema y lo convierte a una cadena de caracteres para que sea recorrido
+        /// </summary>
+        /// <returns></returns>
+        public bool Recorre_lexema()
+        {
+            bool aceptacion = false; // booleano para saber si fue o no aceptado el lexema
+            string lex = lexema_txt.Text; // obtencion de lexema en interfaz
+            char[] lexc = lex.ToCharArray(); // conversion de string a cadena
+
+            string new_nodo = "A"; // se define en new_nodo el estado inicial del AFD, esta variable es necesaria para desplazarse en el AFD
+
+            for(int i=0; i<lexc.Length; i++) // para cada letra en el lexema hacer
+            {
+                bool error = true; // booleano para verificar que si exista una transicion con la gramatica que se esta evaluando del lexema
+                foreach(Transicion t in AFD.lt)
+                {
+                    if (t.origen.id_AFD.Equals(new_nodo)) // si el nodo origen de la transicion es el nodo que guarda new_nodo
+                    {
+                        if(t.operando == lexc[i]) // si el operando es igual a la gramatica  que se esta evaluando del lexema
+                        {
+                            error = false; // el error se hace falso, ya la gramatica si esta en la transicion 
+                            if(i== lexc.Length -1) // si ya es el ultimo elemento de la palabra del lexema
+                            {
+                                aceptacion = t.destino.tipo_edo.Equals("aceptación"); // verifica que el estado al que llego sea uno de aceptacion
+                            }
+                            new_nodo = t.destino.id_AFD; // actualiza new_nodo con el estado destino de la transicion, para moverse en el AFD
+                            break;
+                        }
+                    }
+                }
+                if(error)
+                  break;
+            }
+            return aceptacion;
+
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tabla_transiciones_AFD_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Metodo que manda a llamar la verificacion de que el lexema se encuentre en el AFD
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_validar_Click(object sender, EventArgs e)
+        {
+
+            validar_lbl.Text = Recorre_lexema() ? "El lexema es aceptado por el AFD" : "El lexema no fue aceptado por el AFD";
+            validar_lbl.ForeColor = Recorre_lexema() ?  Color.Green : Color.Red;
+     
         }
     }
 }

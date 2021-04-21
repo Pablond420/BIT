@@ -34,6 +34,9 @@ namespace Compiladores_BIT
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btn_validar = new System.Windows.Forms.Button();
+            this.lexema_txt = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.regEx_explicita = new System.Windows.Forms.TextBox();
             this.text_abrir = new System.Windows.Forms.TextBox();
             this.posfija_text = new System.Windows.Forms.TextBox();
@@ -52,6 +55,7 @@ namespace Compiladores_BIT
             this.label6 = new System.Windows.Forms.Label();
             this.afd_btn = new System.Windows.Forms.Button();
             this.tabla_transiciones_AFD = new System.Windows.Forms.DataGridView();
+            this.validar_lbl = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabAFN.SuspendLayout();
@@ -99,6 +103,10 @@ namespace Compiladores_BIT
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.FloralWhite;
+            this.tabPage1.Controls.Add(this.validar_lbl);
+            this.tabPage1.Controls.Add(this.btn_validar);
+            this.tabPage1.Controls.Add(this.lexema_txt);
+            this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.regEx_explicita);
             this.tabPage1.Controls.Add(this.text_abrir);
             this.tabPage1.Controls.Add(this.posfija_text);
@@ -112,6 +120,38 @@ namespace Compiladores_BIT
             this.tabPage1.Size = new System.Drawing.Size(688, 458);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Analizador lexico";
+            // 
+            // btn_validar
+            // 
+            this.btn_validar.BackColor = System.Drawing.Color.Khaki;
+            this.btn_validar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_validar.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_validar.Location = new System.Drawing.Point(457, 313);
+            this.btn_validar.Name = "btn_validar";
+            this.btn_validar.Size = new System.Drawing.Size(94, 34);
+            this.btn_validar.TabIndex = 10;
+            this.btn_validar.Text = "Validar";
+            this.btn_validar.UseVisualStyleBackColor = false;
+            this.btn_validar.Click += new System.EventHandler(this.btn_validar_Click);
+            // 
+            // lexema_txt
+            // 
+            this.lexema_txt.Font = new System.Drawing.Font("Montserrat", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lexema_txt.Location = new System.Drawing.Point(26, 313);
+            this.lexema_txt.Multiline = true;
+            this.lexema_txt.Name = "lexema_txt";
+            this.lexema_txt.Size = new System.Drawing.Size(409, 34);
+            this.lexema_txt.TabIndex = 9;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(21, 278);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(77, 19);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Lexema:";
             // 
             // regEx_explicita
             // 
@@ -310,6 +350,17 @@ namespace Compiladores_BIT
             this.tabla_transiciones_AFD.TabIndex = 8;
             this.tabla_transiciones_AFD.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tabla_transiciones_AFD_CellContentClick);
             // 
+            // validar_lbl
+            // 
+            this.validar_lbl.AutoSize = true;
+            this.validar_lbl.Font = new System.Drawing.Font("Montserrat", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.validar_lbl.ForeColor = System.Drawing.Color.Black;
+            this.validar_lbl.Location = new System.Drawing.Point(22, 369);
+            this.validar_lbl.Name = "validar_lbl";
+            this.validar_lbl.Size = new System.Drawing.Size(19, 23);
+            this.validar_lbl.TabIndex = 11;
+            this.validar_lbl.Text = "-";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -360,6 +411,10 @@ namespace Compiladores_BIT
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button afd_btn;
         private System.Windows.Forms.DataGridView tabla_transiciones_AFD;
+        private System.Windows.Forms.Button btn_validar;
+        private System.Windows.Forms.TextBox lexema_txt;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label validar_lbl;
     }
 }
 
