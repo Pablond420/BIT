@@ -68,12 +68,11 @@ namespace Compiladores_BIT
             //Ciclos iteradores de matriz con i,j
             for (int i = 0; i < edo; i++)
             {
-             for(int j=0; j<trans; j++)
+                for(int j=0; j<trans; j++)
                 {
                     //Recorre cada transicion, buscando que transiciones tiene el estado que se esta iterando
                     foreach(Transicion t in lt)
                     {
-
                         //si la transicion tiene como origen al estado i entonces entra
                         if(le.ElementAt(i).id_e == t.origen.id_e)
                         {
@@ -87,18 +86,14 @@ namespace Compiladores_BIT
                                 if(c=="")
                                 c = "Φ"; // si no se llega a nada entonces se pone cadena vacia
                             }
-                            
                         }
                         else
                             c = "Φ"; // si no se llega a nada entonces se pone cadena vacia
-
                     }
                     AFD_MTransicion[i, j] = c; // se asigna el valor que se obtuvo a la matriz
                     c = "";
                 }
-            
             }
-        
         }
 
         /// <summary>
@@ -269,22 +264,20 @@ namespace Compiladores_BIT
         /// <summary>
         /// Recorre la lista de cerradura de epsilon para verificar si tiene un estado de aceptacion del AFN para ponerlo en el AFD
         /// </summary>
-        /// <param name="xD"></param>
+        /// <param name="U"></param>
         /// <returns></returns>
-        public bool Verifica_estado_aceptacion(List<Estado> xD)
+        public bool Verifica_estado_aceptacion(List<Estado> U)
         {
             bool a=false;
 
-           foreach(Estado est in xD)
+           foreach(Estado est in U)
             {
                 if(est.id_e == id_acept) // verifica que algun estado en la lista de estados tenga el id del estado de aceptacion del AFN
                 {
                     a = true;
                     break;
                 }
-
             }
-
 
             return a;
         }
@@ -310,14 +303,11 @@ namespace Compiladores_BIT
         /// <param name="U">Lista de estados recorridos con transicion con ε</param>
         private void cerradura_Ep(Estado e, List<Estado> U)
         {
-            
-                U.Add(e);
+            U.Add(e);
+            List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε' && U.Find(tr => tr.Equals(t.destino))==null);//lista que guarda todas las transiciones que tiene ese estado con epsilon siendo ese estado el inicial
 
-                List<Transicion> trans_E = lt.FindAll(t => t.origen.Equals(e) && t.operando == 'ε' && U.Find(tr => tr.Equals(t.destino))==null);//lista que guarda todas las transiciones que tiene ese estado con epsilon siendo ese estado el inicial
-
-                foreach (Transicion t in trans_E)
-                    cerradura_Ep(t.destino, U);
-            
+            foreach (Transicion t in trans_E)
+                cerradura_Ep(t.destino, U);
         }
 
 

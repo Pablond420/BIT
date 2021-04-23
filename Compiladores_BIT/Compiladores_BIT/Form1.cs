@@ -50,6 +50,8 @@ namespace Compiladores_BIT
             //Limpia cualquier valor interpretado anteriormente
             regEx_explicita.Text = "";
             posfija_text.Text = "";
+            lexema_txt.Text = "";
+            validar_lbl.Text = "-";
             //Agrega un controlador en la interfaz de abrir explorador de archivos
             //Asigna el directorio inicial
             abrir_txt.InitialDirectory = "C:/";
@@ -733,6 +735,9 @@ namespace Compiladores_BIT
 
         public void visualizaMatrizAFN()
         {
+            //Limpia la zona donde se contruye la matriz
+            tabla_transiciones_AFN.Rows.Clear();
+            tabla_transiciones_AFN.Columns.Clear();
             //Agrega columnas y renglones al data gris view de la interfaz segun la matriz que se obtuvo del AFN
             tabla_transiciones_AFN.Columns.Add("", "");
             foreach (char c in AFN.alfabeto)
@@ -779,7 +784,6 @@ namespace Compiladores_BIT
             }
         }
 
-
         /// <summary>
         /// Metodo para rellenar el Data Grid View con los datos de la matriz de transiciones del AFD
         /// </summary>
@@ -794,12 +798,12 @@ namespace Compiladores_BIT
                 else
                 tabla_transiciones_AFD.Columns.Add("c" + i, AFD.alfabeto[i-1].ToString());
             }
-             for(int i=0; i<AFD.le.Count();i++)
+            for(int i=0; i<AFD.le.Count();i++)
             {
                 tabla_transiciones_AFD.Rows.Add();
             }
 
-             for(int i=0; i< AFD.le.Count(); i++)
+            for(int i=0; i< AFD.le.Count(); i++)
             {
                 for (int j = 0; j < AFD.alfabeto.Length; j++)
                 {
@@ -807,7 +811,6 @@ namespace Compiladores_BIT
                         tabla_transiciones_AFD.Rows[i].Cells[j].Value = AFD.le.ElementAt(i).id_AFD;
                     else
                         tabla_transiciones_AFD.Rows[i].Cells[j].Value = AFD.AFD_MTransicion[i, j - 1];
-                    
                 }
             }
             foreach (DataGridViewColumn col in tabla_transiciones_AFD.Columns)
@@ -825,21 +828,21 @@ namespace Compiladores_BIT
         {
             bool aceptacion = false; // booleano para saber si fue o no aceptado el lexema
             string lex = lexema_txt.Text; // obtencion de lexema en interfaz
-            char[] lexc = lex.ToCharArray(); // conversion de string a cadena
+            char[] lexc = lex.ToCharArray(); // conversion de string a arreglo de caracteres
 
             string new_nodo = "A"; // se define en new_nodo el estado inicial del AFD, esta variable es necesaria para desplazarse en el AFD
 
             for(int i=0; i<lexc.Length; i++) // para cada letra en el lexema hacer
             {
-                bool error = true; // booleano para verificar que si exista una transicion con la gramatica que se esta evaluando del lexema
+                bool error = true; // booleano para verificar que si exista una transicion en el automata que se esta evaluando del lexema
                 foreach(Transicion t in AFD.lt)
                 {
                     if (t.origen.id_AFD.Equals(new_nodo)) // si el nodo origen de la transicion es el nodo que guarda new_nodo
                     {
                         if(t.operando == lexc[i]) // si el operando es igual a la gramatica  que se esta evaluando del lexema
                         {
-                            error = false; // el error se hace falso, ya la gramatica si esta en la transicion 
-                            if(i== lexc.Length -1) // si ya es el ultimo elemento de la palabra del lexema
+                            error = false; // el error se hace falso, ya el token si esta en la transicion iterada del AFD
+                            if(i == lexc.Length -1) // si ya es el ultimo elemento de la palabra del lexema
                             {
                                 aceptacion = t.destino.tipo_edo.Equals("aceptación"); // verifica que el estado al que llego sea uno de aceptacion
                             }
@@ -852,10 +855,7 @@ namespace Compiladores_BIT
                   break;
             }
             return aceptacion;
-
         }
-
-
 
         /// <summary>
         /// 
@@ -874,10 +874,14 @@ namespace Compiladores_BIT
         /// <param name="e"></param>
         private void btn_validar_Click(object sender, EventArgs e)
         {
+            bool valido = Recorre_lexema();
+            validar_lbl.Text = valido ? "Si pertenece al lenguaje de la ER" : "No pertenece al lenguaje de la ER";
+            validar_lbl.ForeColor = valido ?  Color.Green : Color.Red;
+        }
 
-            validar_lbl.Text = Recorre_lexema() ? "El lexema es aceptado por el AFD" : "El lexema no fue aceptado por el AFD";
-            validar_lbl.ForeColor = Recorre_lexema() ?  Color.Green : Color.Red;
-     
+        private void lexema_txt_TextChanged(object sender, EventArgs e)
+        {
+            validar_lbl.Text = "-";
         }
     }
 }
