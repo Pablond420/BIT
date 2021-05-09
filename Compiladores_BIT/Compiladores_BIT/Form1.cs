@@ -883,5 +883,13 @@ namespace Compiladores_BIT
         {
             validar_lbl.Text = "-";
         }
+
+        private void clasificar_Tokens_Click(object sender, EventArgs e)
+        {
+            char[] tokens = codigoTiny.Text.ToCharArray();
+            string[] token = codigoTiny.Text.Split(' ');
+
+            MessageBox.Show("Tokens separados");
+        }
     }
 }
