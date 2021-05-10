@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Compiladores_BIT
 {
+    class Token
+    {
+        public string lexema;
+        public string nombre;
+
+        public Token(string lexema, string nombre)
+        {
+            this.lexema = lexema;
+            this.nombre = nombre;
+        }
+    }
+
     class Tokens
     {
-        public class Token
-        {
-            public string lexema;
-            public string nombre;
-
-            public Token(string lexema, string nombre)
-            {
-                this.lexema = lexema;
-                this.nombre = nombre;
-            }
-        }
-
         private List<string> palabras = new List<string>();
         public List<Token> tokens = new List<Token>();
         List<string> simbolosEspeciales = new List<string> { "+", "-", "*", "/", "=", "<", ">", "(", ")", ";", ":=" };
@@ -30,29 +30,6 @@ namespace Compiladores_BIT
         {
             //Elimina los espacios de cada parte del código que viene en chars
             palabras = pedazos;
-        }
-
-        private List<string> limpiarEspacios(List<char> p)
-        {
-            List<string> seccionada = new List<string>();
-            string tok = "";
-
-            foreach(char ch in p)
-            {
-                if(ch != ' ' && ch != '\r' && ch != '\n' && ch != '\t')
-                {
-                    tok = String.Concat(tok, ch.ToString());
-                }
-                else if(tok != "")
-                {
-                    seccionada.Add(tok);
-                    tok = "";
-                }
-            }
-            if (tok != "")
-                seccionada.Add(tok);
-
-            return seccionada;
         }
 
         public void clasificaTokens()
@@ -102,6 +79,10 @@ namespace Compiladores_BIT
             bool verifica = tokens.Exists(t => tk.nombre.Equals(t.nombre) && tk.lexema.Equals(t.lexema));
             if (!verifica)
                 tokens.Add(tk);
+        }
+        public List<Token> getTokensSinClasificar()
+        {
+            return tokens.FindAll(x => x.nombre.Equals(""));
         }
     }
 }
