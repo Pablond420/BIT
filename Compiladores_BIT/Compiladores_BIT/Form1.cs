@@ -886,10 +886,13 @@ namespace Compiladores_BIT
 
         private void clasificar_Tokens_Click(object sender, EventArgs e)
         {
-            char[] tokens = codigoTiny.Text.ToCharArray();
-            string[] token = codigoTiny.Text.Split(' ');
+            //Extrae todo el código completamente despedazado caracter por caracter
+            List<char> pedazos = codigoTiny.Text.ToCharArray().ToList();
+            List<string> p = codigoTiny.Text.Split().ToList();
+            p = p.FindAll(str => !str.Equals(""));
+            Tokens tokens = new Tokens(pedazos);
+            tokens.clasificaTokens();
 
-            MessageBox.Show("Tokens separados");
         }
     }
 }
