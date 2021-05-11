@@ -64,6 +64,9 @@ namespace Compiladores_BIT
             this.label9 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.tabla_token = new System.Windows.Forms.DataGridView();
+            this.col_nom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.col_lex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabAFN.SuspendLayout();
@@ -71,6 +74,7 @@ namespace Compiladores_BIT
             this.tabAFD.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFD)).BeginInit();
             this.tabTokens.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabla_token)).BeginInit();
             this.SuspendLayout();
             // 
             // abrir_txt
@@ -84,7 +88,7 @@ namespace Compiladores_BIT
             this.label3.Font = new System.Drawing.Font("Montserrat", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(52, 6);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(678, 41);
+            this.label3.Size = new System.Drawing.Size(545, 33);
             this.label3.TabIndex = 6;
             this.label3.Text = "Compiladores e Intérpretes A - Equipo BIT";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -95,7 +99,7 @@ namespace Compiladores_BIT
             this.label4.Font = new System.Drawing.Font("Montserrat", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(189, 39);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(310, 33);
+            this.label4.Size = new System.Drawing.Size(245, 23);
             this.label4.TabIndex = 7;
             this.label4.Text = "Badillo Ortíz Pablo Angel";
             // 
@@ -105,7 +109,7 @@ namespace Compiladores_BIT
             this.label5.Font = new System.Drawing.Font("Montserrat", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(138, 64);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(432, 33);
+            this.label5.Size = new System.Drawing.Size(342, 23);
             this.label5.TabIndex = 8;
             this.label5.Text = "Ibarra Cuevas Dennise Monserrath";
             // 
@@ -123,10 +127,10 @@ namespace Compiladores_BIT
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.button2);
             this.tabPage1.Controls.Add(this.btn_posfija);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
+            this.tabPage1.Location = new System.Drawing.Point(4, 23);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(688, 452);
+            this.tabPage1.Size = new System.Drawing.Size(688, 458);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Analizador lexico";
             // 
@@ -137,7 +141,7 @@ namespace Compiladores_BIT
             this.validar_lbl.ForeColor = System.Drawing.Color.Black;
             this.validar_lbl.Location = new System.Drawing.Point(22, 369);
             this.validar_lbl.Name = "validar_lbl";
-            this.validar_lbl.Size = new System.Drawing.Size(24, 33);
+            this.validar_lbl.Size = new System.Drawing.Size(19, 23);
             this.validar_lbl.TabIndex = 11;
             this.validar_lbl.Text = "-";
             // 
@@ -170,7 +174,7 @@ namespace Compiladores_BIT
             this.label7.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(21, 278);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(96, 27);
+            this.label7.Size = new System.Drawing.Size(77, 19);
             this.label7.TabIndex = 8;
             this.label7.Text = "Lexema:";
             // 
@@ -209,7 +213,7 @@ namespace Compiladores_BIT
             this.label2.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(21, 172);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 27);
+            this.label2.Size = new System.Drawing.Size(66, 19);
             this.label2.TabIndex = 6;
             this.label2.Text = "Posfija:";
             // 
@@ -219,7 +223,7 @@ namespace Compiladores_BIT
             this.label1.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(21, 50);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(193, 27);
+            this.label1.Size = new System.Drawing.Size(151, 19);
             this.label1.TabIndex = 5;
             this.label1.Text = "Expresión regular:";
             // 
@@ -268,10 +272,10 @@ namespace Compiladores_BIT
             this.tabAFN.Controls.Add(this.pos_txt);
             this.tabAFN.Controls.Add(this.afn_btn);
             this.tabAFN.Controls.Add(this.tabla_transiciones_AFN);
-            this.tabAFN.Location = new System.Drawing.Point(4, 29);
+            this.tabAFN.Location = new System.Drawing.Point(4, 23);
             this.tabAFN.Name = "tabAFN";
             this.tabAFN.Padding = new System.Windows.Forms.Padding(3);
-            this.tabAFN.Size = new System.Drawing.Size(688, 452);
+            this.tabAFN.Size = new System.Drawing.Size(688, 458);
             this.tabAFN.TabIndex = 1;
             this.tabAFN.Text = "AFN";
             this.tabAFN.UseVisualStyleBackColor = true;
@@ -281,7 +285,7 @@ namespace Compiladores_BIT
             this.posf_txt.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.posf_txt.Location = new System.Drawing.Point(12, 13);
             this.posf_txt.Name = "posf_txt";
-            this.posf_txt.Size = new System.Drawing.Size(439, 32);
+            this.posf_txt.Size = new System.Drawing.Size(439, 27);
             this.posf_txt.TabIndex = 7;
             // 
             // pos_txt
@@ -290,7 +294,7 @@ namespace Compiladores_BIT
             this.pos_txt.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pos_txt.Location = new System.Drawing.Point(8, 18);
             this.pos_txt.Name = "pos_txt";
-            this.pos_txt.Size = new System.Drawing.Size(0, 27);
+            this.pos_txt.Size = new System.Drawing.Size(0, 19);
             this.pos_txt.TabIndex = 6;
             // 
             // afn_btn
@@ -322,11 +326,11 @@ namespace Compiladores_BIT
             this.tabAFD.Controls.Add(this.label6);
             this.tabAFD.Controls.Add(this.afd_btn);
             this.tabAFD.Controls.Add(this.tabla_transiciones_AFD);
-            this.tabAFD.Location = new System.Drawing.Point(4, 29);
+            this.tabAFD.Location = new System.Drawing.Point(4, 23);
             this.tabAFD.Margin = new System.Windows.Forms.Padding(2);
             this.tabAFD.Name = "tabAFD";
             this.tabAFD.Padding = new System.Windows.Forms.Padding(2);
-            this.tabAFD.Size = new System.Drawing.Size(688, 452);
+            this.tabAFD.Size = new System.Drawing.Size(688, 458);
             this.tabAFD.TabIndex = 2;
             this.tabAFD.Text = "AFD";
             this.tabAFD.UseVisualStyleBackColor = true;
@@ -336,7 +340,7 @@ namespace Compiladores_BIT
             this.textBox1.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(11, 14);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(439, 32);
+            this.textBox1.Size = new System.Drawing.Size(439, 27);
             this.textBox1.TabIndex = 11;
             // 
             // label6
@@ -345,7 +349,7 @@ namespace Compiladores_BIT
             this.label6.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(8, 19);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(0, 27);
+            this.label6.Size = new System.Drawing.Size(0, 19);
             this.label6.TabIndex = 10;
             // 
             // afd_btn
@@ -374,6 +378,7 @@ namespace Compiladores_BIT
             // 
             // tabTokens
             // 
+            this.tabTokens.Controls.Add(this.tabla_token);
             this.tabTokens.Controls.Add(this.codigoTiny);
             this.tabTokens.Controls.Add(this.clasificar_Tokens);
             this.tabTokens.Controls.Add(this.label10);
@@ -381,10 +386,10 @@ namespace Compiladores_BIT
             this.tabTokens.Controls.Add(this.label9);
             this.tabTokens.Controls.Add(this.textBox2);
             this.tabTokens.Controls.Add(this.label8);
-            this.tabTokens.Location = new System.Drawing.Point(4, 29);
+            this.tabTokens.Location = new System.Drawing.Point(4, 23);
             this.tabTokens.Name = "tabTokens";
             this.tabTokens.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTokens.Size = new System.Drawing.Size(688, 452);
+            this.tabTokens.Size = new System.Drawing.Size(688, 458);
             this.tabTokens.TabIndex = 3;
             this.tabTokens.Text = "Tokens";
             this.tabTokens.UseVisualStyleBackColor = true;
@@ -392,10 +397,11 @@ namespace Compiladores_BIT
             // codigoTiny
             // 
             this.codigoTiny.Font = new System.Drawing.Font("Montserrat", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.codigoTiny.Location = new System.Drawing.Point(27, 106);
+            this.codigoTiny.Location = new System.Drawing.Point(8, 106);
             this.codigoTiny.Multiline = true;
             this.codigoTiny.Name = "codigoTiny";
-            this.codigoTiny.Size = new System.Drawing.Size(629, 227);
+            this.codigoTiny.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.codigoTiny.Size = new System.Drawing.Size(339, 312);
             this.codigoTiny.TabIndex = 13;
             // 
             // clasificar_Tokens
@@ -403,7 +409,7 @@ namespace Compiladores_BIT
             this.clasificar_Tokens.BackColor = System.Drawing.Color.Khaki;
             this.clasificar_Tokens.Cursor = System.Windows.Forms.Cursors.Hand;
             this.clasificar_Tokens.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clasificar_Tokens.Location = new System.Drawing.Point(481, 339);
+            this.clasificar_Tokens.Location = new System.Drawing.Point(479, 67);
             this.clasificar_Tokens.Name = "clasificar_Tokens";
             this.clasificar_Tokens.Size = new System.Drawing.Size(175, 34);
             this.clasificar_Tokens.TabIndex = 11;
@@ -417,7 +423,7 @@ namespace Compiladores_BIT
             this.label10.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(22, 67);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(291, 27);
+            this.label10.Size = new System.Drawing.Size(227, 19);
             this.label10.TabIndex = 10;
             this.label10.Text = "Programa en lenguaje TINY:";
             // 
@@ -436,7 +442,7 @@ namespace Compiladores_BIT
             this.label9.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(376, 19);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(99, 27);
+            this.label9.Size = new System.Drawing.Size(79, 19);
             this.label9.TabIndex = 9;
             this.label9.Text = "Número:";
             // 
@@ -455,9 +461,30 @@ namespace Compiladores_BIT
             this.label8.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(22, 19);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(147, 27);
+            this.label8.Size = new System.Drawing.Size(116, 19);
             this.label8.TabIndex = 7;
             this.label8.Text = "Identificador:";
+            // 
+            // tabla_token
+            // 
+            this.tabla_token.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tabla_token.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.col_nom,
+            this.col_lex});
+            this.tabla_token.Location = new System.Drawing.Point(353, 106);
+            this.tabla_token.Name = "tabla_token";
+            this.tabla_token.Size = new System.Drawing.Size(328, 312);
+            this.tabla_token.TabIndex = 14;
+            // 
+            // col_nom
+            // 
+            this.col_nom.HeaderText = "Nombre";
+            this.col_nom.Name = "col_nom";
+            // 
+            // col_lex
+            // 
+            this.col_lex.HeaderText = "Lexema";
+            this.col_lex.Name = "col_lex";
             // 
             // Form1
             // 
@@ -482,6 +509,7 @@ namespace Compiladores_BIT
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFD)).EndInit();
             this.tabTokens.ResumeLayout(false);
             this.tabTokens.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabla_token)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -523,6 +551,9 @@ namespace Compiladores_BIT
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox codigoTiny;
+        private System.Windows.Forms.DataGridView tabla_token;
+        private System.Windows.Forms.DataGridViewTextBoxColumn col_nom;
+        private System.Windows.Forms.DataGridViewTextBoxColumn col_lex;
     }
 }
 

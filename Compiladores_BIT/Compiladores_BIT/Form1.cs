@@ -21,6 +21,7 @@ namespace Compiladores_BIT
         public int cont_edos_AFN; // cuenta los estados que se han creado para que estos obtengan un id en AFN
         public int cont_trans_AFN; // cuenta las transiciones que se han creado para que estos obtengan un id en AFN
         public int cont_automatas_AFN; // cuenta los automatas que se han creado para que estos obtengan un id en AFN
+        public List<Token> noClasificados;
 
         public bool exp; // bool para saber si ya fue aplanado un boton
         
@@ -74,21 +75,27 @@ namespace Compiladores_BIT
         {
             if (text_abrir.Text != "")
             {
-                //Convierte el string en un arreglo de chars para después recuperarlo y asignarlo en la interfaz
-                regular = text_abrir.Text.ToCharArray();
-                char[] explicita = Regresa_Expresion_legible();
-                regEx_explicita.Text = new string(explicita);
-                pos = getPosfija(explicita);
-                posfija_text.Text = new string(pos);
-                posf_txt.Text = "posfija = " + posfija_text.Text;
-                textBox1.Text = "posfija = " + posfija_text.Text;
-                tabla_transiciones_AFN.Rows.Clear();
-                tabla_transiciones_AFN.Columns.Clear();
-                tabla_transiciones_AFD.Rows.Clear();
-                tabla_transiciones_AFD.Columns.Clear();
-                exp = false;
+                haz_posfija();
                 
             }
+
+        }
+
+        public void haz_posfija()
+        {
+            //Convierte el string en un arreglo de chars para después recuperarlo y asignarlo en la interfaz
+            regular = text_abrir.Text.ToCharArray();
+            char[] explicita = Regresa_Expresion_legible();
+            regEx_explicita.Text = new string(explicita);
+            pos = getPosfija(explicita);
+            posfija_text.Text = new string(pos);
+            posf_txt.Text = "posfija = " + posfija_text.Text;
+            textBox1.Text = "posfija = " + posfija_text.Text;
+            tabla_transiciones_AFN.Rows.Clear();
+            tabla_transiciones_AFN.Columns.Clear();
+            tabla_transiciones_AFD.Rows.Clear();
+            tabla_transiciones_AFD.Columns.Clear();
+            exp = false;
         }
 
         /// <summary>
@@ -719,18 +726,20 @@ namespace Compiladores_BIT
 
         private void afn_btn_Click(object sender, EventArgs e)
         {
+            evento_btn_ClickAFN();
+        }
+
+        public void evento_btn_ClickAFN() {
+
             cont_edos_AFN = cont_trans_AFN = 0;
-
             AFN = Automata_AFN();
-
             //Enumerar estados correctamente, definir inicial y final
             AFN.setNumeracionEstados();
-
             //Obtiene la matriz lógicamente
             AFN.getMatrizAFN();
-
             //Mostrar matriz de transiciones
             visualizaMatrizAFN();
+        
         }
 
         public void visualizaMatrizAFN()
@@ -774,20 +783,26 @@ namespace Compiladores_BIT
         {
             if (!exp)
             {
-                int id_a = AFN.id_acept;
-                AFD = AFN.Construccion_Subconjuntos();
-                AFD.id_acept = id_a;
-                AFD.setAlfabeto();
-                AFD.setLetrasEstados_AFD();
-                AFD.getMatrizAFD();
-                visualizaMatrizAFD();
+                evento_btn_ClickAFD();
             }
         }
 
-        /// <summary>
-        /// Metodo para rellenar el Data Grid View con los datos de la matriz de transiciones del AFD
-        /// </summary>
-        public void visualizaMatrizAFD()
+        public void evento_btn_ClickAFD()
+        {
+            int id_a = AFN.id_acept;
+            AFD = AFN.Construccion_Subconjuntos();
+            AFD.id_acept = id_a;
+            AFD.setAlfabeto();
+            AFD.setLetrasEstados_AFD();
+            AFD.getMatrizAFD();
+            visualizaMatrizAFD();
+
+        }
+
+            /// <summary>
+            /// Metodo para rellenar el Data Grid View con los datos de la matriz de transiciones del AFD
+            /// </summary>
+            public void visualizaMatrizAFD()
         {
             tabla_transiciones_AFD.Rows.Clear();
             tabla_transiciones_AFD.Columns.Clear();
@@ -874,6 +889,11 @@ namespace Compiladores_BIT
         /// <param name="e"></param>
         private void btn_validar_Click(object sender, EventArgs e)
         {
+            evento_click_validar();
+        }
+
+        public void evento_click_validar()
+        {
             bool valido = Recorre_lexema();
             validar_lbl.Text = valido ? "Si pertenece al lenguaje de la ER" : "No pertenece al lenguaje de la ER";
             validar_lbl.ForeColor = valido ?  Color.Green : Color.Red;
@@ -892,7 +912,74 @@ namespace Compiladores_BIT
             p = p.FindAll(str => !str.Equals(""));
             Tokens tokens = new Tokens(p);
             tokens.clasificaTokens();
-            List<Token> noClasificados = tokens.getTokensSinClasificar();
+            noClasificados = tokens.getTokensSinClasificar();
+            RecorreAFD();
+            
+            foreach(Token pp in noClasificados)
+            {
+                foreach (Token pp2 in tokens.tokens)
+                {
+                    if(pp.lexema.Equals(pp2.lexema))
+                    {
+                        pp2.nombre = pp.nombre;
+                    }
+                }
+            }
+
+
+            tabla_token.Rows.Clear();
+            for (int i = 0; i < tokens.tokens.Count(); i++)
+            {
+                tabla_token.Rows.Add();
+                tabla_token.Rows[i].Cells[0].Value = tokens.tokens.ElementAt(i).nombre;
+                tabla_token.Rows[i].Cells[1].Value = tokens.tokens.ElementAt(i).lexema;
+
+
+            }
+
+        }
+
+        public void RecorreAFD()
+        {
+            text_abrir.Text = textBox2.Text;
+            haz_posfija();
+            evento_btn_ClickAFN();
+            evento_btn_ClickAFD();
+            bool valid=false;
+            foreach(Token s in noClasificados)
+            {
+                lexema_txt.Text = s.lexema;
+                valid = Recorre_lexema();
+                if(valid)
+                {
+                    s.nombre = "identificador";
+                }
+
+            }
+
+            text_abrir.Text = textBox3.Text;
+            haz_posfija();
+            evento_btn_ClickAFN();
+            evento_btn_ClickAFD();
+            foreach (Token s in noClasificados)
+            {
+                lexema_txt.Text = s.lexema;
+                valid = Recorre_lexema();
+                if (valid)
+                {
+                    s.nombre = "número";
+                }
+
+            }
+
+            foreach(Token s in noClasificados)
+            {
+                if(s.nombre=="")
+                {
+                    s.nombre = "Error léxico";
+                }
+            }
+
         }
     }
 }
