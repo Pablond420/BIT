@@ -892,6 +892,10 @@ namespace Compiladores_BIT
             evento_click_validar();
         }
 
+
+        /// <summary>
+        /// separar el evento y acciones cuando se hace el click a el boton validar
+        /// </summary>
         public void evento_click_validar()
         {
             bool valido = Recorre_lexema();
@@ -899,10 +903,12 @@ namespace Compiladores_BIT
             validar_lbl.ForeColor = valido ?  Color.Green : Color.Red;
         }
 
+
         private void lexema_txt_TextChanged(object sender, EventArgs e)
         {
             validar_lbl.Text = "-";
         }
+
 
         private void clasificar_Tokens_Click(object sender, EventArgs e)
         {
@@ -912,9 +918,13 @@ namespace Compiladores_BIT
             p = p.FindAll(str => !str.Equals(""));
             Tokens tokens = new Tokens(p);
             tokens.clasificaTokens();
+
+            //Obtine todos los tokens que no fueron clasificados para recorrerlos en los AFD de letras y numeros 
             noClasificados = tokens.getTokensSinClasificar();
+            //Recorre el AFD con cada token
             RecorreAFD();
             
+            // calsifica los lexemas que ya fueron encontrados en el recorrido del AFD
             foreach(Token pp in noClasificados)
             {
                 foreach (Token pp2 in tokens.tokens)
@@ -926,7 +936,7 @@ namespace Compiladores_BIT
                 }
             }
 
-
+            //Muestra la tabla en la interfaz
             tabla_token.Rows.Clear();
             for (int i = 0; i < tokens.tokens.Count(); i++)
             {
@@ -939,6 +949,7 @@ namespace Compiladores_BIT
 
         }
 
+
         public void RecorreAFD()
         {
             text_abrir.Text = textBox2.Text;
@@ -946,6 +957,8 @@ namespace Compiladores_BIT
             evento_btn_ClickAFN();
             evento_btn_ClickAFD();
             bool valid=false;
+
+            //recorre el lexema en el AFD del identificador y si lo identifica le pone el nombre de identificador
             foreach(Token s in noClasificados)
             {
                 lexema_txt.Text = s.lexema;
@@ -961,6 +974,7 @@ namespace Compiladores_BIT
             haz_posfija();
             evento_btn_ClickAFN();
             evento_btn_ClickAFD();
+            //Recorre el lexema pero ahora en el AFD del numero
             foreach (Token s in noClasificados)
             {
                 lexema_txt.Text = s.lexema;
@@ -971,7 +985,7 @@ namespace Compiladores_BIT
                 }
 
             }
-
+            // si no los clasifico con un nombre, les pone Error léxico.
             foreach(Token s in noClasificados)
             {
                 if(s.nombre=="")
