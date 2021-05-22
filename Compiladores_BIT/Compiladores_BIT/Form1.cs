@@ -23,6 +23,8 @@ namespace Compiladores_BIT
         public int cont_automatas_AFN; // cuenta los automatas que se han creado para que estos obtengan un id en AFN
         public List<Token> noClasificados;
 
+        public List<Produccion> gramatica_Tiny; // gramatica de Tiny
+
         public bool exp; // bool para saber si ya fue aplanado un boton
         
         Automata AFN = null;
@@ -35,6 +37,43 @@ namespace Compiladores_BIT
             cont_edos_AFN = cont_trans_AFN = 0;
             cont_automatas_AFN = 1;
             exp = false;
+        }
+
+        public void Crea_Gramatica_Tiny()
+        {
+            Elemento enca = new Elemento();
+            List<Elemento> cuer = new List<Elemento>();
+            //programa -> secuencia-sent
+            enca.texto = "programa";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt","secuencia-sent"));
+            gramatica_Tiny.Add(new Produccion(enca,cuer));
+            //secuencia-sent -> secuancia-sent; sentencia
+            cuer.Clear();
+            enca.texto = "secuencia-sent";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "secuencia-sent"));
+            cuer.Add(new Elemento("t", ";"));
+            cuer.Add(new Elemento("nt", "secuencia"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //secuencia-sent -> sentencia
+            cuer.Clear();
+            enca.texto = "secuencia-sent";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "sentencia"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sentencia -> sent-if
+            cuer.Clear();
+            enca.texto = "sentencia";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "sent-if"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sentencia -> sent-repeat
+            cuer.Clear();
+            enca.texto = "sentencia";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "sent-repeat"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
