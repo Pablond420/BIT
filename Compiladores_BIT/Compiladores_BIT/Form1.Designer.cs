@@ -45,7 +45,7 @@ namespace Compiladores_BIT
             this.label1 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.btn_posfija = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.analizador_sint = new System.Windows.Forms.TabControl();
             this.tabAFN = new System.Windows.Forms.TabPage();
             this.posf_txt = new System.Windows.Forms.TextBox();
             this.pos_txt = new System.Windows.Forms.Label();
@@ -57,6 +57,9 @@ namespace Compiladores_BIT
             this.afd_btn = new System.Windows.Forms.Button();
             this.tabla_transiciones_AFD = new System.Windows.Forms.DataGridView();
             this.tabTokens = new System.Windows.Forms.TabPage();
+            this.tabla_token = new System.Windows.Forms.DataGridView();
+            this.col_nom = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.col_lex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.codigoTiny = new System.Windows.Forms.TextBox();
             this.clasificar_Tokens = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
@@ -64,17 +67,23 @@ namespace Compiladores_BIT
             this.label9 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.tabla_token = new System.Windows.Forms.DataGridView();
-            this.col_nom = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.col_lex = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.Btn_Col_Can = new System.Windows.Forms.Button();
+            this.DGV_Transiciones = new System.Windows.Forms.DataGridView();
+            this.DGV_edos = new System.Windows.Forms.DataGridView();
+            this.Estado_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.conjunto_prod = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.analizador_sint.SuspendLayout();
             this.tabAFN.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFN)).BeginInit();
             this.tabAFD.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFD)).BeginInit();
             this.tabTokens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_token)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_Transiciones)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_edos)).BeginInit();
             this.SuspendLayout();
             // 
             // abrir_txt
@@ -253,18 +262,19 @@ namespace Compiladores_BIT
             this.btn_posfija.UseVisualStyleBackColor = false;
             this.btn_posfija.Click += new System.EventHandler(this.btn_posfija_Click);
             // 
-            // tabControl1
+            // analizador_sint
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabAFN);
-            this.tabControl1.Controls.Add(this.tabAFD);
-            this.tabControl1.Controls.Add(this.tabTokens);
-            this.tabControl1.Font = new System.Drawing.Font("Montserrat", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl1.Location = new System.Drawing.Point(0, 91);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(696, 485);
-            this.tabControl1.TabIndex = 5;
+            this.analizador_sint.Controls.Add(this.tabPage1);
+            this.analizador_sint.Controls.Add(this.tabAFN);
+            this.analizador_sint.Controls.Add(this.tabAFD);
+            this.analizador_sint.Controls.Add(this.tabTokens);
+            this.analizador_sint.Controls.Add(this.tabPage2);
+            this.analizador_sint.Font = new System.Drawing.Font("Montserrat", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.analizador_sint.Location = new System.Drawing.Point(0, 91);
+            this.analizador_sint.Name = "analizador_sint";
+            this.analizador_sint.SelectedIndex = 0;
+            this.analizador_sint.Size = new System.Drawing.Size(696, 485);
+            this.analizador_sint.TabIndex = 5;
             // 
             // tabAFN
             // 
@@ -394,6 +404,27 @@ namespace Compiladores_BIT
             this.tabTokens.Text = "Tokens";
             this.tabTokens.UseVisualStyleBackColor = true;
             // 
+            // tabla_token
+            // 
+            this.tabla_token.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tabla_token.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.col_nom,
+            this.col_lex});
+            this.tabla_token.Location = new System.Drawing.Point(353, 106);
+            this.tabla_token.Name = "tabla_token";
+            this.tabla_token.Size = new System.Drawing.Size(328, 312);
+            this.tabla_token.TabIndex = 14;
+            // 
+            // col_nom
+            // 
+            this.col_nom.HeaderText = "Nombre";
+            this.col_nom.Name = "col_nom";
+            // 
+            // col_lex
+            // 
+            this.col_lex.HeaderText = "Lexema";
+            this.col_lex.Name = "col_lex";
+            // 
             // codigoTiny
             // 
             this.codigoTiny.Font = new System.Drawing.Font("Montserrat", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -465,26 +496,57 @@ namespace Compiladores_BIT
             this.label8.TabIndex = 7;
             this.label8.Text = "Identificador:";
             // 
-            // tabla_token
+            // tabPage2
             // 
-            this.tabla_token.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tabla_token.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.col_nom,
-            this.col_lex});
-            this.tabla_token.Location = new System.Drawing.Point(353, 106);
-            this.tabla_token.Name = "tabla_token";
-            this.tabla_token.Size = new System.Drawing.Size(328, 312);
-            this.tabla_token.TabIndex = 14;
+            this.tabPage2.Controls.Add(this.DGV_edos);
+            this.tabPage2.Controls.Add(this.DGV_Transiciones);
+            this.tabPage2.Controls.Add(this.Btn_Col_Can);
+            this.tabPage2.Location = new System.Drawing.Point(4, 23);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(688, 458);
+            this.tabPage2.TabIndex = 4;
+            this.tabPage2.Text = "Analisis sintáctico LR(0)";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // col_nom
+            // Btn_Col_Can
             // 
-            this.col_nom.HeaderText = "Nombre";
-            this.col_nom.Name = "col_nom";
+            this.Btn_Col_Can.Location = new System.Drawing.Point(23, 24);
+            this.Btn_Col_Can.Name = "Btn_Col_Can";
+            this.Btn_Col_Can.Size = new System.Drawing.Size(407, 28);
+            this.Btn_Col_Can.TabIndex = 0;
+            this.Btn_Col_Can.Text = "Construir Colección LR(0) Canónica";
+            this.Btn_Col_Can.UseVisualStyleBackColor = true;
             // 
-            // col_lex
+            // DGV_Transiciones
             // 
-            this.col_lex.HeaderText = "Lexema";
-            this.col_lex.Name = "col_lex";
+            this.DGV_Transiciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_Transiciones.Location = new System.Drawing.Point(23, 76);
+            this.DGV_Transiciones.Name = "DGV_Transiciones";
+            this.DGV_Transiciones.Size = new System.Drawing.Size(407, 355);
+            this.DGV_Transiciones.TabIndex = 1;
+            // 
+            // DGV_edos
+            // 
+            this.DGV_edos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_edos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Estado_num,
+            this.conjunto_prod});
+            this.DGV_edos.Location = new System.Drawing.Point(436, 76);
+            this.DGV_edos.Name = "DGV_edos";
+            this.DGV_edos.Size = new System.Drawing.Size(240, 355);
+            this.DGV_edos.TabIndex = 2;
+            // 
+            // Estado_num
+            // 
+            this.Estado_num.HeaderText = "Estado";
+            this.Estado_num.Name = "Estado_num";
+            this.Estado_num.Width = 50;
+            // 
+            // conjunto_prod
+            // 
+            this.conjunto_prod.HeaderText = "producciones";
+            this.conjunto_prod.Name = "conjunto_prod";
             // 
             // Form1
             // 
@@ -495,12 +557,12 @@ namespace Compiladores_BIT
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.analizador_sint);
             this.Name = "Form1";
             this.Text = "Compiladores e interpretes";
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.analizador_sint.ResumeLayout(false);
             this.tabAFN.ResumeLayout(false);
             this.tabAFN.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_transiciones_AFN)).EndInit();
@@ -510,6 +572,9 @@ namespace Compiladores_BIT
             this.tabTokens.ResumeLayout(false);
             this.tabTokens.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabla_token)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_Transiciones)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_edos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -528,7 +593,7 @@ namespace Compiladores_BIT
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btn_posfija;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl analizador_sint;
         private System.Windows.Forms.TabPage tabAFN;
         private System.Windows.Forms.DataGridView tabla_transiciones_AFN;
         private System.Windows.Forms.Button afn_btn;
@@ -554,6 +619,12 @@ namespace Compiladores_BIT
         private System.Windows.Forms.DataGridView tabla_token;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_nom;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_lex;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.DataGridView DGV_edos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Estado_num;
+        private System.Windows.Forms.DataGridViewTextBoxColumn conjunto_prod;
+        private System.Windows.Forms.DataGridView DGV_Transiciones;
+        private System.Windows.Forms.Button Btn_Col_Can;
     }
 }
 
