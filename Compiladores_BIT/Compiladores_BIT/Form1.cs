@@ -74,6 +74,181 @@ namespace Compiladores_BIT
             enca.tipo = "nt";
             cuer.Add(new Elemento("nt", "sent-repeat"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sentencia -> sent-assign
+            cuer.Clear();
+            enca.texto = "sentencia";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "sent-assign"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sentencia -> sent-read
+            cuer.Clear();
+            enca.texto = "sentencia";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "sent-read"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sentencia -> sent-write
+            cuer.Clear();
+            enca.texto = "sentencia";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "sent-write"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sent-if -> if exp then secuencia-sent end
+            cuer.Clear();
+            enca.texto = "sent-if";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "if"));
+            cuer.Add(new Elemento("nt", "exp"));
+            cuer.Add(new Elemento("t", "then"));
+            cuer.Add(new Elemento("nt", "secuencia-sent"));
+            cuer.Add(new Elemento("t", "end"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sent-if -> if exp then secuencia-sent else secuencia-sent end
+            cuer.Clear();
+            enca.texto = "sent-if";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "if"));
+            cuer.Add(new Elemento("nt", "exp"));
+            cuer.Add(new Elemento("t", "then"));
+            cuer.Add(new Elemento("nt", "secuencia-sent"));
+            cuer.Add(new Elemento("t", "else"));
+            cuer.Add(new Elemento("nt", "secuencia-sent"));
+            cuer.Add(new Elemento("t", "end"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sent-repeat -> repeat secuencia-sent until exp
+            cuer.Clear();
+            enca.texto = "sent-repeat";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "repeat"));
+            cuer.Add(new Elemento("nt", "secuencia-sent"));
+            cuer.Add(new Elemento("t", "until"));
+            cuer.Add(new Elemento("nt", "exp"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sent-assign -> identificador := exp
+            cuer.Clear();
+            enca.texto = "sent-assign";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "identificador"));
+            cuer.Add(new Elemento("t", ":="));
+            cuer.Add(new Elemento("nt", "exp"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sent-read -> read identificador
+            cuer.Clear();
+            enca.texto = "sent-read";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "read"));
+            cuer.Add(new Elemento("t", "identificador"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //sent-write -> write exp
+            cuer.Clear();
+            enca.texto = "sent-write";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "write"));
+            cuer.Add(new Elemento("nt", "exp"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //exp -> exp-simple op-comp exp-simple
+            cuer.Clear();
+            enca.texto = "exp";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "exp-simple"));
+            cuer.Add(new Elemento("nt", "op-comp"));
+            cuer.Add(new Elemento("nt", "exp-simple"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //exp -> exp-simple
+            cuer.Clear();
+            enca.texto = "exp";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "exp-simple"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //op-comp -> < 
+            cuer.Clear();
+            enca.texto = "op-comp";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "<"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //op-comp -> > 
+            cuer.Clear();
+            enca.texto = "op-comp";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", ">"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //op-comp -> = 
+            cuer.Clear();
+            enca.texto = "op-comp";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "="));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //exp-simple -> exp-simple opsuma term 
+            cuer.Clear();
+            enca.texto = "exp-simple";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "exp-simple"));
+            cuer.Add(new Elemento("nt", "opsuma"));
+            cuer.Add(new Elemento("nt", "term"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //exp-simple -> term 
+            cuer.Clear();
+            enca.texto = "exp-simple";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "term"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //opsuma -> + 
+            cuer.Clear();
+            enca.texto = "opsuma";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "+"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //opsuma -> - 
+            cuer.Clear();
+            enca.texto = "opsuma";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "-"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //term -> term opmult factor 
+            cuer.Clear();
+            enca.texto = "term";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "term"));
+            cuer.Add(new Elemento("nt", "opmult"));
+            cuer.Add(new Elemento("nt", "factor"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //term -> factor 
+            cuer.Clear();
+            enca.texto = "term";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("nt", "factor"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //opmult -> * 
+            cuer.Clear();
+            enca.texto = "opmult";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "*"));
+            //opmult -> *
+            cuer.Clear();
+            enca.texto = "opmult";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "/"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //factor -> ( exp )
+            cuer.Clear();
+            enca.texto = "factor";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "("));
+            cuer.Add(new Elemento("nt", "exp"));
+            cuer.Add(new Elemento("t", ")"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //factor -> numero
+            cuer.Clear();
+            enca.texto = "factor";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "numero"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //factor -> identificador
+            cuer.Clear();
+            enca.texto = "factor";
+            enca.tipo = "nt";
+            cuer.Add(new Elemento("t", "identificador"));
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
