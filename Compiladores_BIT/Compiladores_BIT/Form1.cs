@@ -26,6 +26,9 @@ namespace Compiladores_BIT
         public List<Produccion> gramatica_Tiny; // gramatica de Tiny
 
         public bool exp; // bool para saber si ya fue aplanado un boton
+
+        public int cont_edos_LR;
+        public List<EstadoLR> edosLR = new List<EstadoLR>();
         
         Automata AFN = null;
         Automata AFD = null;
@@ -33,10 +36,12 @@ namespace Compiladores_BIT
         public Form1()
         {
             InitializeComponent();
+            gramatica_Tiny = new List<Produccion>();
             er = new List<Expresion_Regular>();
             cont_edos_AFN = cont_trans_AFN = 0;
             cont_automatas_AFN = 1;
             exp = false;
+            cont_edos_LR = 0;
         }
 
         public void Crea_Gramatica_Tiny()
@@ -54,7 +59,7 @@ namespace Compiladores_BIT
             enca.tipo = "nt";
             cuer.Add(new Elemento("nt", "secuencia-sent"));
             cuer.Add(new Elemento("t", ";"));
-            cuer.Add(new Elemento("nt", "secuencia"));
+            cuer.Add(new Elemento("nt", "sentencia"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
             //secuencia-sent -> sentencia
             cuer.Clear();
@@ -1207,6 +1212,116 @@ namespace Compiladores_BIT
                     s.nombre = "Error léxico";
                 }
             }
+
+        }
+
+        private void Btn_Col_Can_Click(object sender, EventArgs e)
+        {
+            Crea_Gramatica_Tiny();
+            List<Produccion> p = new List<Produccion>();
+            Elemento punto = new Elemento("p", ".");
+            Elemento el = new Elemento("aumentada", "programa'");
+            Elemento ele = new Elemento("nt", "programa");
+            List<Elemento> cuerp = new List<Elemento>();
+            cuerp.Add(punto);
+            cuerp.Add(ele);
+
+            Produccion aum = new Produccion(el, cuerp);
+            aum.Despues_del_Punto();
+
+            p.Add(aum);
+
+            edosLR.Add(new EstadoLR(Cerradura(p), cont_edos_LR));
+            cont_edos_LR++;
+            
+        }
+
+        public List<Produccion> Cerradura(List<Produccion> I)
+        {
+            List<Produccion> J = new List<Produccion>();
+            Copia_Lista(I, J);
+            int cont_elmn = 0;
+            do
+            {
+                    if(J.ElementAt(cont_elmn).B.tipo=="nt")
+                    {
+                        foreach (Produccion g in gramatica_Tiny)
+                        {
+                            if (g.encabezado.texto.Equals(J.ElementAt(cont_elmn).B.texto))
+                            {
+                                Produccion pr = Insertar_Punto(g);
+
+                                if (!Existe_prod(pr, J))
+                                {
+                                    J.Add(pr);
+                                }
+                            }
+                        }
+                    }
+                    cont_elmn++;
+
+            } while (cont_elmn < J.Count());
+
+            return J;
+        }
+
+        public bool Existe_prod(Produccion p, List<Produccion> lp)
+        {
+            bool ex = false;
+            //en todas las producciones de J
+            foreach(Produccion pr in lp)
+            {
+                //si el encabezado es el mismo
+                if(pr.encabezado.texto.Equals(p.encabezado.texto))
+                {
+                    int cont = pr.cuerpo.Count();
+                    if(cont == p.cuerpo.Count()) // si el numero de elementos en su cuerpo es el mismo 
+                    {
+                        bool pr_ig = true;
+                        for(int i=0; i<cont;i++) // para cada elemento del cuerpo de la produccion 
+                        {
+                            if(!(pr.cuerpo.ElementAt(i).texto.Equals(p.cuerpo.ElementAt(i).texto))) // verificar que el elemento del cuerpo sea diferente
+                            {
+                                pr_ig = false;
+                                break;
+                            }
+                        }
+                        if(pr_ig)
+                        {
+                            ex = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return ex;
+        }
+
+        public Produccion Insertar_Punto(Produccion p)
+        {
+            Produccion res = new Produccion();
+
+            res.encabezado = p.encabezado;
+            res.cuerpo.Add(new Elemento("p","."));
+            foreach(Elemento a in p.cuerpo)
+            {
+                res.cuerpo.Add(a);
+            }
+
+            res.Despues_del_Punto();
+            return res;
+        }
+
+        public void Copia_Lista(List<Produccion> c, List<Produccion> d)
+        {
+            foreach (Produccion e in c)
+            {
+                d.Add(e);
+            }
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
 
         }
     }

@@ -17,6 +17,21 @@ namespace Compiladores_BIT
             I = new List<Produccion>();
         }
 
+        public EstadoLR(List<Produccion> a, int n)
+        {
+            I = new List<Produccion>();
+            Copia_Lista(a);
+            numero_edo = n;
+        }
+
+        public void Copia_Lista(List<Produccion> c)
+        {
+            foreach (Produccion e in c)
+            {
+                I.Add(e);
+            }
+        }
+
 
     }
 }

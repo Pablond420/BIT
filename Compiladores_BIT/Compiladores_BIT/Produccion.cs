@@ -8,15 +8,16 @@ namespace Compiladores_BIT
 {
     class Produccion
     {
-        public Elemento encabezado;
+        public Elemento encabezado = new Elemento();
         public List<Elemento> cuerpo;
-        public Elemento B;
+        public Elemento B = new Elemento();
         public Produccion()
         {
             cuerpo = new List<Elemento>();
         }
         public Produccion(Elemento e, List<Elemento> c)
         {
+            cuerpo = new List<Elemento>();
             encabezado.texto = e.texto;
             encabezado.tipo = e.tipo;
             Copia_Lista(c);
