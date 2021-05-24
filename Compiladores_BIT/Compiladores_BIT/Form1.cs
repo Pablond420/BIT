@@ -1320,6 +1320,28 @@ namespace Compiladores_BIT
             }
         }
 
+
+        public List<Produccion> Ir_A(List<Produccion> I, string X)
+        {
+            List<Produccion> ir = new List<Produccion>();
+            Actualiza_B(I);
+            ir = I.FindAll(x => x.B.texto.Equals(X));
+            foreach(Produccion p in ir)
+            {
+
+            }
+
+            return ir;
+        }
+
+        public void Actualiza_B(List<Produccion> I)
+        {
+            foreach(Produccion p in I)
+            {
+                p.Despues_del_Punto();
+            }
+        }
+
         private void label11_Click(object sender, EventArgs e)
         {
 
