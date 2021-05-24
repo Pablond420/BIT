@@ -51,6 +51,16 @@ namespace Compiladores_BIT
 
         }
 
-        
+        public void recorrePunto()
+        {
+            int indexPunto = cuerpo.IndexOf(cuerpo.Find(x => x.tipo.Equals("p")));
+            Elemento punto = cuerpo.ElementAt(indexPunto);
+            Elemento next = cuerpo.ElementAt(indexPunto + 1);
+            cuerpo[indexPunto] = next;
+            if (next != null)
+                cuerpo[indexPunto + 1] = punto;
+            else
+                cuerpo.Add(punto);
+        }
     }
 }

@@ -1328,10 +1328,19 @@ namespace Compiladores_BIT
             ir = I.FindAll(x => x.B.texto.Equals(X));
             foreach(Produccion p in ir)
             {
-
+                p.recorrePunto();
             }
-
+            Cerradura(ir);
             return ir;
+        }
+
+        public void elementos()
+        {
+            //List<Elemento> No_Gramatical = gramatica_Tiny.FindAll(prod => prod.cuerpo.FindAll(x => x.tipo.Equals("t")).Count > 1)
+            do
+            {
+                foreach()
+            }
         }
 
         public void Actualiza_B(List<Produccion> I)
