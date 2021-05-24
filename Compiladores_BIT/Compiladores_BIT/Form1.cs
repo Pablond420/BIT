@@ -29,7 +29,9 @@ namespace Compiladores_BIT
 
         public int cont_edos_LR;
         public List<EstadoLR> edosLR = new List<EstadoLR>();
-        
+
+        List<Elemento> terminales = new List<Elemento>();
+
         Automata AFN = null;
         Automata AFD = null;
 
@@ -59,6 +61,7 @@ namespace Compiladores_BIT
             enca.tipo = "nt";
             cuer.Add(new Elemento("nt", "secuencia-sent"));
             cuer.Add(new Elemento("t", ";"));
+            
             cuer.Add(new Elemento("nt", "sentencia"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
             //secuencia-sent -> sentencia
@@ -102,6 +105,7 @@ namespace Compiladores_BIT
             enca.texto = "sent-if";
             enca.tipo = "nt";
             cuer.Add(new Elemento("t", "if"));
+            
             cuer.Add(new Elemento("nt", "exp"));
             cuer.Add(new Elemento("t", "then"));
             cuer.Add(new Elemento("nt", "secuencia-sent"));
@@ -253,6 +257,46 @@ namespace Compiladores_BIT
             enca.tipo = "nt";
             cuer.Add(new Elemento("t", "identificador"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
+
+            terminales.Add(new Elemento("t", "-"));
+            terminales.Add(new Elemento("t", "("));
+            terminales.Add(new Elemento("t", ")"));
+            terminales.Add(new Elemento("t", "*"));
+            terminales.Add(new Elemento("t", ":="));
+            terminales.Add(new Elemento("t", "/"));
+            terminales.Add(new Elemento("t", ";"));
+            terminales.Add(new Elemento("t", "+"));
+            terminales.Add(new Elemento("t", "<"));
+            terminales.Add(new Elemento("t", "="));
+            terminales.Add(new Elemento("t", ">"));
+            terminales.Add(new Elemento("t", "identificador"));
+            terminales.Add(new Elemento("t", "read"));
+            terminales.Add(new Elemento("t", "end"));
+            terminales.Add(new Elemento("t", "if"));
+            terminales.Add(new Elemento("t", "numero"));
+            terminales.Add(new Elemento("t", "repeat"));
+            terminales.Add(new Elemento("t", "else"));
+            terminales.Add(new Elemento("t", "then"));
+            terminales.Add(new Elemento("t", "until"));
+            terminales.Add(new Elemento("t", "write"));
+            terminales.Add(new Elemento("nt", "sent-if"));
+            terminales.Add(new Elemento("nt", "sent-repeat"));
+            terminales.Add(new Elemento("nt", "sent-assign"));
+            terminales.Add(new Elemento("nt", "sent-read"));
+            terminales.Add(new Elemento("nt", "sent-write"));
+            terminales.Add(new Elemento("nt", "programa"));
+            terminales.Add(new Elemento("nt", "secuencia-sent"));
+            terminales.Add(new Elemento("nt", "exp"));
+            terminales.Add(new Elemento("nt", "factor"));
+            terminales.Add(new Elemento("nt", "sentencia"));                  
+            terminales.Add(new Elemento("nt", "exp-simple"));
+            terminales.Add(new Elemento("nt", "op-comp"));
+            terminales.Add(new Elemento("nt", "opsuma"));
+            terminales.Add(new Elemento("nt", "term"));
+            terminales.Add(new Elemento("nt", "opmult"));
+
+            
+            
 
         }
 
@@ -1218,6 +1262,24 @@ namespace Compiladores_BIT
         private void Btn_Col_Can_Click(object sender, EventArgs e)
         {
             Crea_Gramatica_Tiny();
+            Elementos();
+            visualizaEdos();
+        }
+
+        public void visualizaEdos()
+        {
+            foreach(EstadoLR elr in edosLR)
+            {
+                DGV_edos.Columns.Add(elr.numero_edo.ToString(), "I" + elr.numero_edo);
+            }
+            foreach (DataGridViewColumn dc in DGV_edos.Columns)
+            {
+                dc.Width = 25;
+            }
+        }
+
+        public void CreaAumentada()
+        {
             List<Produccion> p = new List<Produccion>();
             Elemento punto = new Elemento("p", ".");
             Elemento el = new Elemento("aumentada", "programa'");
@@ -1228,12 +1290,9 @@ namespace Compiladores_BIT
 
             Produccion aum = new Produccion(el, cuerp);
             aum.Despues_del_Punto();
-
             p.Add(aum);
-
             edosLR.Add(new EstadoLR(Cerradura(p), cont_edos_LR));
             cont_edos_LR++;
-            
         }
 
         public List<Produccion> Cerradura(List<Produccion> I)
@@ -1324,23 +1383,75 @@ namespace Compiladores_BIT
         public List<Produccion> Ir_A(List<Produccion> I, string X)
         {
             List<Produccion> ir = new List<Produccion>();
+            List<Produccion> ir2 = new List<Produccion>();
             Actualiza_B(I);
-            ir = I.FindAll(x => x.B.texto.Equals(X));
+            foreach(Produccion pr in I)
+            {
+                if (pr.B.texto.Equals(X))
+                {
+                    ir.Add(new Produccion(pr.encabezado, pr.cuerpo));
+                }
+            }
             foreach(Produccion p in ir)
             {
-                p.recorrePunto();
+                p.cuerpo = p.recorrePunto();
             }
-            Cerradura(ir);
-            return ir;
+            Actualiza_B(ir);
+            if (ir.Count() > 0 )
+               ir2 =  Cerradura(ir);
+            return ir2;
         }
+       
 
-        public void elementos()
+        public void Elementos()
         {
-            //List<Elemento> No_Gramatical = gramatica_Tiny.FindAll(prod => prod.cuerpo.FindAll(x => x.tipo.Equals("t")).Count > 1)
+            CreaAumentada();
+            int contedoLR = 0;
             do
             {
-                foreach()
+                foreach (Elemento x in terminales)
+                {
+                    List<Produccion> copiaLR = new List<Produccion>();
+                    Copia_Lista(edosLR.ElementAt(contedoLR).I, copiaLR);
+                    List<Produccion> res_Irs = Ir_A(copiaLR, x.texto);
+
+                    if (res_Irs.Count > 0 && !Existe_En_C(res_Irs))
+                    {
+                        edosLR.Add(new EstadoLR(res_Irs, cont_edos_LR));
+                        cont_edos_LR++;
+                    }
+                }
+                contedoLR++;
+            } while (contedoLR < edosLR.Count());
+           
+        }
+
+        public bool Existe_En_C(List<Produccion> r)
+        {
+            bool res=true;
+            foreach (EstadoLR a in edosLR)
+            {
+                res = true;
+                if (r.Count() == a.I.Count())
+                {
+                    foreach (Produccion x in r)
+                    {
+                        if (!Existe_prod(x, a.I))
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                    res = false;
+
+                if(res)
+                    break;
+                
+
             }
+            return res;
         }
 
         public void Actualiza_B(List<Produccion> I)
@@ -1354,6 +1465,25 @@ namespace Compiladores_BIT
         private void label11_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void DGV_edos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Tb_Elementos.Text = "";
+
+                string str = "";
+                int edo = Convert.ToInt32(DGV_edos.Columns[DGV_edos.CurrentCell.ColumnIndex].Name);
+                EstadoLR select = edosLR.Find(es => es.numero_edo == edo);
+                foreach(Produccion p in select.I)
+                {
+                    string cuerpo = "";
+                    foreach(Elemento c in p.cuerpo)
+                    {
+                        cuerpo += c.texto+ " ";
+                    }
+                    str += "[" + p.encabezado.texto + "->" + cuerpo + "]"+ Environment.NewLine;
+                }
+                Tb_Elementos.Text = str;
         }
     }
 }

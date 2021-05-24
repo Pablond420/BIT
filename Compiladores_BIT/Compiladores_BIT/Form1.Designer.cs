@@ -68,14 +68,13 @@ namespace Compiladores_BIT
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.Tb_Elementos = new System.Windows.Forms.TextBox();
             this.DGV_edos = new System.Windows.Forms.DataGridView();
             this.DGV_Transiciones = new System.Windows.Forms.DataGridView();
             this.Btn_Col_Can = new System.Windows.Forms.Button();
-            this.Estado_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tb_Elementos = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             this.analizador_sint.SuspendLayout();
             this.tabAFN.SuspendLayout();
@@ -516,69 +515,6 @@ namespace Compiladores_BIT
             this.tabPage2.Text = "Analisis sintáctico LR(0)";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // DGV_edos
-            // 
-            this.DGV_edos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_edos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Estado_num});
-            this.DGV_edos.Location = new System.Drawing.Point(371, 24);
-            this.DGV_edos.Name = "DGV_edos";
-            this.DGV_edos.Size = new System.Drawing.Size(310, 60);
-            this.DGV_edos.TabIndex = 2;
-            // 
-            // DGV_Transiciones
-            // 
-            this.DGV_Transiciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_Transiciones.Location = new System.Drawing.Point(6, 59);
-            this.DGV_Transiciones.Name = "DGV_Transiciones";
-            this.DGV_Transiciones.Size = new System.Drawing.Size(359, 393);
-            this.DGV_Transiciones.TabIndex = 1;
-            // 
-            // Btn_Col_Can
-            // 
-            this.Btn_Col_Can.Location = new System.Drawing.Point(6, 6);
-            this.Btn_Col_Can.Name = "Btn_Col_Can";
-            this.Btn_Col_Can.Size = new System.Drawing.Size(359, 28);
-            this.Btn_Col_Can.TabIndex = 0;
-            this.Btn_Col_Can.Text = "Construir Colección LR(0) Canónica";
-            this.Btn_Col_Can.UseVisualStyleBackColor = true;
-            this.Btn_Col_Can.Click += new System.EventHandler(this.Btn_Col_Can_Click);
-            // 
-            // Estado_num
-            // 
-            this.Estado_num.HeaderText = "Estado";
-            this.Estado_num.Name = "Estado_num";
-            this.Estado_num.Width = 50;
-            // 
-            // Tb_Elementos
-            // 
-            this.Tb_Elementos.Location = new System.Drawing.Point(371, 118);
-            this.Tb_Elementos.Multiline = true;
-            this.Tb_Elementos.Name = "Tb_Elementos";
-            this.Tb_Elementos.Size = new System.Drawing.Size(310, 334);
-            this.Tb_Elementos.TabIndex = 3;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(8, 37);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(175, 19);
-            this.label11.TabIndex = 6;
-            this.label11.Text = "Tabla de transiciones";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(371, 2);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(72, 19);
-            this.label12.TabIndex = 7;
-            this.label12.Text = "Estados";
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -588,6 +524,62 @@ namespace Compiladores_BIT
             this.label13.Size = new System.Drawing.Size(94, 19);
             this.label13.TabIndex = 8;
             this.label13.Text = "Elementos";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(8, 4);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(72, 19);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "Estados";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Montserrat", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(4, 106);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(175, 19);
+            this.label11.TabIndex = 6;
+            this.label11.Text = "Tabla de transiciones";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
+            // 
+            // Tb_Elementos
+            // 
+            this.Tb_Elementos.Location = new System.Drawing.Point(371, 118);
+            this.Tb_Elementos.Multiline = true;
+            this.Tb_Elementos.Name = "Tb_Elementos";
+            this.Tb_Elementos.Size = new System.Drawing.Size(310, 334);
+            this.Tb_Elementos.TabIndex = 3;
+            // 
+            // DGV_edos
+            // 
+            this.DGV_edos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_edos.Location = new System.Drawing.Point(8, 24);
+            this.DGV_edos.Name = "DGV_edos";
+            this.DGV_edos.Size = new System.Drawing.Size(673, 66);
+            this.DGV_edos.TabIndex = 2;
+            this.DGV_edos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_edos_CellClick);
+            // 
+            // DGV_Transiciones
+            // 
+            this.DGV_Transiciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_Transiciones.Location = new System.Drawing.Point(6, 96);
+            this.DGV_Transiciones.Name = "DGV_Transiciones";
+            this.DGV_Transiciones.Size = new System.Drawing.Size(359, 356);
+            this.DGV_Transiciones.TabIndex = 1;
+            // 
+            // Btn_Col_Can
+            // 
+            this.Btn_Col_Can.Location = new System.Drawing.Point(473, 85);
+            this.Btn_Col_Can.Name = "Btn_Col_Can";
+            this.Btn_Col_Can.Size = new System.Drawing.Size(205, 28);
+            this.Btn_Col_Can.TabIndex = 0;
+            this.Btn_Col_Can.Text = "Construir Colección LR(0) Canónica";
+            this.Btn_Col_Can.UseVisualStyleBackColor = true;
+            this.Btn_Col_Can.Click += new System.EventHandler(this.Btn_Col_Can_Click);
             // 
             // Form1
             // 
@@ -669,7 +661,6 @@ namespace Compiladores_BIT
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox Tb_Elementos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Estado_num;
     }
 }
 

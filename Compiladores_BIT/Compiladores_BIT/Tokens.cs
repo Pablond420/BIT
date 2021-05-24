@@ -45,7 +45,6 @@ namespace Compiladores_BIT
             //Mientras aun existan palabras o tokens que clasificar
             while (palabras.Count() > 0)
             {
-                int i = 0;
                 //Extrae la primer palabra
                 string palabra = palabras.First();
 

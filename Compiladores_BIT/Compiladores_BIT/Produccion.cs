@@ -27,7 +27,7 @@ namespace Compiladores_BIT
         {
             foreach(Elemento e in c)
             {
-                cuerpo.Add(e);
+                cuerpo.Add(new Elemento(e.tipo,e.texto));
             }
         }
 
@@ -50,17 +50,36 @@ namespace Compiladores_BIT
             }
 
         }
-
-        public void recorrePunto()
+        
+        public List<Elemento> recorrePunto()
         {
-            int indexPunto = cuerpo.IndexOf(cuerpo.Find(x => x.tipo.Equals("p")));
-            Elemento punto = cuerpo.ElementAt(indexPunto);
-            Elemento next = cuerpo.ElementAt(indexPunto + 1);
-            cuerpo[indexPunto] = next;
-            if (next != null)
-                cuerpo[indexPunto + 1] = punto;
+            List<Elemento> c = new List<Elemento>();
+            c.Clear();
+            Copia_Lista2(cuerpo, c);
+            int indexPunto = c.IndexOf(c.Find(x => x.tipo.Equals("p")));
+            Elemento punto = new Elemento(c.ElementAt(indexPunto).tipo, c.ElementAt(indexPunto).texto);
+            Elemento next;
+            if (indexPunto < c.Count() - 1)
+                next = new Elemento(c.ElementAt(indexPunto + 1).tipo, c.ElementAt(indexPunto + 1).texto);
             else
-                cuerpo.Add(punto);
+                next = new Elemento("vacio", "ε");
+            c[indexPunto] = next;
+            if (next != null)
+                c[indexPunto + 1] = punto;
+            else
+                c.Add(punto);
+
+            return c;
         }
+
+        public void Copia_Lista2(List<Elemento> c, List<Elemento> a)
+        {
+            foreach (Elemento e in c)
+            {
+                a.Add(new Elemento(e.tipo,e.texto));
+            }
+        }
+        
+
     }
 }
