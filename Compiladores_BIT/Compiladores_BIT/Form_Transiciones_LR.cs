@@ -52,6 +52,11 @@ namespace Compiladores_BIT
                 }
                 DGV_transiciones.Rows.Add(row);
             }
+
+            foreach(DataGridViewColumn c in DGV_transiciones.Columns)
+            {
+                c.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
     }
 }

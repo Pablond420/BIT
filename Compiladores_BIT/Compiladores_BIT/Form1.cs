@@ -233,7 +233,8 @@ namespace Compiladores_BIT
             enca.texto = "opmult";
             enca.tipo = "nt";
             cuer.Add(new Elemento("t", "*"));
-            //opmult -> *
+            gramatica_Tiny.Add(new Produccion(enca, cuer));
+            //opmult -> /
             cuer.Clear();
             enca.texto = "opmult";
             enca.tipo = "nt";
@@ -296,10 +297,6 @@ namespace Compiladores_BIT
             gramaticales.Add(new Elemento("nt", "opsuma"));
             gramaticales.Add(new Elemento("nt", "term"));
             gramaticales.Add(new Elemento("nt", "opmult"));
-
-            
-            
-
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -1271,6 +1268,7 @@ namespace Compiladores_BIT
             foreach (DataGridViewColumn dc in DGV_edos.Columns)
             {
                 dc.Width = 25;
+                dc.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
 
@@ -1422,8 +1420,6 @@ namespace Compiladores_BIT
                 }
                 contedoLR++;
             } while (contedoLR < edosLR.Count());
-
-            
         }
 
         public bool Existe_En_C(List<Produccion> r)
@@ -1490,7 +1486,6 @@ namespace Compiladores_BIT
             coleccion = new Form_Transiciones_LR(trs, edosLR, gramaticales);
             coleccion.contruyeMatrizLR();
             coleccion.Show();
-            
         }
     }
 }

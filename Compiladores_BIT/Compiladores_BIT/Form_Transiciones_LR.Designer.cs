@@ -29,16 +29,23 @@ namespace Compiladores_BIT
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DGV_transiciones = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_transiciones)).BeginInit();
             this.SuspendLayout();
             // 
             // DGV_transiciones
             // 
+            this.DGV_transiciones.AllowUserToAddRows = false;
+            this.DGV_transiciones.AllowUserToDeleteRows = false;
+            this.DGV_transiciones.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DGV_transiciones.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.DGV_transiciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DGV_transiciones.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.DGV_transiciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_transiciones.Location = new System.Drawing.Point(12, 12);
             this.DGV_transiciones.Name = "DGV_transiciones";
+            this.DGV_transiciones.ReadOnly = true;
             this.DGV_transiciones.Size = new System.Drawing.Size(1375, 734);
             this.DGV_transiciones.TabIndex = 3;
             // 

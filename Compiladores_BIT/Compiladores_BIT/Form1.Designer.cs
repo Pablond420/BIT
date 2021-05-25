@@ -29,6 +29,7 @@ namespace Compiladores_BIT
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.abrir_txt = new System.Windows.Forms.OpenFileDialog();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -595,6 +596,8 @@ namespace Compiladores_BIT
             // 
             // DGV_edos
             // 
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DGV_edos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_edos.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
             this.DGV_edos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV_edos.Location = new System.Drawing.Point(8, 73);
