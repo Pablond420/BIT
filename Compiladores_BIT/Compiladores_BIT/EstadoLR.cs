@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Compiladores_BIT
 {
-
     class EstadoLR
     {
         public List<Produccion> I;

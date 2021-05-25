@@ -30,7 +30,9 @@ namespace Compiladores_BIT
         public int cont_edos_LR;
         public List<EstadoLR> edosLR = new List<EstadoLR>();
 
-        List<Elemento> terminales = new List<Elemento>();
+        List<Elemento> gramaticales = new List<Elemento>();
+        Form_Transiciones_LR coleccion;
+        List<Transicion> trs = new List<Transicion>();
 
         Automata AFN = null;
         Automata AFD = null;
@@ -258,42 +260,42 @@ namespace Compiladores_BIT
             cuer.Add(new Elemento("t", "identificador"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
 
-            terminales.Add(new Elemento("t", "-"));
-            terminales.Add(new Elemento("t", "("));
-            terminales.Add(new Elemento("t", ")"));
-            terminales.Add(new Elemento("t", "*"));
-            terminales.Add(new Elemento("t", ":="));
-            terminales.Add(new Elemento("t", "/"));
-            terminales.Add(new Elemento("t", ";"));
-            terminales.Add(new Elemento("t", "+"));
-            terminales.Add(new Elemento("t", "<"));
-            terminales.Add(new Elemento("t", "="));
-            terminales.Add(new Elemento("t", ">"));
-            terminales.Add(new Elemento("t", "identificador"));
-            terminales.Add(new Elemento("t", "read"));
-            terminales.Add(new Elemento("t", "end"));
-            terminales.Add(new Elemento("t", "if"));
-            terminales.Add(new Elemento("t", "numero"));
-            terminales.Add(new Elemento("t", "repeat"));
-            terminales.Add(new Elemento("t", "else"));
-            terminales.Add(new Elemento("t", "then"));
-            terminales.Add(new Elemento("t", "until"));
-            terminales.Add(new Elemento("t", "write"));
-            terminales.Add(new Elemento("nt", "sent-if"));
-            terminales.Add(new Elemento("nt", "sent-repeat"));
-            terminales.Add(new Elemento("nt", "sent-assign"));
-            terminales.Add(new Elemento("nt", "sent-read"));
-            terminales.Add(new Elemento("nt", "sent-write"));
-            terminales.Add(new Elemento("nt", "programa"));
-            terminales.Add(new Elemento("nt", "secuencia-sent"));
-            terminales.Add(new Elemento("nt", "exp"));
-            terminales.Add(new Elemento("nt", "factor"));
-            terminales.Add(new Elemento("nt", "sentencia"));                  
-            terminales.Add(new Elemento("nt", "exp-simple"));
-            terminales.Add(new Elemento("nt", "op-comp"));
-            terminales.Add(new Elemento("nt", "opsuma"));
-            terminales.Add(new Elemento("nt", "term"));
-            terminales.Add(new Elemento("nt", "opmult"));
+            gramaticales.Add(new Elemento("t", "-"));
+            gramaticales.Add(new Elemento("t", "("));
+            gramaticales.Add(new Elemento("t", ")"));
+            gramaticales.Add(new Elemento("t", "*"));
+            gramaticales.Add(new Elemento("t", ":="));
+            gramaticales.Add(new Elemento("t", "/"));
+            gramaticales.Add(new Elemento("t", ";"));
+            gramaticales.Add(new Elemento("t", "+"));
+            gramaticales.Add(new Elemento("t", "<"));
+            gramaticales.Add(new Elemento("t", "="));
+            gramaticales.Add(new Elemento("t", ">"));
+            gramaticales.Add(new Elemento("t", "identificador"));
+            gramaticales.Add(new Elemento("t", "read"));
+            gramaticales.Add(new Elemento("t", "end"));
+            gramaticales.Add(new Elemento("t", "if"));
+            gramaticales.Add(new Elemento("t", "numero"));
+            gramaticales.Add(new Elemento("t", "repeat"));
+            gramaticales.Add(new Elemento("t", "else"));
+            gramaticales.Add(new Elemento("t", "then"));
+            gramaticales.Add(new Elemento("t", "until"));
+            gramaticales.Add(new Elemento("t", "write"));
+            gramaticales.Add(new Elemento("nt", "sent-if"));
+            gramaticales.Add(new Elemento("nt", "sent-repeat"));
+            gramaticales.Add(new Elemento("nt", "sent-assign"));
+            gramaticales.Add(new Elemento("nt", "sent-read"));
+            gramaticales.Add(new Elemento("nt", "sent-write"));
+            gramaticales.Add(new Elemento("nt", "programa"));
+            gramaticales.Add(new Elemento("nt", "secuencia-sent"));
+            gramaticales.Add(new Elemento("nt", "exp"));
+            gramaticales.Add(new Elemento("nt", "factor"));
+            gramaticales.Add(new Elemento("nt", "sentencia"));                  
+            gramaticales.Add(new Elemento("nt", "exp-simple"));
+            gramaticales.Add(new Elemento("nt", "op-comp"));
+            gramaticales.Add(new Elemento("nt", "opsuma"));
+            gramaticales.Add(new Elemento("nt", "term"));
+            gramaticales.Add(new Elemento("nt", "opmult"));
 
             
             
@@ -1172,7 +1174,6 @@ namespace Compiladores_BIT
             validar_lbl.Text = "-";
         }
 
-
         private void clasificar_Tokens_Click(object sender, EventArgs e)
         {
             //Elimina los espacios del código
@@ -1206,10 +1207,7 @@ namespace Compiladores_BIT
                 tabla_token.Rows.Add();
                 tabla_token.Rows[i].Cells[0].Value = tokens.tokens.ElementAt(i).nombre;
                 tabla_token.Rows[i].Cells[1].Value = tokens.tokens.ElementAt(i).lexema;
-
-
             }
-
         }
 
 
@@ -1230,7 +1228,6 @@ namespace Compiladores_BIT
                 {
                     s.nombre = "identificador";
                 }
-
             }
 
             text_abrir.Text = textBox3.Text;
@@ -1246,7 +1243,6 @@ namespace Compiladores_BIT
                 {
                     s.nombre = "número";
                 }
-
             }
             // si no los clasifico con un nombre, les pone Error léxico.
             foreach(Token s in noClasificados)
@@ -1256,7 +1252,6 @@ namespace Compiladores_BIT
                     s.nombre = "Error léxico";
                 }
             }
-
         }
 
         private void Btn_Col_Can_Click(object sender, EventArgs e)
@@ -1264,6 +1259,7 @@ namespace Compiladores_BIT
             Crea_Gramatica_Tiny();
             Elementos();
             visualizaEdos();
+            Btn_transiciones.Visible = true;
         }
 
         public void visualizaEdos()
@@ -1302,22 +1298,22 @@ namespace Compiladores_BIT
             int cont_elmn = 0;
             do
             {
-                    if(J.ElementAt(cont_elmn).B.tipo=="nt")
+                if(J.ElementAt(cont_elmn).B.tipo=="nt")
+                {
+                    foreach (Produccion g in gramatica_Tiny)
                     {
-                        foreach (Produccion g in gramatica_Tiny)
+                        if (g.encabezado.texto.Equals(J.ElementAt(cont_elmn).B.texto))
                         {
-                            if (g.encabezado.texto.Equals(J.ElementAt(cont_elmn).B.texto))
-                            {
-                                Produccion pr = Insertar_Punto(g);
+                            Produccion pr = Insertar_Punto(g);
 
-                                if (!Existe_prod(pr, J))
-                                {
-                                    J.Add(pr);
-                                }
+                            if (!Existe_prod(pr, J))
+                            {
+                                J.Add(pr);
                             }
                         }
                     }
-                    cont_elmn++;
+                }
+                cont_elmn++;
 
             } while (cont_elmn < J.Count());
 
@@ -1405,11 +1401,12 @@ namespace Compiladores_BIT
 
         public void Elementos()
         {
+            
             CreaAumentada();
             int contedoLR = 0;
             do
             {
-                foreach (Elemento x in terminales)
+                foreach (Elemento x in gramaticales)
                 {
                     List<Produccion> copiaLR = new List<Produccion>();
                     Copia_Lista(edosLR.ElementAt(contedoLR).I, copiaLR);
@@ -1419,11 +1416,14 @@ namespace Compiladores_BIT
                     {
                         edosLR.Add(new EstadoLR(res_Irs, cont_edos_LR));
                         cont_edos_LR++;
+                        Transicion t = new Transicion(edosLR.ElementAt(contedoLR), edosLR.Last(), x.texto);
+                        trs.Add(t);
                     }
                 }
                 contedoLR++;
             } while (contedoLR < edosLR.Count());
-           
+
+            
         }
 
         public bool Existe_En_C(List<Produccion> r)
@@ -1445,11 +1445,8 @@ namespace Compiladores_BIT
                 }
                 else
                     res = false;
-
                 if(res)
                     break;
-                
-
             }
             return res;
         }
@@ -1462,28 +1459,38 @@ namespace Compiladores_BIT
             }
         }
 
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void DGV_edos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             Tb_Elementos.Text = "";
-
-                string str = "";
-                int edo = Convert.ToInt32(DGV_edos.Columns[DGV_edos.CurrentCell.ColumnIndex].Name);
-                EstadoLR select = edosLR.Find(es => es.numero_edo == edo);
-                foreach(Produccion p in select.I)
+            lbl_cantElem.Text = "";
+            
+            int contElem = 1;
+            string str = "";
+            int edo = Convert.ToInt32(DGV_edos.Columns[DGV_edos.CurrentCell.ColumnIndex].Name);
+            txt_Elementos.Text = "Elementos del estado " + "I-" + edo.ToString();
+            EstadoLR select = edosLR.Find(es => es.numero_edo == edo);
+            foreach(Produccion p in select.I)
+            {
+                string cuerpo = "";
+                foreach(Elemento c in p.cuerpo)
                 {
-                    string cuerpo = "";
-                    foreach(Elemento c in p.cuerpo)
-                    {
+                    if (c.tipo.Equals("p"))
+                        cuerpo += "• ";
+                    else
                         cuerpo += c.texto+ " ";
-                    }
-                    str += "[" + p.encabezado.texto + "->" + cuerpo + "]"+ Environment.NewLine;
                 }
-                Tb_Elementos.Text = str;
+                str += contElem++.ToString() + ". " + "[ " + p.encabezado.texto + " ➞ " + cuerpo + "]"+ Environment.NewLine;
+            }
+            Tb_Elementos.Text = str;
+            lbl_cantElem.Text = (contElem-1).ToString();
+        }
+
+        private void Btn_transiciones_Click(object sender, EventArgs e)
+        {
+            coleccion = new Form_Transiciones_LR(trs, edosLR, gramaticales);
+            coleccion.contruyeMatrizLR();
+            coleccion.Show();
+            
         }
     }
 }

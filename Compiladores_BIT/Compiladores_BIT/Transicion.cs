@@ -13,6 +13,10 @@ namespace Compiladores_BIT
         public int id_tran;
         public char operando;
 
+        public EstadoLR origenLR;
+        public EstadoLR destinoLR;
+        public string operandoLR;
+
         public Transicion()
         {
 
@@ -26,5 +30,11 @@ namespace Compiladores_BIT
             this.id_tran = id;
         }
 
+        public Transicion(EstadoLR origen, EstadoLR destino, string operando)
+        {
+            this.origenLR = origen;
+            this.destinoLR = destino;
+            this.operandoLR = operando;
+        }
     }
 }
