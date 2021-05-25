@@ -33,6 +33,7 @@ namespace Compiladores_BIT
         List<Elemento> gramaticales = new List<Elemento>();
         Form_Transiciones_LR coleccion;
         List<Transicion> trs = new List<Transicion>();
+        int iedo = 0;
 
         Automata AFN = null;
         Automata AFD = null;
@@ -1257,10 +1258,13 @@ namespace Compiladores_BIT
             Elementos();
             visualizaEdos();
             Btn_transiciones.Visible = true;
+            Btn_Col_Can.Enabled = false;
         }
 
         public void visualizaEdos()
         {
+            DGV_edos.Rows.Clear();
+            DGV_edos.Columns.Clear();
             foreach(EstadoLR elr in edosLR)
             {
                 DGV_edos.Columns.Add(elr.numero_edo.ToString(), "I" + elr.numero_edo);
@@ -1412,9 +1416,16 @@ namespace Compiladores_BIT
 
                     if (res_Irs.Count > 0 && !Existe_En_C(res_Irs))
                     {
-                        edosLR.Add(new EstadoLR(res_Irs, cont_edos_LR));
+                        EstadoLR elr = new EstadoLR(res_Irs, cont_edos_LR);
+                        edosLR.Add(elr);
                         cont_edos_LR++;
-                        Transicion t = new Transicion(edosLR.ElementAt(contedoLR), edosLR.Last(), x.texto);
+                        Transicion t = new Transicion(edosLR.ElementAt(contedoLR), edosLR.ElementAt(edosLR.IndexOf(elr)), x.texto);
+                        trs.Add(t);
+                    }
+                    else if(res_Irs.Count > 0)
+                    {
+                        //EstadoLR rrr = edosLR.Find(edo => edo.I.Equals(res_Irs));
+                        Transicion t = new Transicion(edosLR.ElementAt(contedoLR), edosLR.ElementAt(iedo), x.texto);
                         trs.Add(t);
                     }
                 }
@@ -1425,6 +1436,7 @@ namespace Compiladores_BIT
         public bool Existe_En_C(List<Produccion> r)
         {
             bool res=true;
+            
             foreach (EstadoLR a in edosLR)
             {
                 res = true;
@@ -1441,8 +1453,12 @@ namespace Compiladores_BIT
                 }
                 else
                     res = false;
-                if(res)
+                if (res)
+                {
+                    iedo = edosLR.IndexOf(a);
                     break;
+                }
+                    
             }
             return res;
         }

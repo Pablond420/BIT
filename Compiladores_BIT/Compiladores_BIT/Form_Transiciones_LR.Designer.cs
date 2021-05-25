@@ -46,7 +46,7 @@ namespace Compiladores_BIT
             this.DGV_transiciones.Location = new System.Drawing.Point(12, 12);
             this.DGV_transiciones.Name = "DGV_transiciones";
             this.DGV_transiciones.ReadOnly = true;
-            this.DGV_transiciones.Size = new System.Drawing.Size(1375, 734);
+            this.DGV_transiciones.Size = new System.Drawing.Size(1555, 734);
             this.DGV_transiciones.TabIndex = 3;
             // 
             // Form_Transiciones_LR
@@ -54,7 +54,7 @@ namespace Compiladores_BIT
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Bisque;
-            this.ClientSize = new System.Drawing.Size(1399, 758);
+            this.ClientSize = new System.Drawing.Size(1579, 758);
             this.Controls.Add(this.DGV_transiciones);
             this.Name = "Form_Transiciones_LR";
             this.Text = "Form_Transiciones_LR";
