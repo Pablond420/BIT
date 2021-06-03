@@ -43,10 +43,12 @@ namespace Compiladores_BIT
             this.DGV_tabla.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.DGV_tabla.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DGV_tabla.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.DGV_tabla.ColumnHeadersHeight = 29;
             this.DGV_tabla.Location = new System.Drawing.Point(12, 12);
             this.DGV_tabla.Name = "DGV_tabla";
             this.DGV_tabla.ReadOnly = true;
-            this.DGV_tabla.Size = new System.Drawing.Size(1555, 734);
+            this.DGV_tabla.RowHeadersWidth = 51;
+            this.DGV_tabla.Size = new System.Drawing.Size(1110, 692);
             this.DGV_tabla.TabIndex = 4;
             // 
             // Form_TablaAS

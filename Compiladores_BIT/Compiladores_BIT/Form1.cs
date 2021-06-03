@@ -1589,12 +1589,44 @@ namespace Compiladores_BIT
             List<Elemento> cuerpo = new List<Elemento>();
             foreach(Elemento c in p.cuerpo)
             {
-                if(!c.tipo.Equals("punto"))
+                if(!c.tipo.Equals("p"))
                     cuerpo.Add(new Elemento(c.tipo, c.texto));
             }
             Produccion prod = new Produccion(p.encabezado, cuerpo);
             //Busca y regresa el numero de produccion con base en las producciones originales
-            return gramatica_original_Tiny.FindIndex(x => x.Equals(prod)) + 1;
+
+            bool band = true;
+            int ind = -1;
+            foreach (Produccion pd in gramatica_original_Tiny)
+            {
+                if (pd.encabezado.texto.Equals(prod.encabezado.texto))
+                {
+                    ind = gramatica_original_Tiny.IndexOf(pd);
+                    if (gramatica_original_Tiny[ind].cuerpo.Count() == prod.cuerpo.Count())
+                    {
+                        int j = 0;
+                        foreach (Elemento el in gramatica_original_Tiny[ind].cuerpo)
+                        {
+                            if (!el.texto.Equals(prod.cuerpo[j].texto))
+                            {
+                                band = false;
+                                break;
+                            }
+                            j++;
+                        }
+                        if (band) break;
+                    }
+                }
+                
+                //if (band) break;
+            }
+            if (ind == -1)
+            {
+                bool k= false;
+
+            }
+                
+            return ind;
         }
 
         private int ir_Aj(EstadoLR i, string a)
