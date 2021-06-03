@@ -20,6 +20,7 @@ namespace Compiladores_BIT
             cuerpo = new List<Elemento>();
             encabezado.texto = e.texto;
             encabezado.tipo = e.tipo;
+            encabezado.Siguientes = e.Siguientes;
             Copia_Lista(c);
         }
 

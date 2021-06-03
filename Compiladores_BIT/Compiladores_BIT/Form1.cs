@@ -24,6 +24,7 @@ namespace Compiladores_BIT
         public List<Token> noClasificados;
 
         public List<Produccion> gramatica_Tiny; // gramatica de Tiny
+        List<Produccion> gramatica_original_Tiny = new List<Produccion>(); // gramatica de Tiny
 
         public bool exp; // bool para saber si ya fue aplanado un boton
 
@@ -31,8 +32,10 @@ namespace Compiladores_BIT
         public List<EstadoLR> edosLR = new List<EstadoLR>();
 
         List<Elemento> gramaticales = new List<Elemento>();
+        List<Elemento> grmls;
         Form_Transiciones_LR coleccion;
         List<Transicion> trs = new List<Transicion>();
+        string[,] Tabla_AS;
         int iedo = 0;
 
         Automata AFN = null;
@@ -56,12 +59,14 @@ namespace Compiladores_BIT
             //programa -> secuencia-sent
             enca.texto = "programa";
             enca.tipo = "nt";
-            cuer.Add(new Elemento("nt","secuencia-sent"));
+            enca.Siguientes = new List<string> { "$" };
+            cuer.Add(new Elemento("nt", "secuencia-sent"));
             gramatica_Tiny.Add(new Produccion(enca,cuer));
             //secuencia-sent -> secuancia-sent; sentencia
             cuer.Clear();
             enca.texto = "secuencia-sent";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> {";", "end", "else", "until", "$"};
             cuer.Add(new Elemento("nt", "secuencia-sent"));
             cuer.Add(new Elemento("t", ";"));
             
@@ -77,6 +82,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "sentencia";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { ";", "end", "else", "until", "$" };
             cuer.Add(new Elemento("nt", "sent-if"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
             //sentencia -> sent-repeat
@@ -107,6 +113,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "sent-if";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { ";", "end", "else", "until", "$" };
             cuer.Add(new Elemento("t", "if"));
             
             cuer.Add(new Elemento("nt", "exp"));
@@ -130,6 +137,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "sent-repeat";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { ";", "end", "else", "until", "$" };
             cuer.Add(new Elemento("t", "repeat"));
             cuer.Add(new Elemento("nt", "secuencia-sent"));
             cuer.Add(new Elemento("t", "until"));
@@ -139,6 +147,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "sent-assign";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { ";", "end", "else", "until", "$" };
             cuer.Add(new Elemento("t", "identificador"));
             cuer.Add(new Elemento("t", ":="));
             cuer.Add(new Elemento("nt", "exp"));
@@ -147,6 +156,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "sent-read";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { ";", "end", "else", "until", "$" };
             cuer.Add(new Elemento("t", "read"));
             cuer.Add(new Elemento("t", "identificador"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
@@ -154,6 +164,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "sent-write";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { ";", "end", "else", "until", "$" };
             cuer.Add(new Elemento("t", "write"));
             cuer.Add(new Elemento("nt", "exp"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
@@ -161,6 +172,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "exp";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { "then", ";", "end", "else", "until", "$", ")"};
             cuer.Add(new Elemento("nt", "exp-simple"));
             cuer.Add(new Elemento("nt", "op-comp"));
             cuer.Add(new Elemento("nt", "exp-simple"));
@@ -175,6 +187,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "op-comp";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { "(", "numero", "identificador"};
             cuer.Add(new Elemento("t", "<"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
             //op-comp -> > 
@@ -193,6 +206,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "exp-simple";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> {"<", ">", "=", "then", ";", "end", "else", "until", "$", ")", "+", "-"};
             cuer.Add(new Elemento("nt", "exp-simple"));
             cuer.Add(new Elemento("nt", "opsuma"));
             cuer.Add(new Elemento("nt", "term"));
@@ -207,6 +221,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "opsuma";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { "(", "numero", "identificador" };
             cuer.Add(new Elemento("t", "+"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
             //opsuma -> - 
@@ -219,6 +234,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "term";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> {"<", ">", "=", "then", ";", "end", "else", "until", "$", ")", "+", "-", "*", "/" };
             cuer.Add(new Elemento("nt", "term"));
             cuer.Add(new Elemento("nt", "opmult"));
             cuer.Add(new Elemento("nt", "factor"));
@@ -233,6 +249,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "opmult";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> { "(", "numero", "identificador"};
             cuer.Add(new Elemento("t", "*"));
             gramatica_Tiny.Add(new Produccion(enca, cuer));
             //opmult -> /
@@ -245,6 +262,7 @@ namespace Compiladores_BIT
             cuer.Clear();
             enca.texto = "factor";
             enca.tipo = "nt";
+            enca.Siguientes = new List<string> {"<", ">", "=", "then", ";", "end", "else", "until", "$", ")", "+", "-", "*", "/"};
             cuer.Add(new Elemento("t", "("));
             cuer.Add(new Elemento("nt", "exp"));
             cuer.Add(new Elemento("t", ")"));
@@ -298,6 +316,7 @@ namespace Compiladores_BIT
             gramaticales.Add(new Elemento("nt", "opsuma"));
             gramaticales.Add(new Elemento("nt", "term"));
             gramaticales.Add(new Elemento("nt", "opmult"));
+
         }
 
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
@@ -1255,10 +1274,14 @@ namespace Compiladores_BIT
         private void Btn_Col_Can_Click(object sender, EventArgs e)
         {
             Crea_Gramatica_Tiny();
+            Copia_Lista(gramatica_Tiny, gramatica_original_Tiny);
             Elementos();
             visualizaEdos();
             Btn_transiciones.Visible = true;
             Btn_Col_Can.Enabled = false;
+
+            Analisis_Sintactico();
+            Btn_TablaAS.Visible = true;
         }
 
         public void visualizaEdos()
@@ -1502,6 +1525,89 @@ namespace Compiladores_BIT
             coleccion = new Form_Transiciones_LR(trs, edosLR, gramaticales);
             coleccion.contruyeMatrizLR();
             coleccion.Show();
+        }
+
+        private void Analisis_Sintactico()
+        {
+            //Inicializar la tabla de análisis sintactico de la cantidad total de estados x cantidad total de simbolos gramaticales 
+            grmls = new List<Elemento>();
+            bool band = false;
+            foreach (Elemento el in gramaticales)
+            {
+                if (el.tipo.Equals("nt") && !band)
+                {
+                    band = true;
+                    grmls.Add(new Elemento("pesos", "$"));
+                }
+                grmls.Add(el);
+            }
+            Tabla_AS = new string[edosLR.Count(), grmls.Count()];
+            
+            foreach(EstadoLR eLr in edosLR)
+            {
+                int Ii = edosLR.IndexOf(eLr);
+                int pesos = grmls.FindIndex(x => x.texto.Equals("$"));
+                foreach(Produccion p in eLr.I)
+                {
+                    //Inciso A) [A -> alfa . a beta] buscamos un terminal despues del punto
+                    if (p.B.tipo.Equals("t"))
+                    {
+                        int a = grmls.FindIndex(x => x.texto.Equals(p.B.texto));
+                        Tabla_AS[Ii, a] = "D" + ir_Aj(eLr, p.B.texto).ToString();
+                    }
+                    if (p.B.tipo.Equals("vacio") && !p.encabezado.tipo.Equals("aumentada"))
+                    {
+                        //Produccion pr = gramatica_original_Tiny.Find(x => x.encabezado.Equals(p.encabezado));
+                        foreach(string sig in p.encabezado.Siguientes)
+                        {
+                            int a = grmls.FindIndex(x => x.texto.Equals(sig));
+                            Tabla_AS[Ii, a] = "R" + Num_Prod(p).ToString();
+                        }
+                    }
+                    if(p.B.tipo.Equals("vacio") && p.encabezado.tipo.Equals("aumentada"))
+                    {
+                        Tabla_AS[Ii, pesos] = "AC";
+                    }
+                }
+            }
+
+            //Parte que completa los Ir_A
+            foreach(Transicion tr in trs)
+            {
+                if(grmls.Find(gr => gr.texto.Equals(tr.operandoLR)).tipo.Equals("nt"))
+                {
+                    int Ii = edosLR.FindIndex(t => t.Equals(tr.origenLR));
+                    int a = grmls.FindIndex(g => g.texto.Equals(tr.operandoLR));
+                    Tabla_AS[Ii, a] = tr.destinoLR.numero_edo.ToString();
+                }
+            }
+        }
+
+        private int Num_Prod(Produccion p)
+        {
+            //Crea una nueva producción sin punto para compararla contra alguna producción original
+            List<Elemento> cuerpo = new List<Elemento>();
+            foreach(Elemento c in p.cuerpo)
+            {
+                if(!c.tipo.Equals("punto"))
+                    cuerpo.Add(new Elemento(c.tipo, c.texto));
+            }
+            Produccion prod = new Produccion(p.encabezado, cuerpo);
+            //Busca y regresa el numero de produccion con base en las producciones originales
+            return gramatica_original_Tiny.FindIndex(x => x.Equals(prod)) + 1;
+        }
+
+        private int ir_Aj(EstadoLR i, string a)
+        {
+            Transicion transicion = trs.Find(t => t.origenLR.Equals(i) && t.operandoLR.Equals(a));
+            return edosLR.IndexOf(transicion.destinoLR);
+        }
+
+        private void Btn_TablaAS_Click(object sender, EventArgs e)
+        {
+            Form_TablaAS tabla = new Form_TablaAS(Tabla_AS, grmls, edosLR.Count(), grmls.Count());
+            tabla.construyeTabla();
+            tabla.Show();
         }
     }
 }

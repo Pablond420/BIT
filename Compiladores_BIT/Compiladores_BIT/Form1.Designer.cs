@@ -77,6 +77,7 @@ namespace Compiladores_BIT
             this.label12 = new System.Windows.Forms.Label();
             this.Tb_Elementos = new System.Windows.Forms.TextBox();
             this.DGV_edos = new System.Windows.Forms.DataGridView();
+            this.Btn_TablaAS = new System.Windows.Forms.Button();
             this.tabPage1.SuspendLayout();
             this.analizador_sint.SuspendLayout();
             this.tabAFN.SuspendLayout();
@@ -502,6 +503,7 @@ namespace Compiladores_BIT
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.White;
+            this.tabPage2.Controls.Add(this.Btn_TablaAS);
             this.tabPage2.Controls.Add(this.lbl_cantElem);
             this.tabPage2.Controls.Add(this.txt_cantElem);
             this.tabPage2.Controls.Add(this.Btn_transiciones);
@@ -541,7 +543,7 @@ namespace Compiladores_BIT
             this.Btn_transiciones.BackColor = System.Drawing.Color.Khaki;
             this.Btn_transiciones.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_transiciones.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Btn_transiciones.Location = new System.Drawing.Point(413, 6);
+            this.Btn_transiciones.Location = new System.Drawing.Point(413, 3);
             this.Btn_transiciones.Name = "Btn_transiciones";
             this.Btn_transiciones.Size = new System.Drawing.Size(268, 34);
             this.Btn_transiciones.TabIndex = 10;
@@ -557,9 +559,9 @@ namespace Compiladores_BIT
             this.Btn_Col_Can.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Btn_Col_Can.Location = new System.Drawing.Point(8, 7);
             this.Btn_Col_Can.Name = "Btn_Col_Can";
-            this.Btn_Col_Can.Size = new System.Drawing.Size(268, 34);
+            this.Btn_Col_Can.Size = new System.Drawing.Size(302, 34);
             this.Btn_Col_Can.TabIndex = 9;
-            this.Btn_Col_Can.Text = "Construir Colección Canónica LR";
+            this.Btn_Col_Can.Text = "Construir Colección Canónica LR y Tabla AS";
             this.Btn_Col_Can.UseVisualStyleBackColor = false;
             this.Btn_Col_Can.Click += new System.EventHandler(this.Btn_Col_Can_Click);
             // 
@@ -605,6 +607,20 @@ namespace Compiladores_BIT
             this.DGV_edos.Size = new System.Drawing.Size(673, 66);
             this.DGV_edos.TabIndex = 2;
             this.DGV_edos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_edos_CellClick);
+            // 
+            // Btn_TablaAS
+            // 
+            this.Btn_TablaAS.BackColor = System.Drawing.Color.Khaki;
+            this.Btn_TablaAS.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Btn_TablaAS.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Btn_TablaAS.Location = new System.Drawing.Point(413, 38);
+            this.Btn_TablaAS.Name = "Btn_TablaAS";
+            this.Btn_TablaAS.Size = new System.Drawing.Size(268, 34);
+            this.Btn_TablaAS.TabIndex = 13;
+            this.Btn_TablaAS.Text = "Tabla de Análisis Sintáctico";
+            this.Btn_TablaAS.UseVisualStyleBackColor = false;
+            this.Btn_TablaAS.Visible = false;
+            this.Btn_TablaAS.Click += new System.EventHandler(this.Btn_TablaAS_Click);
             // 
             // Form1
             // 
@@ -686,6 +702,7 @@ namespace Compiladores_BIT
         private System.Windows.Forms.Button Btn_Col_Can;
         private System.Windows.Forms.Label lbl_cantElem;
         private System.Windows.Forms.Label txt_cantElem;
+        private System.Windows.Forms.Button Btn_TablaAS;
     }
 }
 

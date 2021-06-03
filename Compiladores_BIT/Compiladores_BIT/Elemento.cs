@@ -10,7 +10,7 @@ namespace Compiladores_BIT
     {
         public string tipo;
         public string texto;
-
+        public List<string> Siguientes = new List<string>();
 
         public Elemento(string ti, string te)
         {
@@ -21,7 +21,11 @@ namespace Compiladores_BIT
         {
 
         }
-
-
+        public Elemento(string ti, string te, List<string> Sig)
+        {
+            tipo = ti;
+            texto = te;
+            Siguientes = Sig;
+        }
     }
 }
