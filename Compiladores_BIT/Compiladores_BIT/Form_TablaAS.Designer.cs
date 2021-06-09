@@ -48,7 +48,7 @@ namespace Compiladores_BIT
             this.DGV_tabla.Name = "DGV_tabla";
             this.DGV_tabla.ReadOnly = true;
             this.DGV_tabla.RowHeadersWidth = 51;
-            this.DGV_tabla.Size = new System.Drawing.Size(1110, 692);
+            this.DGV_tabla.Size = new System.Drawing.Size(1542, 734);
             this.DGV_tabla.TabIndex = 4;
             // 
             // Form_TablaAS
