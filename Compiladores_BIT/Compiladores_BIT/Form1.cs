@@ -37,6 +37,7 @@ namespace Compiladores_BIT
         List<Transicion> trs = new List<Transicion>();
         string[,] Tabla_AS;
         int iedo = 0;
+        List<string> erroreslexicos = new List<string>();
 
         Automata AFN = null;
         Automata AFD = null;
@@ -1193,8 +1194,10 @@ namespace Compiladores_BIT
 
         private void clasificar_Tokens_Click(object sender, EventArgs e)
         {
+            erroreslexicos.Clear();
             //Elimina los espacios del código
             List<string> p = codigoTiny.Text.Split().ToList();
+            List<string> listaTextoP = codigoTiny.Text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
             //Elimina las cadenas vacias
             p = p.FindAll(str => !str.Equals(""));
             Tokens tokens = new Tokens(p);
@@ -1204,13 +1207,13 @@ namespace Compiladores_BIT
             noClasificados = tokens.getTokensSinClasificar();
             //Recorre el AFD con cada token
             RecorreAFD();
-            
+
             // calsifica los lexemas que ya fueron encontrados en el recorrido del AFD
-            foreach(Token pp in noClasificados)
+            foreach (Token pp in noClasificados)
             {
                 foreach (Token pp2 in tokens.tokens)
                 {
-                    if(pp.lexema.Equals(pp2.lexema))
+                    if (pp.lexema.Equals(pp2.lexema))
                     {
                         pp2.nombre = pp.nombre;
                     }
@@ -1224,6 +1227,60 @@ namespace Compiladores_BIT
                 tabla_token.Rows.Add();
                 tabla_token.Rows[i].Cells[0].Value = tokens.tokens.ElementAt(i).nombre;
                 tabla_token.Rows[i].Cells[1].Value = tokens.tokens.ElementAt(i).lexema;
+
+                if (tokens.tokens.ElementAt(i).nombre.Equals("Error léxico"))
+                {
+                    for (int j=0; j<listaTextoP.Count();j++)
+                    {
+                        if (listaTextoP.ElementAt(j).Contains(tokens.tokens.ElementAt(i).lexema))
+                        {
+                            int xd = j + 1;
+                            string er = "Linea "+xd+". "+ tokens.tokens.ElementAt(i).lexema+" no se reconoce";
+                            erroreslexicos.Add(er);
+                        }
+                     }
+                }
+
+            }
+
+
+        }
+
+        public void clasi_token()
+        {
+            //Elimina los espacios del código
+            List<string> p = codigoTiny.Text.Split().ToList();
+            //Elimina las cadenas vacias
+            p = p.FindAll(str => !str.Equals(""));
+            Tokens tokens = new Tokens(p);
+            tokens.clasificaTokens();
+
+            //Obtine todos los tokens que no fueron clasificados para recorrerlos en los AFD de letras y numeros 
+            noClasificados = tokens.getTokensSinClasificar();
+            //Recorre el AFD con cada token
+            RecorreAFD();
+
+            // calsifica los lexemas que ya fueron encontrados en el recorrido del AFD
+            foreach (Token pp in noClasificados)
+            {
+                foreach (Token pp2 in tokens.tokens)
+                {
+                    if (pp.lexema.Equals(pp2.lexema))
+                    {
+                        pp2.nombre = pp.nombre;
+                    }
+                }
+            }
+
+            //Muestra la tabla en la interfaz
+            tabla_token.Rows.Clear();
+            for (int i = 0; i < tokens.tokens.Count(); i++)
+            {
+                tabla_token.Rows.Add();
+                tabla_token.Rows[i].Cells[0].Value = tokens.tokens.ElementAt(i).nombre;
+                tabla_token.Rows[i].Cells[1].Value = tokens.tokens.ElementAt(i).lexema;
+
+                //if()
             }
         }
 
@@ -1640,6 +1697,17 @@ namespace Compiladores_BIT
             Form_TablaAS tabla = new Form_TablaAS(Tabla_AS, grmls, edosLR.Count(), grmls.Count());
             tabla.construyeTabla();
             tabla.Show();
+        }
+
+        public void Analizador_Completo()
+        {
+            //1. Llevara a cabo el analisis lexico, utilizando el modulo de clasificacion de tokens. 
+            clasi_token();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
