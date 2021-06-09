@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.ComponentModel;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 
 namespace Compiladores_BIT
@@ -38,6 +40,9 @@ namespace Compiladores_BIT
         string[,] Tabla_AS;
         int iedo = 0;
         List<string> erroreslexicos = new List<string>();
+        Tokens tokens;
+
+        List<TreeNode> arbolaux = new List<TreeNode>();
 
         Automata AFN = null;
         Automata AFD = null;
@@ -1194,10 +1199,9 @@ namespace Compiladores_BIT
 
         private void clasificar_Tokens_Click(object sender, EventArgs e)
         {
-            erroreslexicos.Clear();
             //Elimina los espacios del código
             List<string> p = codigoTiny.Text.Split().ToList();
-            List<string> listaTextoP = codigoTiny.Text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            
             //Elimina las cadenas vacias
             p = p.FindAll(str => !str.Equals(""));
             Tokens tokens = new Tokens(p);
@@ -1228,42 +1232,27 @@ namespace Compiladores_BIT
                 tabla_token.Rows[i].Cells[0].Value = tokens.tokens.ElementAt(i).nombre;
                 tabla_token.Rows[i].Cells[1].Value = tokens.tokens.ElementAt(i).lexema;
 
-                if (tokens.tokens.ElementAt(i).nombre.Equals("Error léxico"))
-                {
-                    for (int j=0; j<listaTextoP.Count();j++)
-                    {
-                        if (listaTextoP.ElementAt(j).Contains(tokens.tokens.ElementAt(i).lexema))
-                        {
-                            int xd = j + 1;
-                            string er = "Linea "+xd+". "+ tokens.tokens.ElementAt(i).lexema+" no se reconoce";
-                            erroreslexicos.Add(er);
-                        }
-                     }
-                }
-
             }
-
-
         }
 
         public void clasi_token()
         {
+            erroreslexicos.Clear();
             //Elimina los espacios del código
             List<string> p = codigoTiny.Text.Split().ToList();
+            List<String> listaTextoP = codigoTiny.Text.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
             //Elimina las cadenas vacias
             p = p.FindAll(str => !str.Equals(""));
-            Tokens tokens = new Tokens(p);
+            tokens = new Tokens(p);
             tokens.clasificaTokens();
-
             //Obtine todos los tokens que no fueron clasificados para recorrerlos en los AFD de letras y numeros 
-            noClasificados = tokens.getTokensSinClasificar();
+            noClasificados = tokens.getTokensSinClasificarAS();
             //Recorre el AFD con cada token
             RecorreAFD();
-
-            // calsifica los lexemas que ya fueron encontrados en el recorrido del AFD
+            // calsifica los lexemas que ya fueron encontrdos en el recorrido del AFD
             foreach (Token pp in noClasificados)
             {
-                foreach (Token pp2 in tokens.tokens)
+                foreach (Token pp2 in tokens.tokensAS)
                 {
                     if (pp.lexema.Equals(pp2.lexema))
                     {
@@ -1271,16 +1260,28 @@ namespace Compiladores_BIT
                     }
                 }
             }
-
             //Muestra la tabla en la interfaz
             tabla_token.Rows.Clear();
-            for (int i = 0; i < tokens.tokens.Count(); i++)
+            for (int i = 0; i < tokens.tokensAS.Count(); i++)
             {
                 tabla_token.Rows.Add();
-                tabla_token.Rows[i].Cells[0].Value = tokens.tokens.ElementAt(i).nombre;
-                tabla_token.Rows[i].Cells[1].Value = tokens.tokens.ElementAt(i).lexema;
+                tabla_token.Rows[i].Cells[0].Value = tokens.tokensAS.ElementAt(i).nombre;
+                tabla_token.Rows[i].Cells[1].Value = tokens.tokensAS.ElementAt(i).lexema;
+                if (tokens.tokensAS.ElementAt(i).nombre.Equals("Error léxico"))
+                {
+                    
+                    for (int j = 0; j < listaTextoP.Count(); j++)
+                    {
+                        if (listaTextoP.ElementAt(j).Contains(tokens.tokensAS.ElementAt(i).lexema))
+                        {
+                            int xd = j + 1;
+                            string er = "Linea " + xd + ". " + tokens.tokensAS.ElementAt(i).lexema + " no se reconoce";
+                            if(!erroreslexicos.Contains(er))
+                                erroreslexicos.Add(er);
 
-                //if()
+                        }
+                    }
+                }
             }
         }
 
@@ -1315,7 +1316,7 @@ namespace Compiladores_BIT
                 valid = Recorre_lexema();
                 if (valid)
                 {
-                    s.nombre = "número";
+                    s.nombre = "numero";
                 }
             }
             // si no los clasifico con un nombre, les pone Error léxico.
@@ -1339,6 +1340,13 @@ namespace Compiladores_BIT
 
             Analisis_Sintactico();
             Btn_TablaAS.Visible = true;
+        }
+        public void Colec_can()
+        {
+            Crea_Gramatica_Tiny();
+            Copia_Lista(gramatica_Tiny, gramatica_original_Tiny);
+            Elementos();
+            Analisis_Sintactico();
         }
 
         public void visualizaEdos()
@@ -1701,13 +1709,162 @@ namespace Compiladores_BIT
 
         public void Analizador_Completo()
         {
-            //1. Llevara a cabo el analisis lexico, utilizando el modulo de clasificacion de tokens. 
+            //1. Llevara a cabo el analisis lexico, utilizando el modulo de clasificacion de tokens y reconocer en que linea sucedio el error. 
             clasi_token();
+            //2. 2. Si se encontró algún error léxico. Ya no continuará con el análisis sintáctico.
+            if (erroreslexicos.Count()>0)
+            {
+                txt_errores.Text = "Existen errores léxicos";
+                for (int i=0; i< erroreslexicos.Count(); i++ )
+                {
+                    txt_errores.Text += Environment.NewLine + erroreslexicos.ElementAt(i);
+                }
+            }else
+            {
+                //3. Si no encontró error léxico, llevará a cabo el análisis sintáctico LR y mostrará en pantalla el árbol de análisis sintáctico resultante 
+                //(se aconseja utilizar TreeView para mostrar la jerarquía de las reducciones).
+                // se construye la coleccion canonica
+                Colec_can();
+                Analisis_sintacticoLR();
+                
+
+
+            }
         }
+
+        public void Analisis_sintacticoLR()
+        {
+            //Tabla de tansiciones del automata es trs
+
+            //Tabla de analisis Sintactico es   tabla_AS
+
+            //Lista con las producciones 
+
+            //cadena w
+
+            //pila para manejo del algoritmo 
+
+            //Variables para el manejo del algoritmo 
+
+
+            //1. Obtener w y la cadena para hacer el arbol 
+            List<string> w = new List<string>();
+            List<string> waux = new List<string>();
+            //Declarar una lista de arbol sintactico
+            List<TreeNode> arbol = new List<TreeNode>();
+            foreach (Token to in tokens.tokensAS)
+            {
+                w.Add(to.nombre);
+                waux.Add(to.nombre);
+                arbol.Add(new TreeNode(to.nombre));
+            }
+            w.Add("$");
+            //2. Crear pila
+            Stack pila = new Stack();
+            pila.Push(0);
+            int s,t;
+            int i = 0;
+            int i2 = -1;
+            string a=w.ElementAt(i);
+            int numr;
+            string aux;
+            while (true)
+            {
+                s = (int)pila.Peek();
+                string acc = Accion_LR(s, a);
+                if (acc!="" && !acc.Equals("error"))
+                {
+                    if(acc.Contains("D"))
+                    {
+                        Match m = Regex.Match(acc, "(\\d+)");
+
+                        if (m.Success)
+                        {
+                            numr = Int32.Parse(m.Value);
+                            pila.Push(numr);
+                            i++;
+                            i2++;
+                            a = w.ElementAt(i);
+                            
+                        }
+                    }
+                    else {
+                        if (acc.Contains("R"))
+                        {
+                            Match m = Regex.Match(acc, "(\\d+)");
+
+                            if (m.Success)
+                            {
+                                numr = Int32.Parse(m.Value);
+
+                                int sacar = gramatica_original_Tiny.ElementAt(numr).cuerpo.Count();
+                                for (int j = 0; j < sacar; j++)
+                                {
+                                    pila.Pop();
+                                }
+                                t = (int)pila.Peek();
+                                aux = gramatica_original_Tiny.ElementAt(numr).encabezado.texto;
+                                numr = Int32.Parse(Accion_LR(t, aux));
+                                pila.Push(numr);
+
+
+                                // parte del arbol
+                                i2 = i2 - sacar + 1;
+                                arbolaux = arbol.GetRange(i2,sacar);
+                                arbol.RemoveRange(i2, sacar);
+                                arbol.Insert(i2, new TreeNode(aux, arbolaux.ToArray()));
+                            }
+                        }
+                        else {
+                            if (acc.Equals("AC"))
+                            {
+                                tree_v.Nodes.Clear();
+                                tree_v.BeginUpdate();
+                                tree_v.Nodes.AddRange(arbol.ToArray());
+                                tree_v.EndUpdate();
+                                tree_v.ExpandAll();
+                                break;
+                            }
+                        }
+
+                    }
+                    
+
+
+                }else 
+                {
+                    txt_errores.Text = "Se obtuvo un error sintáctico" + Environment.NewLine
+                        + "Al hacer la acción de " + s + " con " + a;
+                    break;
+                }
+            }
+
+        }
+
+        public string Accion_LR(int s, string a)
+        {
+            string q = "";
+            int i = grmls.FindIndex(x => x.texto.Equals(a));
+            if(Tabla_AS[s,i]==null)
+            {
+                q = "error";
+            }else
+            {
+                q = Tabla_AS[s, i];
+            }
+            return q;
+        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            txt_errores.Text = "";
+            Analizador_Completo();
         }
     }
 }

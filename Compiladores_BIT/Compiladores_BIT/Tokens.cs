@@ -28,6 +28,7 @@ namespace Compiladores_BIT
     {
         private List<string> palabras = new List<string>();
         public List<Token> tokens = new List<Token>();
+        public List<Token> tokensAS = new List<Token>();
         List<string> simbolosEspeciales = new List<string> { "+", "-", "*", "/", "=", "<", ">", "(", ")", ";", ":=" };
         List<string> palabrasReservadas = new List<string> { "if", "then", "else", "end", "repeat", "until", "read", "write" };
         string lexema = "";
@@ -106,6 +107,7 @@ namespace Compiladores_BIT
             bool verifica = tokens.Exists(t => tk.nombre.Equals(t.nombre) && tk.lexema.Equals(t.lexema));
             if (!verifica)
                 tokens.Add(tk);
+            tokensAS.Add(tk);
         }
 
         /// <summary>
@@ -115,6 +117,10 @@ namespace Compiladores_BIT
         public List<Token> getTokensSinClasificar()
         {
             return tokens.FindAll(x => x.nombre.Equals(""));
+        }
+        public List<Token> getTokensSinClasificarAS()
+        {
+            return tokensAS.FindAll(x => x.nombre.Equals(""));
         }
     }
 }

@@ -79,9 +79,11 @@ namespace Compiladores_BIT
             this.Tb_Elementos = new System.Windows.Forms.TextBox();
             this.DGV_edos = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
             this.txt_errores = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.arbol_sint = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tree_v = new System.Windows.Forms.TreeView();
             this.tabPage1.SuspendLayout();
             this.analizador_sint.SuspendLayout();
             this.tabAFN.SuspendLayout();
@@ -93,6 +95,7 @@ namespace Compiladores_BIT
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_edos)).BeginInit();
             this.tabPage3.SuspendLayout();
+            this.arbol_sint.SuspendLayout();
             this.SuspendLayout();
             // 
             // abrir_txt
@@ -119,7 +122,7 @@ namespace Compiladores_BIT
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(245, 23);
             this.label4.TabIndex = 7;
-            this.label4.Text = "Badillo Ortíz Pablo Angel";
+            this.label4.Text = "Badillo Ortiz Pablo Angel";
             // 
             // label5
             // 
@@ -147,7 +150,7 @@ namespace Compiladores_BIT
             this.tabPage1.Controls.Add(this.btn_posfija);
             this.tabPage1.Location = new System.Drawing.Point(4, 23);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(688, 458);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Analizador lexico";
@@ -279,6 +282,7 @@ namespace Compiladores_BIT
             this.analizador_sint.Controls.Add(this.tabTokens);
             this.analizador_sint.Controls.Add(this.tabPage2);
             this.analizador_sint.Controls.Add(this.tabPage3);
+            this.analizador_sint.Controls.Add(this.arbol_sint);
             this.analizador_sint.Font = new System.Drawing.Font("Montserrat", 8.249999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.analizador_sint.Location = new System.Drawing.Point(0, 91);
             this.analizador_sint.Name = "analizador_sint";
@@ -294,7 +298,7 @@ namespace Compiladores_BIT
             this.tabAFN.Controls.Add(this.tabla_transiciones_AFN);
             this.tabAFN.Location = new System.Drawing.Point(4, 23);
             this.tabAFN.Name = "tabAFN";
-            this.tabAFN.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabAFN.Padding = new System.Windows.Forms.Padding(3);
             this.tabAFN.Size = new System.Drawing.Size(688, 458);
             this.tabAFN.TabIndex = 1;
             this.tabAFN.Text = "AFN";
@@ -347,9 +351,9 @@ namespace Compiladores_BIT
             this.tabAFD.Controls.Add(this.afd_btn);
             this.tabAFD.Controls.Add(this.tabla_transiciones_AFD);
             this.tabAFD.Location = new System.Drawing.Point(4, 23);
-            this.tabAFD.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabAFD.Margin = new System.Windows.Forms.Padding(2);
             this.tabAFD.Name = "tabAFD";
-            this.tabAFD.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabAFD.Padding = new System.Windows.Forms.Padding(2);
             this.tabAFD.Size = new System.Drawing.Size(688, 458);
             this.tabAFD.TabIndex = 2;
             this.tabAFD.Text = "AFD";
@@ -408,7 +412,7 @@ namespace Compiladores_BIT
             this.tabTokens.Controls.Add(this.label8);
             this.tabTokens.Location = new System.Drawing.Point(4, 23);
             this.tabTokens.Name = "tabTokens";
-            this.tabTokens.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabTokens.Padding = new System.Windows.Forms.Padding(3);
             this.tabTokens.Size = new System.Drawing.Size(688, 458);
             this.tabTokens.TabIndex = 3;
             this.tabTokens.Text = "Tokens";
@@ -525,7 +529,7 @@ namespace Compiladores_BIT
             this.tabPage2.Controls.Add(this.DGV_edos);
             this.tabPage2.Location = new System.Drawing.Point(4, 23);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(688, 458);
             this.tabPage2.TabIndex = 4;
             this.tabPage2.Text = "Analisis sintáctico LR(0)";
@@ -636,30 +640,16 @@ namespace Compiladores_BIT
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.button3);
             this.tabPage3.Controls.Add(this.txt_errores);
             this.tabPage3.Controls.Add(this.button1);
             this.tabPage3.Location = new System.Drawing.Point(4, 23);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage3.Size = new System.Drawing.Size(688, 458);
             this.tabPage3.TabIndex = 5;
             this.tabPage3.Text = "Análisis Léxico Sintáctico";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.Khaki;
-            this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button3.Font = new System.Drawing.Font("Montserrat", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(208, 414);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(278, 34);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "Árbol de Análisis Sintáctico Resultante";
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // txt_errores
             // 
@@ -670,7 +660,7 @@ namespace Compiladores_BIT
             this.txt_errores.Name = "txt_errores";
             this.txt_errores.ReadOnly = true;
             this.txt_errores.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txt_errores.Size = new System.Drawing.Size(673, 351);
+            this.txt_errores.Size = new System.Drawing.Size(673, 398);
             this.txt_errores.TabIndex = 11;
             // 
             // button1
@@ -684,13 +674,43 @@ namespace Compiladores_BIT
             this.button1.TabIndex = 10;
             this.button1.Text = "Análisis Léxico y Sintáctico del programa en lenguaje TINY";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // arbol_sint
+            // 
+            this.arbol_sint.Controls.Add(this.label11);
+            this.arbol_sint.Controls.Add(this.tree_v);
+            this.arbol_sint.Location = new System.Drawing.Point(4, 23);
+            this.arbol_sint.Name = "arbol_sint";
+            this.arbol_sint.Padding = new System.Windows.Forms.Padding(3);
+            this.arbol_sint.Size = new System.Drawing.Size(688, 458);
+            this.arbol_sint.TabIndex = 6;
+            this.arbol_sint.Text = "Árbol Sintáctico";
+            this.arbol_sint.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Montserrat", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(152, 8);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(383, 33);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "Árbol de Análisis Sintáctico";
+            // 
+            // tree_v
+            // 
+            this.tree_v.Location = new System.Drawing.Point(6, 44);
+            this.tree_v.Name = "tree_v";
+            this.tree_v.Size = new System.Drawing.Size(675, 408);
+            this.tree_v.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Bisque;
-            this.ClientSize = new System.Drawing.Size(697, 573);
+            this.ClientSize = new System.Drawing.Size(697, 579);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -714,6 +734,8 @@ namespace Compiladores_BIT
             ((System.ComponentModel.ISupportInitialize)(this.DGV_edos)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.arbol_sint.ResumeLayout(false);
+            this.arbol_sint.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -769,9 +791,11 @@ namespace Compiladores_BIT
         private System.Windows.Forms.Label txt_cantElem;
         private System.Windows.Forms.Button Btn_TablaAS;
         private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox txt_errores;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TabPage arbol_sint;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TreeView tree_v;
     }
 }
 
